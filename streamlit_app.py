@@ -4,23 +4,26 @@ pg = st.navigation(
     {
         "Web traffic": [
             st.Page(
-                "home.py",
+                "streamlit_testing/pages/home.py",
                 title="Home",
                 icon="🏠"
             ),
             st.Page(
-                "dashboard_web_summary.py",
+                "streamlit_testing/pages/dashboard/web_traffic/summary.py",
                 title="Summary",
+                url_path="/web_traffic_summary",
                 icon="📊"
             ),
             st.Page(
-                "dashboard_web_bypage.py",
+                "streamlit_testing/pages/dashboard/web_traffic/by_page.py",
                 title="By page",
+                url_path="/web_traffic_by_page",
                 icon="📊"
             ),
             st.Page(
-                "dashboard_web_pagedetail.py",
+                "streamlit_testing/pages/dashboard/web_traffic/page_detail.py",
                 title="Page detail",
+                url_path="/web_traffic_page_detail",
                 icon="📊"
             )
         ],
