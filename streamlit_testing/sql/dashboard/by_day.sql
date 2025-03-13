@@ -2,11 +2,11 @@
 --- By page
 select
     pv.date,
-    -- sum(pv.activeUsers) activeUsers,
-    -- sum(pv.engagedSessions) engagedSessions,
-    sum(pv.screenPageViews) screenPageViews
-    -- sum(pv.sessions) sessions,
-    -- sum(pv.userEngagementDuration) userEngagementDuration
+    sum(pv.activeUsers) activeUsers,
+    sum(pv.engagedSessions) engagedSessions,
+    sum(pv.screenPageViews) screenPageViews,
+    sum(pv.sessions) sessions,
+    sum(pv.userEngagementDuration) userEngagementDuration
 from corporate.ga_page_views_by_date pv
     left join corporate.ifg_content c on
         pv.pagePath = c.[partial]

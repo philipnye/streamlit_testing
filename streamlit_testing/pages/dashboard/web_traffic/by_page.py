@@ -52,15 +52,30 @@ df_by_page["pagePath"] = df_by_page["pagePath"].apply(
     lambda x: f"https://www.instituteforgovernment.org.uk{x}"
 )
 
-# DISPLAY RESULTS
+# DRAW APP
+# Controls
+metric = st.selectbox(
+    label="Metric",
+    options=[
+        "activeUsers",
+        "engagedSessions",
+        "screenPageViews",
+        "sessions",
+        "userEngagementDuration",
+    ],
+    index=0,
+    key="metric",
+)
+
+# Chart
 st.line_chart(
     data=df_by_day,
     x="date",
-    y="screenPageViews",
+    y=metric,
     use_container_width=True,
 )
 
-# Streamlit dataframe
+# Table
 st.dataframe(
     df_by_page,
     hide_index=True,
