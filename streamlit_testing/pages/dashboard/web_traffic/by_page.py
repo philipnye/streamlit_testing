@@ -1,6 +1,7 @@
 import os
 
 import pandas as pd
+from sqlalchemy import exc
 import streamlit as st
 
 import ds_utils.database_operations as dbo
@@ -21,10 +22,16 @@ connection = dbo.connect_sql_db(
 with open('streamlit_testing/sql/dashboard/by_page.sql', 'r') as file:
     script = file.read()
 
-df = pd.read_sql_query(
-    sql=script,
-    con=connection,
-)
+try:
+    df = pd.read_sql_query(
+        sql=script,
+        con=connection,
+    )
+except exc.DBAPIError:
+    df = pd.read_sql_query(
+        sql=script,
+        con=connection,
+    )
 
 # DISPLAY RESULTS
 st.dataframe(df)
