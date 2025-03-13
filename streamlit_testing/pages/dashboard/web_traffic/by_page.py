@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from sqlalchemy import exc
 import streamlit as st
+from st_aggrid import AgGrid, GridOptionsBuilder
 
 import ds_utils.database_operations as dbo
 
@@ -39,6 +40,7 @@ df["pagePath"] = df["pagePath"].apply(
 )
 
 # DISPLAY RESULTS
+# Streamlit dataframe
 st.dataframe(
     df,
     hide_index=True,
@@ -51,4 +53,17 @@ st.dataframe(
             display_text="https://www.instituteforgovernment.org.uk(.*)"
         )
     },
+)
+
+# AG Grid
+grid_builder = GridOptionsBuilder.from_dataframe(df)
+grid_options = grid_builder.build()
+
+grid_options["columnDefs"][0]["pinned"] = "left"
+
+AgGrid(
+    df,
+    key="ag",
+    update_on=[],
+    gridOptions=grid_options,
 )
