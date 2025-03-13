@@ -33,5 +33,22 @@ except exc.DBAPIError:
         con=connection,
     )
 
+# EDIT DATA
+df["pagePath"] = df["pagePath"].apply(
+    lambda x: f"https://www.instituteforgovernment.org.uk{x}"
+)
+
 # DISPLAY RESULTS
-st.dataframe(df)
+st.dataframe(
+    df,
+    hide_index=True,
+    column_config={
+        "page_title": st.column_config.Column(
+            label="Page title",
+            pinned=True,
+        ),
+        "pagePath": st.column_config.LinkColumn(
+            display_text="https://www.instituteforgovernment.org.uk(.*)"
+        )
+    },
+)
