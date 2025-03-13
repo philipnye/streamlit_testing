@@ -21,28 +21,48 @@ connection = dbo.connect_sql_db(
 
 # RUN QUERY
 with open("streamlit_testing/sql/dashboard/by_page.sql", "r") as file:
-    script = file.read()
+    by_page_script = file.read()
+with open("streamlit_testing/sql/dashboard/by_day.sql", "r") as file:
+    by_day_script = file.read()
 
 try:
-    df = pd.read_sql_query(
-        sql=script,
+    df_by_page = pd.read_sql_query(
+        sql=by_page_script,
         con=connection,
     )
 except exc.DBAPIError:
-    df = pd.read_sql_query(
-        sql=script,
+    df_by_page = pd.read_sql_query(
+        sql=by_page_script,
+        con=connection,
+    )
+
+try:
+    df_by_day = pd.read_sql_query(
+        sql=by_day_script,
+        con=connection,
+    )
+except exc.DBAPIError:
+    df_by_day = pd.read_sql_query(
+        sql=by_day_script,
         con=connection,
     )
 
 # EDIT DATA
-df["pagePath"] = df["pagePath"].apply(
+df_by_page["pagePath"] = df_by_page["pagePath"].apply(
     lambda x: f"https://www.instituteforgovernment.org.uk{x}"
 )
 
 # DISPLAY RESULTS
+st.line_chart(
+    data=df_by_day,
+    x="date",
+    y="screenPageViews",
+    use_container_width=True,
+)
+
 # Streamlit dataframe
 st.dataframe(
-    df,
+    df_by_page,
     hide_index=True,
     column_config={
         "page_title": st.column_config.Column(
@@ -57,7 +77,7 @@ st.dataframe(
 
 # AG Grid
 # Ref (hyperlinks): https://github.com/PablocFonseca/streamlit-aggrid/issues/198
-grid_builder = GridOptionsBuilder.from_dataframe(df)
+grid_builder = GridOptionsBuilder.from_dataframe(df_by_page)
 grid_options = grid_builder.build()
 
 grid_options["pagination"] = True
@@ -85,7 +105,7 @@ column_defs["pagePath"]["cellRenderer"] = JsCode("""
 """)
 
 AgGrid(
-    df,
+    df_by_page,
     key="ag",
     update_on=[],
     gridOptions=grid_options,
