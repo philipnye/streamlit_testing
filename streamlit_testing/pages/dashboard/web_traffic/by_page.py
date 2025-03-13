@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from sqlalchemy import exc
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder
+from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
 import ds_utils.database_operations as dbo
 
@@ -56,6 +56,7 @@ st.dataframe(
 )
 
 # AG Grid
+# Ref (hyperlinks): https://github.com/PablocFonseca/streamlit-aggrid/issues/198
 grid_builder = GridOptionsBuilder.from_dataframe(df)
 grid_options = grid_builder.build()
 
@@ -68,10 +69,25 @@ grid_options["defaultColDef"] = {
 
 column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
 column_defs["page_title"]["pinned"] = "left"
+column_defs["pagePath"]["cellRenderer"] = JsCode("""
+    class UrlCellRenderer {
+    init(params) {
+        this.eGui = document.createElement("a");
+        this.eGui.innerText = params.value;
+        this.eGui.setAttribute("href", params.value);
+        this.eGui.setAttribute("style", "text-decoration:none");
+        this.eGui.setAttribute("target", "_blank");
+    }
+    getGui() {
+        return this.eGui;
+    }
+    }
+""")
 
 AgGrid(
     df,
     key="ag",
     update_on=[],
     gridOptions=grid_options,
+    allow_unsafe_jscode=True,
 )
