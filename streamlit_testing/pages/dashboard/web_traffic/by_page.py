@@ -59,9 +59,9 @@ st.dataframe(
 grid_builder = GridOptionsBuilder.from_dataframe(df)
 grid_options = grid_builder.build()
 
-columnDefs = {columnDef["field"]: columnDef for columnDef in grid_options["columnDefs"]}
+column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
 
-columnDefs["page_title"]["pinned"] = "left"
+column_defs["page_title"]["pinned"] = "left"
 
 AgGrid(
     df,
