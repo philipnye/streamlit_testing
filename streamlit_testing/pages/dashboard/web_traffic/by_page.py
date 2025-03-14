@@ -104,10 +104,6 @@ df_by_page = df[[
     "tags",
 ]).sum().reset_index().sort_values(metric, ascending=False)
 
-df_by_page["pagePath"] = df_by_page["pagePath"].apply(
-    lambda x: f"https://www.instituteforgovernment.org.uk{x}"
-)
-
 # DRAW OUTPUT WIDGETS
 # Chart
 st.line_chart(
@@ -118,7 +114,6 @@ st.line_chart(
 )
 
 # Table
-# Ref (hyperlinks): https://github.com/PablocFonseca/streamlit-aggrid/issues/198
 grid_builder = GridOptionsBuilder.from_dataframe(df_by_page)
 grid_options = grid_builder.build()
 
@@ -136,7 +131,9 @@ column_defs["page_title"]["cellRenderer"] = JsCode("""
         init(params) {
             this.eGui = document.createElement("a");
             this.eGui.innerText = params.value;
-            this.eGui.setAttribute("href", params.data.pagePath);
+            this.eGui.setAttribute(
+                "href", "http://localhost:8501/web_traffic_page_detail?" + params.data.pagePath
+            );
             this.eGui.setAttribute("style", "text-decoration:none");
             this.eGui.setAttribute("target", "_blank");
         }
@@ -150,7 +147,9 @@ column_defs["pagePath"]["cellRenderer"] = JsCode("""
         init(params) {
             this.eGui = document.createElement("a");
             this.eGui.innerText = "View page ⮺";
-            this.eGui.setAttribute("href", params.value);
+            this.eGui.setAttribute(
+                "href", "https://www.instituteforgovernment.org.uk" + params.value
+            );
             this.eGui.setAttribute("style", "text-decoration:none");
             this.eGui.setAttribute("target", "_blank");
         }
