@@ -133,16 +133,16 @@ column_defs = {column_def["field"]: column_def for column_def in grid_options["c
 column_defs["page_title"]["pinned"] = "left"
 column_defs["pagePath"]["cellRenderer"] = JsCode("""
     class UrlCellRenderer {
-    init(params) {
-        this.eGui = document.createElement("a");
-        this.eGui.innerText = params.value;
-        this.eGui.setAttribute("href", params.value);
-        this.eGui.setAttribute("style", "text-decoration:none");
-        this.eGui.setAttribute("target", "_blank");
-    }
-    getGui() {
-        return this.eGui;
-    }
+        init(params) {
+            this.eGui = document.createElement("a");
+            this.eGui.innerText = params.value;
+            this.eGui.setAttribute("href", params.value);
+            this.eGui.setAttribute("style", "text-decoration:none");
+            this.eGui.setAttribute("target", "_blank");
+        }
+        getGui() {
+            return this.eGui;
+        }
     }
 """)
 
