@@ -132,7 +132,7 @@ column_defs["page_title"]["cellRenderer"] = JsCode("""
             this.eGui = document.createElement("a");
             this.eGui.innerText = params.value;
             this.eGui.setAttribute(
-                "href", "http://localhost:8501/web_traffic_page_detail?" + params.data.pagePath
+                "href", "http://localhost:8501/web_traffic_page_detail?url=" + params.data.pagePath
             );
             this.eGui.setAttribute("style", "text-decoration:none");
             this.eGui.setAttribute("target", "_blank");
