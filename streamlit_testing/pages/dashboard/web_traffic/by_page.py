@@ -135,7 +135,7 @@ column_defs["pagePath"]["cellRenderer"] = JsCode("""
     class UrlCellRenderer {
         init(params) {
             this.eGui = document.createElement("a");
-            this.eGui.innerText = params.value;
+            this.eGui.innerText = "View page ⮺";
             this.eGui.setAttribute("href", params.value);
             this.eGui.setAttribute("style", "text-decoration:none");
             this.eGui.setAttribute("target", "_blank");
