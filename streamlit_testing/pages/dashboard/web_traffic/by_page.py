@@ -19,40 +19,22 @@ connection = dbo.connect_sql_db(
     password=os.environ["AZURE_CLIENT_SECRET"],
 )
 
-# RUN QUERY
+# LOAD DATA
 with open("streamlit_testing/sql/dashboard/by_page.sql", "r") as file:
-    by_page_script = file.read()
-with open("streamlit_testing/sql/dashboard/by_day.sql", "r") as file:
-    by_day_script = file.read()
+    script = file.read()
 
 try:
-    df_by_page = pd.read_sql_query(
-        sql=by_page_script,
+    df = pd.read_sql_query(
+        sql=script,
         con=connection,
     )
 except exc.DBAPIError:
-    df_by_page = pd.read_sql_query(
-        sql=by_page_script,
+    df = pd.read_sql_query(
+        sql=script,
         con=connection,
     )
 
-try:
-    df_by_day = pd.read_sql_query(
-        sql=by_day_script,
-        con=connection,
-    )
-except exc.DBAPIError:
-    df_by_day = pd.read_sql_query(
-        sql=by_day_script,
-        con=connection,
-    )
-
-# EDIT DATA
-df_by_page["pagePath"] = df_by_page["pagePath"].apply(
-    lambda x: f"https://www.instituteforgovernment.org.uk{x}"
-)
-
-# DRAW APP
+# DRAW INPUT WIDGETS
 # Controls
 metric = st.selectbox(
     label="Metric",
@@ -67,6 +49,66 @@ metric = st.selectbox(
     key="metric",
 )
 
+start_date = st.date_input(
+    label="Start date",
+    value=df["date"].min(),
+    min_value=df["date"].min(),
+    max_value=df["date"].max(),
+    key="start_date",
+)
+end_date = st.date_input(
+    label="End date",
+    value=df["date"].max(),
+    min_value=df["date"].min(),
+    max_value=df["date"].max(),
+    key="end_date",
+)
+
+# EDIT DATA
+df = df[
+    (df["date"] >= start_date) &
+    (df["date"] <= end_date)
+]
+
+df_by_day = df[[
+    "date",
+    "activeUsers",
+    "engagedSessions",
+    "screenPageViews",
+    "sessions",
+    "userEngagementDuration",
+]].copy().groupby("date").sum().reset_index().sort_values("date")
+
+df_by_page = df[[
+    "page_title",
+    "pagePath",
+    "type",
+    "published_date",
+    "updated_date_alternative",
+    "authors",
+    "research_areas",
+    "tags",
+    "activeUsers",
+    "engagedSessions",
+    "screenPageViews",
+    "sessions",
+    "userEngagementDuration",
+]].copy().groupby([
+    "page_title",
+    "pagePath",
+    "type",
+    "published_date",
+    "updated_date_alternative",
+    "authors",
+    "research_areas",
+    "tags",
+]).sum().reset_index().sort_values(metric, ascending=False)
+
+df_by_page["pagePath"] = df_by_page["pagePath"].apply(
+    lambda x: f"https://www.instituteforgovernment.org.uk{x}"
+)
+
+# DRAW OUTPUT WIDGETS
 # Chart
 st.line_chart(
     data=df_by_day,

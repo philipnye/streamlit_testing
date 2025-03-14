@@ -1,6 +1,7 @@
 -- Web traffic
 --- By page
 select
+    pv.date,
     c.page_title,
     pv.pagePath,
     c.type,
@@ -9,11 +10,11 @@ select
     a.authors,
     ra.research_areas,
     t.tags,
-    sum(pv.activeUsers) activeUsers,
-    sum(pv.engagedSessions) engagedSessions,
-    sum(pv.screenPageViews) screenPageViews,
-    sum(pv.sessions) sessions,
-    sum(pv.userEngagementDuration) userEngagementDuration
+    pv.activeUsers,
+    pv.engagedSessions,
+    pv.screenPageViews,
+    pv.sessions,
+    pv.userEngagementDuration
 from corporate.ga_page_views_by_date pv
     left join corporate.ifg_content c on
         pv.pagePath = c.[partial]
@@ -46,18 +47,3 @@ from corporate.ga_page_views_by_date pv
     ) a
 where
     c.page_title is not null
-group by
-    pv.pagePath,
-    c.type,
-    c.page_title,
-    c.description,
-    c.published_date,
-    c.published_date_alternative,
-    c.updated_date,
-    c.updated_date_alternative,
-    c.readtime,
-    a.authors,
-    ra.research_areas,
-    t.tags
-order by
-    sum(pv.screenPageViews) desc
