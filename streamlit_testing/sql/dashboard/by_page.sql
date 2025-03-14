@@ -1,5 +1,3 @@
--- Web traffic
---- By page
 select
     pv.date,
     c.page_title,
@@ -46,4 +44,4 @@ from corporate.ga_page_views_by_date pv
             a.partial
     ) a
 where
-    c.page_title is not null
+    c.page_title is not null;
