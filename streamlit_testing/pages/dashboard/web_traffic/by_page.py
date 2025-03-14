@@ -131,6 +131,20 @@ grid_options["defaultColDef"] = {
 
 column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
 column_defs["page_title"]["pinned"] = "left"
+column_defs["page_title"]["cellRenderer"] = JsCode("""
+    class UrlCellRenderer {
+        init(params) {
+            this.eGui = document.createElement("a");
+            this.eGui.innerText = params.data.page_title;
+            this.eGui.setAttribute("href", params.data.pagePath);
+            this.eGui.setAttribute("style", "text-decoration:none");
+            this.eGui.setAttribute("target", "_blank");
+        }
+        getGui() {
+            return this.eGui;
+        }
+    }
+""")
 column_defs["pagePath"]["cellRenderer"] = JsCode("""
     class UrlCellRenderer {
         init(params) {
