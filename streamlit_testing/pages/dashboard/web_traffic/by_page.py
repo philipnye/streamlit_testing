@@ -76,21 +76,6 @@ st.line_chart(
 )
 
 # Table
-st.dataframe(
-    df_by_page,
-    hide_index=True,
-    column_config={
-        "page_title": st.column_config.Column(
-            label="Page title",
-            pinned=True,
-        ),
-        "pagePath": st.column_config.LinkColumn(
-            display_text="https://www.instituteforgovernment.org.uk(.*)"
-        )
-    },
-)
-
-# AG Grid
 # Ref (hyperlinks): https://github.com/PablocFonseca/streamlit-aggrid/issues/198
 grid_builder = GridOptionsBuilder.from_dataframe(df_by_page)
 grid_options = grid_builder.build()
