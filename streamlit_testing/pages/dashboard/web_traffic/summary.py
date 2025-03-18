@@ -34,6 +34,9 @@ except exc.DBAPIError:
         con=connection,
     )
 
+# DRAW PAGE HEADER
+st.title("Summary")
+
 # DRAW INPUT WIDGETS
 # Controls
 metric = st.selectbox(
@@ -128,8 +131,6 @@ else:
     )
 
 # DRAW OUTPUT WIDGETS
-st.title("Summary")
-
 # Chart
 st.line_chart(
     data=df_grouped_by_day,

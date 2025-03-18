@@ -73,11 +73,12 @@ except exc.DBAPIError:
         con=connection,
     )
 
-# DRAW OUTPUT WIDGETS
+# DRAW PAGE HEADER
 st.title(df_content_metadata["page_title"].iloc[0])
 st.subheader(df_content_metadata["authors"].iloc[0])
 st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["partial"].iloc[0])
 
+# DRAW OUTPUT WIDGETS
 st.dataframe(
     df_content_metadata[[
         "type", "published_date", "updated_date_alternative", "research_areas", "tags"

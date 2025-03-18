@@ -34,6 +34,9 @@ except exc.DBAPIError:
         con=connection,
     )
 
+# DRAW PAGE HEADER
+st.title("By page")
+
 # DRAW INPUT WIDGETS
 # Controls
 metric = st.selectbox(
@@ -105,8 +108,6 @@ df_by_page = df[[
 ]).sum().reset_index().sort_values(metric, ascending=False)
 
 # DRAW OUTPUT WIDGETS
-st.title("By page")
-
 # Chart
 st.line_chart(
     data=df_by_day,
