@@ -77,7 +77,7 @@ df_by_day = df[[
     "screenPageViews",
     "sessions",
     "userEngagementDuration",
-]].copy().groupby("date").sum().reset_index().sort_values("date")
+]].groupby("date").sum().reset_index().sort_values("date")
 
 df_by_page = df[[
     "page_title",
@@ -93,7 +93,7 @@ df_by_page = df[[
     "screenPageViews",
     "sessions",
     "userEngagementDuration",
-]].copy().groupby([
+]].groupby([
     "page_title",
     "pagePath",
     "type",

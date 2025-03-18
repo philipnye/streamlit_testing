@@ -92,7 +92,7 @@ df_grouped_by_day = df[[
     "screenPageViews",
     "sessions",
     "userEngagementDuration",
-]].copy().groupby("date").sum().reset_index().sort_values("date")
+]].groupby("date").sum().reset_index().sort_values("date")
 
 if breakdowns != []:
     df_grouped = df[breakdowns + [
@@ -101,7 +101,7 @@ if breakdowns != []:
         "screenPageViews",
         "sessions",
         "userEngagementDuration",
-    ]].copy().groupby(breakdowns).sum().reset_index().sort_values(breakdowns)
+    ]].groupby(breakdowns).sum().reset_index().sort_values(breakdowns)
 else:
     df_grouped = df[[
         "activeUsers",
@@ -109,7 +109,7 @@ else:
         "screenPageViews",
         "sessions",
         "userEngagementDuration",
-    ]].copy().sum().to_frame().T
+    ]].sum().reset_index()
 
 # DRAW OUTPUT WIDGETS
 # Chart
