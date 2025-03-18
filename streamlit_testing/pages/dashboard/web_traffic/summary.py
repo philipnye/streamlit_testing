@@ -109,7 +109,7 @@ else:
         "screenPageViews",
         "sessions",
         "userEngagementDuration",
-    ]].sum().reset_index()
+    ]].copy().sum().to_frame().T
 
 # DRAW OUTPUT WIDGETS
 # Chart
