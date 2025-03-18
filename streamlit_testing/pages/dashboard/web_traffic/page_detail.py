@@ -7,6 +7,14 @@ from st_aggrid import AgGrid, GridOptionsBuilder
 
 import ds_utils.database_operations as dbo
 
+# HANDLE DIRECT ACCESS
+if "url" not in st.query_params:
+    st.write("""
+        Direct access to this page not developed yet - please navigate here using one of the links
+        in the table on the 'By page' page
+    """)
+    st.stop()
+
 # CONNECT TO DATABASE
 connection = dbo.connect_sql_db(
     driver="pyodbc",
@@ -26,19 +34,8 @@ with open("streamlit_testing/sql/dashboard/page_detail.sql", "r") as file:
 script_content_metadata = script.split(';')[0]
 script_web_traffic = script.split(';')[1]
 
-if "url" not in st.query_params:
-    st.write("""
-        Direct access to this page not developed yet - please navigate here using one of the links
-        in the table on the 'By page' page
-    """)
-    st.stop()
-else:
-    script_content_metadata = script_content_metadata.replace(
-        "''", "'" + st.query_params["url"] + "'"
-    )
-    script_web_traffic = script_web_traffic.replace(
-        "''", "'" + st.query_params["url"] + "'"
-    )
+script_content_metadata = script_content_metadata.replace("''", "'" + st.query_params["url"] + "'")
+script_web_traffic = script_web_traffic.replace("''", "'" + st.query_params["url"] + "'")
 
 try:
     df_content_metadata = pd.read_sql_query(
