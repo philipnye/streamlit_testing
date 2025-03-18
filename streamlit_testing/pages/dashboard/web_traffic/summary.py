@@ -118,7 +118,7 @@ else:
         "screenPageViews",
         "sessions",
         "userEngagementDuration",
-    ]].groupby(lambda _: True).agg(
+    ]].groupby(lambda _: True).agg(     # Ref: https://stackoverflow.com/a/41363399/4659442
         pages=("partial", "count"),
         activeUsers=("activeUsers", "sum"),
         engagedSessions=("engagedSessions", "sum"),
