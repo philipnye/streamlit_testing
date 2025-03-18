@@ -33,7 +33,7 @@ st.markdown(
 # CONNECT TO DATABASE
 connection = dbo.connect_sql_db(
     driver="pyodbc",
-    driver_version=os.environ["ODBC_DRIVER"],
+    driver_version="{ODBC Driver 17 for SQL Server}",
     dialect="mssql",
     server=os.environ["ODBC_SERVER"],
     database=os.environ["ODBC_DATABASE"],
