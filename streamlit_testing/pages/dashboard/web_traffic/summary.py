@@ -128,6 +128,8 @@ else:
     )
 
 # DRAW OUTPUT WIDGETS
+st.title("Summary")
+
 # Chart
 st.line_chart(
     data=df_grouped_by_day,
