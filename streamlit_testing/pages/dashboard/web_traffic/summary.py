@@ -96,20 +96,36 @@ df_grouped_by_day = df[[
 
 if breakdowns != []:
     df_grouped = df[breakdowns + [
+        "partial",
         "activeUsers",
         "engagedSessions",
         "screenPageViews",
         "sessions",
         "userEngagementDuration",
-    ]].groupby(breakdowns).sum().reset_index().sort_values(breakdowns)
+    ]].groupby(breakdowns).agg(
+        pages=("partial", "count"),
+        activeUsers=("activeUsers", "sum"),
+        engagedSessions=("engagedSessions", "sum"),
+        screenPageViews=("screenPageViews", "sum"),
+        sessions=("sessions", "sum"),
+        userEngagementDuration=("userEngagementDuration", "sum"),
+    ).reset_index().sort_values(breakdowns)
 else:
     df_grouped = df[[
+        "partial",
         "activeUsers",
         "engagedSessions",
         "screenPageViews",
         "sessions",
         "userEngagementDuration",
-    ]].copy().sum().to_frame().T
+    ]].groupby(lambda _: True).agg(
+        pages=("partial", "count"),
+        activeUsers=("activeUsers", "sum"),
+        engagedSessions=("engagedSessions", "sum"),
+        screenPageViews=("screenPageViews", "sum"),
+        sessions=("sessions", "sum"),
+        userEngagementDuration=("userEngagementDuration", "sum"),
+    )
 
 # DRAW OUTPUT WIDGETS
 # Chart
