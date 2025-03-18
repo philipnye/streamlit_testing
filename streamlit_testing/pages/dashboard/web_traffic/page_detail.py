@@ -15,6 +15,21 @@ if "url" not in st.query_params:
     """)
     st.stop()
 
+# DISABLE SIDEBAR
+st.markdown(
+    """
+        <style>
+            div[data-testid="stSidebarCollapsedControl"]{
+                display: none;
+            }
+            section[data-testid="stSidebar"][aria-expanded="true"]{
+                display: none;
+            }
+        </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # CONNECT TO DATABASE
 connection = dbo.connect_sql_db(
     driver="pyodbc",
