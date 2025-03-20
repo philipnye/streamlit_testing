@@ -116,7 +116,7 @@ if breakdowns != []:
         "sessions",
         "userEngagementDuration",
     ]].groupby(breakdowns).agg(
-        pages=("partial", "count"),
+        pages=("partial", "nunique"),
         activeUsers=("activeUsers", "sum"),
         engagedSessions=("engagedSessions", "sum"),
         screenPageViews=("screenPageViews", "sum"),
@@ -132,7 +132,7 @@ else:
         "sessions",
         "userEngagementDuration",
     ]].groupby(lambda _: True).agg(     # Ref: https://stackoverflow.com/a/41363399/4659442
-        pages=("partial", "count"),
+        pages=("partial", "nunique"),
         activeUsers=("activeUsers", "sum"),
         engagedSessions=("engagedSessions", "sum"),
         screenPageViews=("screenPageViews", "sum"),
