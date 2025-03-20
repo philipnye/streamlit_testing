@@ -159,3 +159,27 @@ AgGrid(
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
 )
+
+# ADD ANALYTICS TRACKING
+st.html(
+    """
+        <script type="text/javascript">
+            var sc_project=13105466;
+            var sc_invisible=0;
+            var sc_security="d39aadb8";
+            var scJsHost = "https://";
+            document.write("<sc"+"ript type='text/javascript' src='" + scJsHost+
+            "statcounter.com/counter/counter.js'></"+"script>");
+        </script>
+        <noscript>
+            <div class="statcounter">
+                <a title="Web Analytics Made Easy -
+                    Statcounter" href="https://statcounter.com/" target="_blank"><img
+                    class="statcounter" src="https://c.statcounter.com/13105466/0/d39aadb8/0/"
+                    alt="Web Analytics Made Easy - Statcounter"
+                    referrerPolicy="no-referrer-when-downgrade">
+                </a>
+            </div>
+        </noscript>
+    """,
+)
