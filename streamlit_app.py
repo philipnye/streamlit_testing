@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit_analytics2 as streamlit_analytics
 
 st.set_page_config(
     layout="wide",
@@ -29,4 +30,5 @@ pg = st.navigation(
     },
 )
 
-pg.run()
+with streamlit_analytics.track():
+    pg.run()
