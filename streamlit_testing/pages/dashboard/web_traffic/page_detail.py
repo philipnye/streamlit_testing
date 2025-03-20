@@ -1,7 +1,7 @@
 import os
 
 import pandas as pd
-from sqlalchemy import exc
+from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
@@ -52,26 +52,27 @@ script_web_traffic = script.split(';')[1]
 script_content_metadata = script_content_metadata.replace("''", "'" + st.query_params["url"] + "'")
 script_web_traffic = script_web_traffic.replace("''", "'" + st.query_params["url"] + "'")
 
-try:
-    df_content_metadata = pd.read_sql_query(
-        sql=script_content_metadata,
-        con=connection,
-    )
-except exc.DBAPIError:
-    df_content_metadata = pd.read_sql_query(
-        sql=script_content_metadata,
-        con=connection,
-    )
-try:
-    df_web_traffic = pd.read_sql_query(
-        sql=script_web_traffic,
-        con=connection,
-    )
-except exc.DBAPIError:
-    df_web_traffic = pd.read_sql_query(
-        sql=script_web_traffic,
-        con=connection,
-    )
+
+@st.cache_data(show_spinner="Loading data...")
+def load_data(script: str, _connection: engine.base.Engine) -> pd.DataFrame:
+    """Load data from database"""
+
+    try:
+        df = pd.read_sql_query(
+            sql=script,
+            con=_connection,
+        )
+    except exc.DBAPIError:
+        df = pd.read_sql_query(
+            sql=script,
+            con=_connection,
+        )
+
+    return df
+
+
+df_content_metadata = load_data(script_content_metadata, connection)
+df_web_traffic = load_data(script_web_traffic, connection)
 
 # DRAW PAGE HEADER
 st.title(df_content_metadata["page_title"].iloc[0])
