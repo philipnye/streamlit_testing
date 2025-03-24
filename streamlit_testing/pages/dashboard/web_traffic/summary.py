@@ -166,6 +166,9 @@ grid_options["defaultColDef"] = {
 }
 
 column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
+if breakdowns != []:
+    for breakdown in breakdowns:
+        column_defs[breakdown]["pinned"] = "left"
 
 AgGrid(
     df_grouped,
