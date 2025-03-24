@@ -151,6 +151,7 @@ st.line_chart(
     x="date",
     y=metric,
     use_container_width=True,
+    x_label=""
 )
 
 # Table
