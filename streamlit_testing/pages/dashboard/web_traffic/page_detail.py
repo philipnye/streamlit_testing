@@ -5,6 +5,7 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
+import streamlit_testing.pages.dashboard.web_traffic.config as config
 from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string
 
 import ds_utils.database_operations as dbo
@@ -93,13 +94,7 @@ tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
 with tab1:
     metric = st.selectbox(
         label="Metric",
-        options=[
-            "activeUsers",
-            "engagedSessions",
-            "screenPageViews",
-            "sessions",
-            "userEngagementDuration",
-        ],
+        options=config.metrics,
         index=0,
         key="metric",
     )
@@ -145,14 +140,7 @@ with tab1:
 
     column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
 
-    metrics = [
-        "activeUsers",
-        "engagedSessions",
-        "screenPageViews",
-        "sessions",
-        "userEngagementDuration",
-    ]
-    for metric in metrics:
+    for metric in config.metrics:
         column_defs[metric]["valueFormatter"] = apply_locale_string
 
     AgGrid(

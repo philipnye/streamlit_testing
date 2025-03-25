@@ -5,6 +5,7 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
+import streamlit_testing.pages.dashboard.web_traffic.config as config
 from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string
 
 import ds_utils.database_operations as dbo
@@ -53,13 +54,7 @@ st.title("By page")
 # Controls
 metric = st.selectbox(
     label="Metric",
-    options=[
-        "activeUsers",
-        "engagedSessions",
-        "screenPageViews",
-        "sessions",
-        "userEngagementDuration",
-    ],
+    options=config.metrics,
     index=0,
     key="metric",
 )
@@ -85,30 +80,20 @@ df = df[
     (df["date"] <= end_date)
 ]
 
-df_by_day = df[[
-    "date",
-    "activeUsers",
-    "engagedSessions",
-    "screenPageViews",
-    "sessions",
-    "userEngagementDuration",
-]].groupby("date").sum().reset_index().sort_values("date")
+df_by_day = df[["date"] + config.metrics].groupby("date").sum().reset_index().sort_values("date")
 
-df_by_page = df[[
-    "page_title",
-    "pagePath",
-    "type",
-    "published_date",
-    "updated_date_alternative",
-    "authors",
-    "research_areas",
-    "tags",
-    "activeUsers",
-    "engagedSessions",
-    "screenPageViews",
-    "sessions",
-    "userEngagementDuration",
-]].groupby([
+df_by_page = df[
+    [
+        "page_title",
+        "pagePath",
+        "type",
+        "published_date",
+        "updated_date_alternative",
+        "authors",
+        "research_areas",
+        "tags",
+    ] + config.metrics
+].groupby([
     "page_title",
     "pagePath",
     "type",
@@ -175,14 +160,7 @@ column_defs["pagePath"]["cellRenderer"] = JsCode("""
     }
 """)
 
-metrics = [
-    "activeUsers",
-    "engagedSessions",
-    "screenPageViews",
-    "sessions",
-    "userEngagementDuration",
-]
-for metric in metrics:
+for metric in config.metrics:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(
