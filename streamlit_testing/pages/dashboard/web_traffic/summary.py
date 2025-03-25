@@ -128,21 +128,23 @@ if breakdowns != []:
         userEngagementDuration=("userEngagementDuration", "sum"),
     ).reset_index().sort_values(breakdowns)
 else:
+    df.insert(0, "category", "All pages")
     df_grouped = df[[
+        "category",
         "partial",
         "activeUsers",
         "engagedSessions",
         "screenPageViews",
         "sessions",
         "userEngagementDuration",
-    ]].groupby(lambda _: True).agg(     # Ref: https://stackoverflow.com/a/41363399/4659442
+    ]].groupby("category").agg(
         pages=("partial", "nunique"),
         activeUsers=("activeUsers", "sum"),
         engagedSessions=("engagedSessions", "sum"),
         screenPageViews=("screenPageViews", "sum"),
         sessions=("sessions", "sum"),
         userEngagementDuration=("userEngagementDuration", "sum"),
-    )
+    ).reset_index()
 
 # DRAW OUTPUT WIDGETS
 # Chart
