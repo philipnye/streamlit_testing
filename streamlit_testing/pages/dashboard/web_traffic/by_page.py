@@ -5,6 +5,8 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
+from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string
+
 import ds_utils.database_operations as dbo
 
 # CONNECT TO DATABASE
@@ -172,6 +174,16 @@ column_defs["pagePath"]["cellRenderer"] = JsCode("""
         }
     }
 """)
+
+metrics = [
+    "activeUsers",
+    "engagedSessions",
+    "screenPageViews",
+    "sessions",
+    "userEngagementDuration",
+]
+for metric in metrics:
+    column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(
     df_by_page,

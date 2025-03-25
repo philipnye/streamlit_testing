@@ -5,6 +5,8 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
+from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string
+
 import ds_utils.database_operations as dbo
 
 # HANDLE DIRECT ACCESS
@@ -139,6 +141,18 @@ with tab1:
     grid_options["defaultColDef"] = {
         "filter": True,
     }
+
+    column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
+
+    metrics = [
+        "activeUsers",
+        "engagedSessions",
+        "screenPageViews",
+        "sessions",
+        "userEngagementDuration",
+    ]
+    for metric in metrics:
+        column_defs[metric]["valueFormatter"] = apply_locale_string
 
     AgGrid(
         df_web_traffic,
