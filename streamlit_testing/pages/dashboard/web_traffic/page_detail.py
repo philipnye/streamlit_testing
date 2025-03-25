@@ -130,6 +130,7 @@ with tab1:
         x="date",
         y=metric,
         use_container_width=True,
+        x_label=""
     )
 
     grid_builder = GridOptionsBuilder.from_dataframe(df_web_traffic)
