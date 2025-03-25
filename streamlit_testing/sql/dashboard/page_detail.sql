@@ -50,4 +50,6 @@ select
     pv.userEngagementDuration
 from corporate.ga_page_views_by_date pv
 where
-    pv.pagePath = '';
+    pv.pagePath = ''
+order by
+    pv.date;
