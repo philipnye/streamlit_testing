@@ -6,7 +6,9 @@ import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
 import streamlit_testing.pages.dashboard.web_traffic.config as config
-from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string
+from streamlit_testing.pages.dashboard.web_traffic.utils import (
+    apply_locale_string, format_date, format_date_comparator
+)
 
 import ds_utils.database_operations as dbo
 
@@ -128,6 +130,10 @@ with tab1:
         x_label=""
     )
 
+    df_web_traffic["date"] = pd.to_datetime(
+        df_web_traffic["date"]
+    ).dt.strftime("%Y-%m-%d")
+
     grid_builder = GridOptionsBuilder.from_dataframe(df_web_traffic)
     grid_options = grid_builder.build()
 
@@ -139,6 +145,12 @@ with tab1:
     }
 
     column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
+
+    column_defs["date"]["type"] = "date"
+    column_defs["date"]["cellClass"] = "ag-right-aligned-cell"
+    column_defs["date"]["headerClass"] = "ag-right-aligned-header"
+    column_defs["date"]["valueFormatter"] = format_date
+    column_defs["date"]["comparator"] = format_date_comparator
 
     for metric in config.metrics:
         column_defs[metric]["valueFormatter"] = apply_locale_string

@@ -6,7 +6,9 @@ import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
 import streamlit_testing.pages.dashboard.web_traffic.config as config
-from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string
+from streamlit_testing.pages.dashboard.web_traffic.utils import (
+    apply_locale_string, format_date, format_date_comparator
+)
 
 import ds_utils.database_operations as dbo
 
@@ -104,6 +106,13 @@ df_by_page = df[
     "tags",
 ]).sum().reset_index().sort_values(metric, ascending=False)
 
+df_by_page["published_date"] = pd.to_datetime(
+    df_by_page["published_date"]
+).dt.strftime("%Y-%m-%d")
+df_by_page["updated_date_alternative"] = pd.to_datetime(
+    df_by_page["updated_date_alternative"]
+).dt.strftime("%Y-%m-%d")
+
 # DRAW OUTPUT WIDGETS
 # Chart
 st.line_chart(
@@ -159,6 +168,16 @@ column_defs["pagePath"]["cellRenderer"] = JsCode("""
         }
     }
 """)
+column_defs["published_date"]["type"] = "date"
+column_defs["published_date"]["cellClass"] = "ag-right-aligned-cell"
+column_defs["published_date"]["headerClass"] = "ag-right-aligned-header"
+column_defs["published_date"]["valueFormatter"] = format_date
+column_defs["published_date"]["comparator"] = format_date_comparator
+column_defs["updated_date_alternative"]["type"] = "date"
+column_defs["updated_date_alternative"]["cellClass"] = "ag-right-aligned-cell"
+column_defs["updated_date_alternative"]["headerClass"] = "ag-right-aligned-header"
+column_defs["updated_date_alternative"]["valueFormatter"] = format_date
+column_defs["updated_date_alternative"]["comparator"] = format_date_comparator
 
 for metric in config.metrics:
     column_defs[metric]["valueFormatter"] = apply_locale_string
