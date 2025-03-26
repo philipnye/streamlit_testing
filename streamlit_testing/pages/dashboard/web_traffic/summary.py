@@ -6,6 +6,7 @@ import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
 import streamlit_testing.pages.dashboard.web_traffic.config as config
+import streamlit_testing.pages.dashboard.web_traffic.elements as elements
 from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string
 
 import ds_utils.database_operations as dbo
@@ -52,19 +53,9 @@ st.title("Summary")
 
 # DRAW INPUT WIDGETS
 # Controls
-start_date = st.date_input(
-    label="Start date",
-    value=df["date"].min(),
-    min_value=df["date"].min(),
-    max_value=df["date"].max(),
-    key="start_date",
-)
-end_date = st.date_input(
-    label="End date",
-    value=df["date"].max(),
-    min_value=df["date"].min(),
-    max_value=df["date"].max(),
-    key="end_date",
+start_date, end_date = elements.draw_date_range_inputs(
+    min_date=df["date"].min(),
+    max_date=df["date"].max(),
 )
 
 breakdowns = st.pills(
