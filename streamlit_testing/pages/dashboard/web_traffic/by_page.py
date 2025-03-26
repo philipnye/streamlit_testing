@@ -82,7 +82,7 @@ df = df[
     (df["date"] <= end_date)
 ]
 
-df_by_day = df[["date"] + config.metrics].groupby("date").sum().reset_index().sort_values("date")
+df_by_day = df[["date"] + config.metrics].groupby("date").sum().reset_index()
 
 df_by_page = df[
     [
@@ -104,7 +104,7 @@ df_by_page = df[
     "authors",
     "research_areas",
     "tags",
-]).sum().reset_index().sort_values(metric, ascending=False)
+]).sum().reset_index()
 
 df_by_page["published_date"] = pd.to_datetime(
     df_by_page["published_date"]
@@ -181,6 +181,7 @@ column_defs["updated_date_alternative"]["headerClass"] = "ag-right-aligned-heade
 column_defs["updated_date_alternative"]["valueFormatter"] = format_date
 column_defs["updated_date_alternative"]["comparator"] = format_date_comparator
 
+column_defs[metric]["sort"] = "desc"
 for metric in config.metrics:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 

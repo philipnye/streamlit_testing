@@ -153,6 +153,7 @@ with tab1:
     column_defs["date"]["headerClass"] = "ag-right-aligned-header"
     column_defs["date"]["valueFormatter"] = format_date
     column_defs["date"]["comparator"] = format_date_comparator
+    column_defs["date"]["sort"] = "asc"
 
     for metric in config.metrics:
         column_defs[metric]["valueFormatter"] = apply_locale_string

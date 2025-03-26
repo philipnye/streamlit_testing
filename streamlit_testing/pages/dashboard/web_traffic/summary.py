@@ -100,13 +100,13 @@ df = df[
 ]
 
 df_grouped_by_day = df[["date"] + config.metrics].\
-    groupby("date").sum().reset_index().sort_values("date")
+    groupby("date").sum().reset_index()
 
 if breakdowns != []:
     df_grouped = df[breakdowns + ["partial"] + config.metrics].groupby(breakdowns).agg(
         pages=("partial", "nunique"),
         **config.metric_aggregations
-    ).reset_index().sort_values(breakdowns)
+    ).reset_index()
 else:
     df.insert(0, "category", "All pages")
     df_grouped = df[["category", "partial"] + config.metrics].groupby("category").agg(
@@ -141,6 +141,7 @@ column_defs = {column_def["field"]: column_def for column_def in grid_options["c
 if breakdowns != []:
     for breakdown in breakdowns:
         column_defs[breakdown]["pinned"] = "left"
+column_defs[breakdowns[0]]["sort"] = "asc"
 
 column_defs["pages"]["valueFormatter"] = apply_locale_string
 
