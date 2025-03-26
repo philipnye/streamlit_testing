@@ -12,3 +12,4 @@ metric_aggregations = {
     "sessions": ("sessions", "sum"),
     "userEngagementDuration": ("userEngagementDuration", "sum"),
 }
+default_metric = "screenPageViews"

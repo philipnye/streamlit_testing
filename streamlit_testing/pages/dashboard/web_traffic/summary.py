@@ -55,7 +55,7 @@ st.title("Summary")
 metric = st.selectbox(
     label="Metric",
     options=config.metrics,
-    index=0,
+    index=config.metrics.index(config.default_metric),
     key="metric",
 )
 

@@ -57,7 +57,7 @@ st.title("By page")
 metric = st.selectbox(
     label="Metric",
     options=config.metrics,
-    index=0,
+    index=config.metrics.index(config.default_metric),
     key="metric",
 )
 
@@ -181,7 +181,7 @@ column_defs["updated_date_alternative"]["headerClass"] = "ag-right-aligned-heade
 column_defs["updated_date_alternative"]["valueFormatter"] = format_date
 column_defs["updated_date_alternative"]["comparator"] = format_date_comparator
 
-column_defs[metric]["sort"] = "desc"
+column_defs[config.default_metric]["sort"] = "desc"
 for metric in config.metrics:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
