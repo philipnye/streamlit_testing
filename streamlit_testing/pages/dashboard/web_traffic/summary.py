@@ -130,9 +130,11 @@ grid_options = grid_builder.build()
 
 grid_options["pagination"] = True
 grid_options["paginationPageSize"] = 25
-
 grid_options["defaultColDef"] = {
     "filter": True,
+    "filterParams": {
+        "excelMode": "windows",
+    },
 }
 
 column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
