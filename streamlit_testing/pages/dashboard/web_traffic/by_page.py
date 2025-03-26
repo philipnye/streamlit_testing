@@ -54,11 +54,11 @@ st.title("By page")
 
 # DRAW INPUT WIDGETS
 # Controls
-metric = st.selectbox(
+selected_metric = st.selectbox(
     label="Metric",
     options=config.metrics,
     index=config.metrics.index(config.default_metric),
-    key="metric",
+    key="selected_metric",
 )
 
 start_date = st.date_input(
@@ -118,7 +118,7 @@ df_by_page["updated_date_alternative"] = pd.to_datetime(
 st.line_chart(
     data=df_by_day,
     x="date",
-    y=metric,
+    y=selected_metric,
     use_container_width=True,
     x_label=""
 )

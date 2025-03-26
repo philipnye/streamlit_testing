@@ -94,11 +94,11 @@ st.dataframe(
 tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
 
 with tab1:
-    metric = st.selectbox(
+    selected_metric = st.selectbox(
         label="Metric",
         options=config.metrics,
         index=config.metrics.index(config.default_metric),
-        key="metric",
+        key="selected_metric",
     )
 
     start_date = st.date_input(
@@ -125,7 +125,7 @@ with tab1:
     st.line_chart(
         data=df_web_traffic,
         x="date",
-        y=metric,
+        y=selected_metric,
         use_container_width=True,
         x_label=""
     )
@@ -156,7 +156,7 @@ with tab1:
     column_defs["date"]["sort"] = "asc"
 
     for metric in config.metrics:
-        column_defs[metric]["valueFormatter"] = apply_locale_string
+        column_defs[selected_metric]["valueFormatter"] = apply_locale_string
 
     AgGrid(
         df_web_traffic,
