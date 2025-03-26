@@ -52,13 +52,6 @@ st.title("Summary")
 
 # DRAW INPUT WIDGETS
 # Controls
-selected_metric = st.selectbox(
-    label="Metric",
-    options=config.metrics,
-    index=config.metrics.index(config.default_metric),
-    key="selected_metric",
-)
-
 start_date = st.date_input(
     label="Start date",
     value=df["date"].min(),
@@ -116,13 +109,27 @@ else:
 
 # DRAW OUTPUT WIDGETS
 # Chart
-st.line_chart(
-    data=df_grouped_by_day,
-    x="date",
-    y=selected_metric,
-    use_container_width=True,
-    x_label=""
-)
+with st.container(
+    border=True,
+):
+    col1, col2 = st.columns([1, 5])
+
+    with col1:
+        selected_metric = st.selectbox(
+            label="Metric",
+            label_visibility="collapsed",
+            options=config.metrics,
+            index=config.metrics.index(config.default_metric),
+            key="selected_metric",
+        )
+
+    st.line_chart(
+        data=df_grouped_by_day,
+        x="date",
+        y=selected_metric,
+        use_container_width=True,
+        x_label=""
+    )
 
 # Table
 grid_builder = GridOptionsBuilder.from_dataframe(df_grouped)
