@@ -5,11 +5,14 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
-import streamlit_testing.pages.dashboard.web_traffic.config as config
 import streamlit_testing.pages.dashboard.web_traffic.elements as elements
-from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string
+from streamlit_testing.pages.dashboard.web_traffic.utils import apply_locale_string, set_metrics
 
 import ds_utils.database_operations as dbo
+
+# SET METRIC TYPE
+METRIC_TYPE = "web_traffic"
+METRICS, METRIC_AGGREGATIONS, DEFAULT_METRIC = set_metrics(METRIC_TYPE)
 
 # CONNECT TO DATABASE
 connection = dbo.connect_sql_db(
@@ -83,19 +86,19 @@ df = df[
     (df["date"] <= end_date)
 ]
 
-df_grouped_by_day = df[["date"] + config.web_traffic_metrics].\
+df_grouped_by_day = df[["date"] + METRICS].\
     groupby("date").sum().reset_index()
 
 if breakdowns != []:
-    df_grouped = df[breakdowns + ["partial"] + config.web_traffic_metrics].groupby(breakdowns).agg(
+    df_grouped = df[breakdowns + ["partial"] + METRICS].groupby(breakdowns).agg(
         pages=("partial", "nunique"),
-        **config.web_traffic_metric_aggregations
+        **METRIC_AGGREGATIONS
     ).reset_index()
 else:
     df.insert(0, "category", "All pages")
-    df_grouped = df[["category", "partial"] + config.web_traffic_metrics].groupby("category").agg(
+    df_grouped = df[["category", "partial"] + METRICS].groupby("category").agg(
         pages=("partial", "nunique"),
-        **config.web_traffic_metric_aggregations
+        **METRIC_AGGREGATIONS
     ).reset_index()
 
 # DRAW OUTPUT WIDGETS
@@ -109,8 +112,8 @@ with st.container(
         selected_metric = st.selectbox(
             label="Metric",
             label_visibility="collapsed",
-            options=config.web_traffic_metrics,
-            index=config.web_traffic_metrics.index(config.default_web_traffic_metric),
+            options=METRICS,
+            index=METRICS.index(DEFAULT_METRIC),
             key="selected_metric",
         )
 
@@ -143,7 +146,7 @@ column_defs[breakdowns[0]]["sort"] = "asc"
 
 column_defs["pages"]["valueFormatter"] = apply_locale_string
 
-for metric in config.web_traffic_metrics:
+for metric in METRICS:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(

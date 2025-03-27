@@ -5,13 +5,17 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
-import streamlit_testing.pages.dashboard.web_traffic.config as config
 import streamlit_testing.pages.dashboard.web_traffic.elements as elements
 from streamlit_testing.pages.dashboard.web_traffic.utils import (
-    apply_locale_string, format_date, format_date_comparator
+    apply_locale_string, format_date, format_date_comparator,
+    set_metrics
 )
 
 import ds_utils.database_operations as dbo
+
+# SET METRIC TYPE
+METRIC_TYPE = "download"
+METRICS, METRIC_AGGREGATIONS, DEFAULT_METRIC = set_metrics(METRIC_TYPE)
 
 # CONNECT TO DATABASE
 connection = dbo.connect_sql_db(
@@ -66,7 +70,7 @@ df = df[
     (df["date"] <= end_date)
 ]
 
-df_by_day = df[["date"] + config.download_metrics].groupby("date").sum().reset_index()
+df_by_day = df[["date"] + METRICS].groupby("date").sum().reset_index()
 
 df_by_output = df[
     [
@@ -79,7 +83,7 @@ df_by_output = df[
         "authors",
         "research_areas",
         "tags",
-    ] + config.download_metrics
+    ] + METRICS
 ].groupby([
     "output_title",
     "fileName",
@@ -110,8 +114,8 @@ with st.container(
         selected_metric = st.selectbox(
             label="Metric",
             label_visibility="collapsed",
-            options=config.download_metrics,
-            index=config.download_metrics.index(config.default_download_metric),
+            options=METRICS,
+            index=METRICS.index(DEFAULT_METRIC),
             key="selected_metric",
         )
 
@@ -165,8 +169,8 @@ column_defs["updated_date_alternative"]["headerClass"] = "ag-right-aligned-heade
 column_defs["updated_date_alternative"]["valueFormatter"] = format_date
 column_defs["updated_date_alternative"]["comparator"] = format_date_comparator
 
-column_defs[config.default_download_metric]["sort"] = "desc"
-for metric in config.download_metrics:
+column_defs[DEFAULT_METRIC]["sort"] = "desc"
+for metric in METRICS:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(

@@ -5,10 +5,10 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
-import streamlit_testing.pages.dashboard.web_traffic.config as config
 import streamlit_testing.pages.dashboard.web_traffic.elements as elements
 from streamlit_testing.pages.dashboard.web_traffic.utils import (
-    apply_locale_string, format_date, format_date_comparator
+    apply_locale_string, format_date, format_date_comparator,
+    set_metrics
 )
 
 import ds_utils.database_operations as dbo
@@ -35,6 +35,10 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# SET METRIC TYPE
+METRIC_TYPE = "web_traffic"
+METRICS, METRIC_AGGREGATIONS, DEFAULT_METRIC = set_metrics(METRIC_TYPE)
 
 # CONNECT TO DATABASE
 connection = dbo.connect_sql_db(
@@ -115,8 +119,8 @@ with tab1:
             selected_metric = st.selectbox(
                 label="Metric",
                 label_visibility="collapsed",
-                options=config.web_traffic_metrics,
-                index=config.web_traffic_metrics.index(config.default_web_traffic_metric),
+                options=METRICS,
+                index=METRICS.index(DEFAULT_METRIC),
                 key="selected_metric",
             )
 
@@ -153,7 +157,7 @@ with tab1:
     column_defs["date"]["comparator"] = format_date_comparator
     column_defs["date"]["sort"] = "asc"
 
-    for metric in config.web_traffic_metrics:
+    for metric in METRICS:
         column_defs[selected_metric]["valueFormatter"] = apply_locale_string
 
     AgGrid(
