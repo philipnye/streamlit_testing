@@ -25,7 +25,13 @@ pg = st.navigation(
                 title="Page detail",
                 url_path="/web_traffic_page_detail",
                 icon="📊"
-            )
+            ),
+            st.Page(
+                "streamlit_testing/pages/dashboard/web_traffic/by_output.py",
+                title="By output",
+                url_path="/web_traffic_by_output",
+                icon="📊"
+            ),
         ],
     },
 )

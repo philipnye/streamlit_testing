@@ -115,8 +115,8 @@ with tab1:
             selected_metric = st.selectbox(
                 label="Metric",
                 label_visibility="collapsed",
-                options=config.metrics,
-                index=config.metrics.index(config.default_metric),
+                options=config.web_traffic_metrics,
+                index=config.web_traffic_metrics.index(config.default_web_traffic_metric),
                 key="selected_metric",
             )
 
@@ -153,7 +153,7 @@ with tab1:
     column_defs["date"]["comparator"] = format_date_comparator
     column_defs["date"]["sort"] = "asc"
 
-    for metric in config.metrics:
+    for metric in config.web_traffic_metrics:
         column_defs[selected_metric]["valueFormatter"] = apply_locale_string
 
     AgGrid(

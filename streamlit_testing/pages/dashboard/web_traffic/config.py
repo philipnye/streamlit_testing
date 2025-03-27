@@ -1,4 +1,4 @@
-metrics = [
+web_traffic_metrics = [
     "activeUsers",
     "engagedSessions",
     "screenPageViews",
@@ -6,7 +6,7 @@ metrics = [
     "userEngagementDuration",
     "eventCount",
 ]
-metric_aggregations = {
+web_traffic_metric_aggregations = {
     "activeUsers": ("activeUsers", "sum"),
     "engagedSessions": ("engagedSessions", "sum"),
     "screenPageViews": ("screenPageViews", "sum"),
@@ -14,7 +14,14 @@ metric_aggregations = {
     "userEngagementDuration": ("userEngagementDuration", "sum"),
     "eventCount": ("eventCount", "sum"),
 }
-default_metric = "screenPageViews"
+default_web_traffic_metric = "screenPageViews"
+download_metrics = [
+    "eventCount",
+]
+download_metric_aggregations = {
+    "eventCount": ("eventCount", "sum"),
+}
+default_download_metric = "eventCount"
 date_ranges = {
     "Last 7 days": 7,
     "Last 30 days": 30,

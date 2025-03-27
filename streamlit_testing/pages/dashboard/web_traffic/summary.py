@@ -83,19 +83,19 @@ df = df[
     (df["date"] <= end_date)
 ]
 
-df_grouped_by_day = df[["date"] + config.metrics].\
+df_grouped_by_day = df[["date"] + config.web_traffic_metrics].\
     groupby("date").sum().reset_index()
 
 if breakdowns != []:
-    df_grouped = df[breakdowns + ["partial"] + config.metrics].groupby(breakdowns).agg(
+    df_grouped = df[breakdowns + ["partial"] + config.web_traffic_metrics].groupby(breakdowns).agg(
         pages=("partial", "nunique"),
-        **config.metric_aggregations
+        **config.web_traffic_metric_aggregations
     ).reset_index()
 else:
     df.insert(0, "category", "All pages")
-    df_grouped = df[["category", "partial"] + config.metrics].groupby("category").agg(
+    df_grouped = df[["category", "partial"] + config.web_traffic_metrics].groupby("category").agg(
         pages=("partial", "nunique"),
-        **config.metric_aggregations
+        **config.web_traffic_metric_aggregations
     ).reset_index()
 
 # DRAW OUTPUT WIDGETS
@@ -109,8 +109,8 @@ with st.container(
         selected_metric = st.selectbox(
             label="Metric",
             label_visibility="collapsed",
-            options=config.metrics,
-            index=config.metrics.index(config.default_metric),
+            options=config.web_traffic_metrics,
+            index=config.web_traffic_metrics.index(config.default_web_traffic_metric),
             key="selected_metric",
         )
 
@@ -143,7 +143,7 @@ column_defs[breakdowns[0]]["sort"] = "asc"
 
 column_defs["pages"]["valueFormatter"] = apply_locale_string
 
-for metric in config.metrics:
+for metric in config.web_traffic_metrics:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(

@@ -26,7 +26,7 @@ connection = dbo.connect_sql_db(
 )
 
 # LOAD DATA
-with open("streamlit_testing/sql/dashboard/by_page.sql", "r") as file:
+with open("streamlit_testing/sql/dashboard/by_output.sql", "r") as file:
     script = file.read()
 
 
@@ -51,7 +51,7 @@ def load_data(script: str, _connection: engine.base.Engine) -> pd.DataFrame:
 df = load_data(script, connection)
 
 # DRAW PAGE HEADER
-st.title("By page")
+st.title("By output")
 
 # DRAW INPUT WIDGETS
 # Controls
@@ -66,22 +66,24 @@ df = df[
     (df["date"] <= end_date)
 ]
 
-df_by_day = df[["date"] + config.web_traffic_metrics].groupby("date").sum().reset_index()
+df_by_day = df[["date"] + config.download_metrics].groupby("date").sum().reset_index()
 
-df_by_page = df[
+df_by_output = df[
     [
-        "page_title",
-        "pagePath",
+        "output_title",
+        "fileName",
+        "fileExtension",
         "type",
         "published_date",
         "updated_date_alternative",
         "authors",
         "research_areas",
         "tags",
-    ] + config.web_traffic_metrics
+    ] + config.download_metrics
 ].groupby([
-    "page_title",
-    "pagePath",
+    "output_title",
+    "fileName",
+    "fileExtension",
     "type",
     "published_date",
     "updated_date_alternative",
@@ -90,11 +92,11 @@ df_by_page = df[
     "tags",
 ]).sum().reset_index()
 
-df_by_page["published_date"] = pd.to_datetime(
-    df_by_page["published_date"]
+df_by_output["published_date"] = pd.to_datetime(
+    df_by_output["published_date"]
 ).dt.strftime("%Y-%m-%d")
-df_by_page["updated_date_alternative"] = pd.to_datetime(
-    df_by_page["updated_date_alternative"]
+df_by_output["updated_date_alternative"] = pd.to_datetime(
+    df_by_output["updated_date_alternative"]
 ).dt.strftime("%Y-%m-%d")
 
 # DRAW OUTPUT WIDGETS
@@ -108,8 +110,8 @@ with st.container(
         selected_metric = st.selectbox(
             label="Metric",
             label_visibility="collapsed",
-            options=config.web_traffic_metrics,
-            index=config.web_traffic_metrics.index(config.default_web_traffic_metric),
+            options=config.download_metrics,
+            index=config.download_metrics.index(config.default_download_metric),
             key="selected_metric",
         )
 
@@ -122,7 +124,7 @@ with st.container(
     )
 
 # Table
-grid_builder = GridOptionsBuilder.from_dataframe(df_by_page)
+grid_builder = GridOptionsBuilder.from_dataframe(df_by_output)
 grid_options = grid_builder.build()
 
 grid_options["pagination"] = True
@@ -135,28 +137,12 @@ grid_options["defaultColDef"] = {
 }
 
 column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
-column_defs["page_title"]["pinned"] = "left"
-column_defs["page_title"]["cellRenderer"] = JsCode("""
+column_defs["output_title"]["pinned"] = "left"
+column_defs["fileName"]["cellRenderer"] = JsCode("""
     class UrlCellRenderer {
         init(params) {
             this.eGui = document.createElement("a");
-            this.eGui.innerText = params.value;
-            this.eGui.setAttribute(
-                "href", "/web_traffic_page_detail?url=" + params.data.pagePath
-            );
-            this.eGui.setAttribute("style", "text-decoration:none");
-            this.eGui.setAttribute("target", "_blank");
-        }
-        getGui() {
-            return this.eGui;
-        }
-    }
-""")
-column_defs["pagePath"]["cellRenderer"] = JsCode("""
-    class UrlCellRenderer {
-        init(params) {
-            this.eGui = document.createElement("a");
-            this.eGui.innerText = "View page ⮺";
+            this.eGui.innerText = "View output ⮺";
             this.eGui.setAttribute(
                 "href", "https://www.instituteforgovernment.org.uk" + params.value
             );
@@ -179,12 +165,12 @@ column_defs["updated_date_alternative"]["headerClass"] = "ag-right-aligned-heade
 column_defs["updated_date_alternative"]["valueFormatter"] = format_date
 column_defs["updated_date_alternative"]["comparator"] = format_date_comparator
 
-column_defs[config.default_web_traffic_metric]["sort"] = "desc"
-for metric in config.web_traffic_metrics:
+column_defs[config.default_download_metric]["sort"] = "desc"
+for metric in config.download_metrics:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(
-    df_by_page,
+    df_by_output,
     key="ag",
     update_on=[],
     gridOptions=grid_options,
