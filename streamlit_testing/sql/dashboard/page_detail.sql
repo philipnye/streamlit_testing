@@ -47,8 +47,12 @@ select
     pv.engagedSessions,
     pv.screenPageViews,
     pv.sessions,
-    pv.userEngagementDuration
+    pv.userEngagementDuration,
+    d.eventCount
 from corporate.ga_page_views_by_date pv
+    left join corporate.ga_downloads_by_date d on
+        pv.pagePath = d.pagePath and
+        pv.date = d.date
 where
     pv.pagePath = ''
 order by

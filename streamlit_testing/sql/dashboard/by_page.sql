@@ -12,10 +12,14 @@ select
     pv.engagedSessions,
     pv.screenPageViews,
     pv.sessions,
-    pv.userEngagementDuration
-from corporate.ga_page_views_by_date pv
-    left join corporate.ifg_content c on
-        pv.pagePath = c.[partial]
+    pv.userEngagementDuration,
+    d.eventCount
+from corporate.ifg_content c
+    inner join corporate.ga_page_views_by_date pv on
+        pv.pagePath = c.partial
+    left join corporate.ga_downloads_by_date d on
+        c.partial = d.pagePath and
+        pv.date = d.date
     outer apply (
         select
             string_agg(ra.research_area, ', ') as research_areas

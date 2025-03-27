@@ -18,10 +18,14 @@ select
     pv.engagedSessions,
     pv.screenPageViews,
     pv.sessions,
-    pv.userEngagementDuration
-from corporate.ga_page_views_by_date pv
-    left join corporate.ifg_content c on
-        pv.pagePath = c.partial
+    pv.userEngagementDuration,
+    d.eventCount
+from corporate.ifg_content c
+    inner join corporate.ga_page_views_by_date pv on
+        c.partial = pv.pagePath
+    left join corporate.ga_downloads_by_date d on
+        c.partial = d.pagePath and
+        pv.date = d.date
     left join corporate.ifg_research_areas ra on
         c.partial = ra.partial
     left join corporate.ifg_tags t on

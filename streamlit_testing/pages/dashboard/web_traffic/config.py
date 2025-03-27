@@ -4,6 +4,7 @@ metrics = [
     "screenPageViews",
     "sessions",
     "userEngagementDuration",
+    "eventCount",
 ]
 metric_aggregations = {
     "activeUsers": ("activeUsers", "sum"),
@@ -11,6 +12,7 @@ metric_aggregations = {
     "screenPageViews": ("screenPageViews", "sum"),
     "sessions": ("sessions", "sum"),
     "userEngagementDuration": ("userEngagementDuration", "sum"),
+    "eventCount": ("eventCount", "sum"),
 }
 default_metric = "screenPageViews"
 date_ranges = {
