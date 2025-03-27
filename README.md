@@ -1,0 +1,35 @@
+# IfG Analytics Dashboard
+## Serving the dashboard
+### Web
+Hosted on Streamlit Community Cloud at [https://ifganalytics.streamlit.app/](https://ifganalytics.streamlit.app/)
+
+### Local development
+1. Create a new virtual environment using `python -m venv env`
+1. Activate the virtual environment using `env\Scripts\activate`
+1. Run `pip install -r requirements.txt` to install packages
+1. Run `pre-commit install` to install [`pre-commit`](https://pre-commit.com/)
+1. Run `streamlit run streamlit_app.py`
+
+## Project structure
+```
+streamlit_testing/
+├── docs/
+│   ├── design_notes.md
+│
+├── pages/
+│   ├── dashboard/
+│       ├── web_traffic/
+│          ├── <page name>.py
+│          ├── config.py        <<< Variables used across multiple pages
+│          ├── elements.py     <<< Page elements used across multiple pages
+│
+├── sql/
+│   ├── dashboard/
+│       ├── web_traffic/
+│
+├── .gitignore
+├── .pre-commit-config.yaml
+├── README.md
+├── streamlit_app.py
+└── requirements.txt
+```
