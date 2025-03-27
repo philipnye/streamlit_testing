@@ -30,7 +30,7 @@ connection = dbo.connect_sql_db(
 )
 
 # LOAD DATA
-with open("streamlit_testing/sql/dashboard/by_page.sql", "r") as file:
+with open("streamlit_testing/sql/dashboard/web_traffic/by_page.sql", "r") as file:
     script = file.read()
 
 

@@ -53,7 +53,7 @@ connection = dbo.connect_sql_db(
 )
 
 # LOAD DATA
-with open("streamlit_testing/sql/dashboard/page_detail.sql", "r") as file:
+with open("streamlit_testing/sql/dashboard/web_traffic/page_detail.sql", "r") as file:
     script = file.read()
 
 script_content_metadata = script.split(';')[0]
