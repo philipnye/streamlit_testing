@@ -105,28 +105,12 @@ df_by_output["updated_date_alternative"] = pd.to_datetime(
 
 # DRAW OUTPUT WIDGETS
 # Chart
-with st.container(
-    border=True,
-):
-    col1, col2 = st.columns([1, 5])
-
-    with col1:
-        selected_metric = st.selectbox(
-            label="Metric",
-            label_visibility="collapsed",
-            options=METRICS,
-            index=METRICS.index(DEFAULT_METRIC),
-            key="selected_metric",
-        )
-
-    st.line_chart(
-        data=df_by_day,
-        x="date",
-        y=selected_metric,
-        use_container_width=True,
-        x_label="",
-        y_label="",
-    )
+elements.draw_line_chart_section(
+    df=df_by_day,
+    x="date",
+    metrics=METRICS,
+    default_metric=DEFAULT_METRIC,
+)
 
 # Table
 grid_builder = GridOptionsBuilder.from_dataframe(df_by_output)

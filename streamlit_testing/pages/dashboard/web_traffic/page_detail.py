@@ -110,28 +110,12 @@ with tab1:
         (df_web_traffic["date"] <= end_date)
     ]
 
-    with st.container(
-        border=True,
-    ):
-        col1, col2 = st.columns([1, 5])
-
-        with col1:
-            selected_metric = st.selectbox(
-                label="Metric",
-                label_visibility="collapsed",
-                options=METRICS,
-                index=METRICS.index(DEFAULT_METRIC),
-                key="selected_metric",
-            )
-
-        st.line_chart(
-            data=df_web_traffic,
-            x="date",
-            y=selected_metric,
-            use_container_width=True,
-            x_label="",
-            y_label="",
-        )
+    elements.draw_line_chart_section(
+        df=df_web_traffic,
+        x="date",
+        metrics=METRICS,
+        default_metric=DEFAULT_METRIC,
+    )
 
     df_web_traffic["date"] = pd.to_datetime(
         df_web_traffic["date"]
