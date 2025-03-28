@@ -1,10 +1,29 @@
 from datetime import date, timedelta
+import os
 
 import pandas as pd
 from sqlalchemy import engine, exc
 import streamlit as st
 
 import streamlit_testing.pages.dashboard.web_metrics.config as config
+
+import ds_utils.database_operations as dbo
+
+
+# CONNECT TO DATABASE
+@st.cache_resource
+def connect_database():
+    """Connect to SQL database"""
+    return dbo.connect_sql_db(
+        driver="pyodbc",
+        driver_version=os.environ["ODBC_DRIVER"],
+        dialect="mssql",
+        server=os.environ["ODBC_SERVER"],
+        database=os.environ["ODBC_DATABASE"],
+        authentication=os.environ["ODBC_AUTHENTICATION"],
+        username=os.environ["AZURE_CLIENT_ID"],
+        password=os.environ["AZURE_CLIENT_SECRET"],
+    )
 
 
 def draw_date_range_inputs(

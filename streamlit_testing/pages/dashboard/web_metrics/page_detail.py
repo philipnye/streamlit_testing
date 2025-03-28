@@ -1,5 +1,3 @@
-import os
-
 import pandas as pd
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
@@ -9,8 +7,6 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import (
     apply_locale_string, format_date, format_date_comparator,
     set_metrics
 )
-
-import ds_utils.database_operations as dbo
 
 # HANDLE DIRECT ACCESS
 if "url" not in st.query_params:
@@ -37,16 +33,7 @@ METRIC_TYPE = "web_traffic"
 METRICS, METRIC_AGGREGATIONS, DEFAULT_METRIC = set_metrics(METRIC_TYPE)
 
 # CONNECT TO DATABASE
-connection = dbo.connect_sql_db(
-    driver="pyodbc",
-    driver_version=os.environ["ODBC_DRIVER"],
-    dialect="mssql",
-    server=os.environ["ODBC_SERVER"],
-    database=os.environ["ODBC_DATABASE"],
-    authentication=os.environ["ODBC_AUTHENTICATION"],
-    username=os.environ["AZURE_CLIENT_ID"],
-    password=os.environ["AZURE_CLIENT_SECRET"],
-)
+connection = elements.connect_database()
 
 # LOAD DATA
 with open("streamlit_testing/sql/dashboard/web_metrics/page_detail.sql", "r") as file:
