@@ -74,6 +74,7 @@ def draw_line_chart_section(
                 label_visibility="collapsed",
                 options=metrics,
                 index=metrics.index(default_metric),
+                disabled=len(metrics) == 1,
                 key="selected_metric",
             )
 
