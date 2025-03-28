@@ -3,4 +3,5 @@
 /temp
 
 *.pyc
+temp.py
 todo.txt

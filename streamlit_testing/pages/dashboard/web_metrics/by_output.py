@@ -1,7 +1,6 @@
 import os
 
 import pandas as pd
-from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
@@ -33,26 +32,7 @@ connection = dbo.connect_sql_db(
 with open("streamlit_testing/sql/dashboard/web_metrics/by_output.sql", "r") as file:
     script = file.read()
 
-
-@st.cache_data(show_spinner="Loading data...")
-def load_data(script: str, _connection: engine.base.Engine) -> pd.DataFrame:
-    """Load data from database"""
-
-    try:
-        df = pd.read_sql_query(
-            sql=script,
-            con=_connection,
-        )
-    except exc.DBAPIError:
-        df = pd.read_sql_query(
-            sql=script,
-            con=_connection,
-        )
-
-    return df
-
-
-df = load_data(script, connection)
+df = elements.load_data(script, connection)
 
 # DRAW PAGE HEADER
 st.title("By output")

@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 import pandas as pd
+from sqlalchemy import engine, exc
 import streamlit as st
 
 import streamlit_testing.pages.dashboard.web_metrics.config as config
@@ -88,6 +89,24 @@ def draw_line_chart_section(
         )
 
     return
+
+
+@st.cache_data(show_spinner="Loading data...")
+def load_data(script: str, _connection: engine.base.Engine) -> pd.DataFrame:
+    """Load data from database"""
+
+    try:
+        df = pd.read_sql_query(
+            sql=script,
+            con=_connection,
+        )
+    except exc.DBAPIError:
+        df = pd.read_sql_query(
+            sql=script,
+            con=_connection,
+        )
+
+    return df
 
 
 @st.dialog("Page not found")

@@ -1,7 +1,6 @@
 import os
 
 import pandas as pd
-from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
@@ -59,32 +58,13 @@ script_web_traffic = script.split(';')[1]
 script_content_metadata = script_content_metadata.replace("''", "'" + st.query_params["url"] + "'")
 script_web_traffic = script_web_traffic.replace("''", "'" + st.query_params["url"] + "'")
 
-
-@st.cache_data(show_spinner="Loading data...")
-def load_data(script: str, _connection: engine.base.Engine) -> pd.DataFrame:
-    """Load data from database"""
-
-    try:
-        df = pd.read_sql_query(
-            sql=script,
-            con=_connection,
-        )
-    except exc.DBAPIError:
-        df = pd.read_sql_query(
-            sql=script,
-            con=_connection,
-        )
-
-    return df
-
-
-df_content_metadata = load_data(script_content_metadata, connection)
+df_content_metadata = elements.load_data(script_content_metadata, connection)
 
 if df_content_metadata.empty:
     elements.raise_page_not_found_message()
     st.stop()
 
-df_web_traffic = load_data(script_web_traffic, connection)
+df_web_traffic = elements.load_data(script_web_traffic, connection)
 
 # DRAW PAGE HEADER
 st.title(df_content_metadata["page_title"].iloc[0])
