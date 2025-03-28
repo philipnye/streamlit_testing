@@ -28,7 +28,7 @@ start_date, end_date = elements.draw_date_range_inputs(
 )
 
 breakdowns = st.pills(
-    label="Breakdowns",
+    label="Choose breakdown",
     options=[
         "Content type",
         "Publication type",
