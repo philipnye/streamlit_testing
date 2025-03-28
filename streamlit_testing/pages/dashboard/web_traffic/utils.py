@@ -4,7 +4,11 @@ import streamlit_testing.pages.dashboard.web_traffic.config as config
 
 apply_locale_string = JsCode("""
     function stringFormatter(params) {
-        return params.value.toLocaleString();
+        if (!params.value) {
+            return params.value;
+        } else {
+            return params.value.toLocaleString();
+        }
     }
 """)
 format_date = JsCode("""
