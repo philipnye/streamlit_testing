@@ -18,14 +18,14 @@ streamlit_testing/
 │
 ├── pages/
 │   ├── dashboard/
-│       ├── web_traffic/
+│       ├── web_metrics/
 │          ├── <page name>.py
 │          ├── config.py        <<< Variables used across multiple pages
 │          ├── elements.py     <<< Page elements used across multiple pages
 │
 ├── sql/
 │   ├── dashboard/
-│       ├── web_traffic/
+│       ├── web_metrics/
 │
 ├── .gitignore
 ├── .pre-commit-config.yaml

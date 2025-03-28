@@ -5,8 +5,8 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
-import streamlit_testing.pages.dashboard.web_traffic.elements as elements
-from streamlit_testing.pages.dashboard.web_traffic.utils import (
+import streamlit_testing.pages.dashboard.web_metrics.elements as elements
+from streamlit_testing.pages.dashboard.web_metrics.utils import (
     apply_locale_string, format_date, format_date_comparator,
     set_metrics
 )
@@ -53,7 +53,7 @@ connection = dbo.connect_sql_db(
 )
 
 # LOAD DATA
-with open("streamlit_testing/sql/dashboard/web_traffic/page_detail.sql", "r") as file:
+with open("streamlit_testing/sql/dashboard/web_metrics/page_detail.sql", "r") as file:
     script = file.read()
 
 script_content_metadata = script.split(';')[0]

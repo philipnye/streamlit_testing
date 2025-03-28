@@ -5,8 +5,8 @@ from sqlalchemy import engine, exc
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
-import streamlit_testing.pages.dashboard.web_traffic.elements as elements
-from streamlit_testing.pages.dashboard.web_traffic.utils import (
+import streamlit_testing.pages.dashboard.web_metrics.elements as elements
+from streamlit_testing.pages.dashboard.web_metrics.utils import (
     apply_locale_string, format_date, format_date_comparator,
     set_metrics
 )
@@ -14,7 +14,7 @@ from streamlit_testing.pages.dashboard.web_traffic.utils import (
 import ds_utils.database_operations as dbo
 
 # SET METRIC TYPE
-METRIC_TYPE = "download"
+METRIC_TYPE = "web_traffic"
 METRICS, METRIC_AGGREGATIONS, DEFAULT_METRIC = set_metrics(METRIC_TYPE)
 
 # CONNECT TO DATABASE
@@ -30,7 +30,7 @@ connection = dbo.connect_sql_db(
 )
 
 # LOAD DATA
-with open("streamlit_testing/sql/dashboard/web_traffic/by_output.sql", "r") as file:
+with open("streamlit_testing/sql/dashboard/web_metrics/by_page.sql", "r") as file:
     script = file.read()
 
 
@@ -55,7 +55,7 @@ def load_data(script: str, _connection: engine.base.Engine) -> pd.DataFrame:
 df = load_data(script, connection)
 
 # DRAW PAGE HEADER
-st.title("By output")
+st.title("By page")
 
 # DRAW INPUT WIDGETS
 # Controls
@@ -72,11 +72,10 @@ df = df[
 
 df_by_day = df[["date"] + METRICS].groupby("date").sum().reset_index()
 
-df_by_output = df[
+df_by_page = df[
     [
-        "output_title",
-        "fileName",
-        "fileExtension",
+        "page_title",
+        "pagePath",
         "type",
         "published_date",
         "updated_date_alternative",
@@ -85,9 +84,8 @@ df_by_output = df[
         "tags",
     ] + METRICS
 ].groupby([
-    "output_title",
-    "fileName",
-    "fileExtension",
+    "page_title",
+    "pagePath",
     "type",
     "published_date",
     "updated_date_alternative",
@@ -96,11 +94,11 @@ df_by_output = df[
     "tags",
 ]).sum().reset_index()
 
-df_by_output["published_date"] = pd.to_datetime(
-    df_by_output["published_date"]
+df_by_page["published_date"] = pd.to_datetime(
+    df_by_page["published_date"]
 ).dt.strftime("%Y-%m-%d")
-df_by_output["updated_date_alternative"] = pd.to_datetime(
-    df_by_output["updated_date_alternative"]
+df_by_page["updated_date_alternative"] = pd.to_datetime(
+    df_by_page["updated_date_alternative"]
 ).dt.strftime("%Y-%m-%d")
 
 # DRAW OUTPUT WIDGETS
@@ -113,7 +111,7 @@ elements.draw_line_chart_section(
 )
 
 # Table
-grid_builder = GridOptionsBuilder.from_dataframe(df_by_output)
+grid_builder = GridOptionsBuilder.from_dataframe(df_by_page)
 grid_options = grid_builder.build()
 
 grid_options["pagination"] = True
@@ -126,12 +124,28 @@ grid_options["defaultColDef"] = {
 }
 
 column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
-column_defs["output_title"]["pinned"] = "left"
-column_defs["fileName"]["cellRenderer"] = JsCode("""
+column_defs["page_title"]["pinned"] = "left"
+column_defs["page_title"]["cellRenderer"] = JsCode("""
     class UrlCellRenderer {
         init(params) {
             this.eGui = document.createElement("a");
-            this.eGui.innerText = "View output ⮺";
+            this.eGui.innerText = params.value;
+            this.eGui.setAttribute(
+                "href", "/web_metrics_page_detail?url=" + params.data.pagePath
+            );
+            this.eGui.setAttribute("style", "text-decoration:none");
+            this.eGui.setAttribute("target", "_blank");
+        }
+        getGui() {
+            return this.eGui;
+        }
+    }
+""")
+column_defs["pagePath"]["cellRenderer"] = JsCode("""
+    class UrlCellRenderer {
+        init(params) {
+            this.eGui = document.createElement("a");
+            this.eGui.innerText = "View page ⮺";
             this.eGui.setAttribute(
                 "href", "https://www.instituteforgovernment.org.uk" + params.value
             );
@@ -159,7 +173,7 @@ for metric in METRICS:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(
-    df_by_output,
+    df_by_page,
     key="ag",
     update_on=[],
     gridOptions=grid_options,

@@ -9,27 +9,27 @@ pg = st.navigation(
     {
         "Web traffic": [
             st.Page(
-                "streamlit_testing/pages/dashboard/web_traffic/summary.py",
+                "streamlit_testing/pages/dashboard/web_metrics/summary.py",
                 title="Summary",
-                url_path="/web_traffic_summary",
+                url_path="/web_metrics_summary",
                 icon="📊"
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_traffic/by_page.py",
+                "streamlit_testing/pages/dashboard/web_metrics/by_page.py",
                 title="By page",
-                url_path="/web_traffic_by_page",
+                url_path="/web_metrics_by_page",
                 icon="📊"
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_traffic/page_detail.py",
+                "streamlit_testing/pages/dashboard/web_metrics/page_detail.py",
                 title="Page detail",
-                url_path="/web_traffic_page_detail",
+                url_path="/web_metrics_page_detail",
                 icon="📊"
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_traffic/by_output.py",
+                "streamlit_testing/pages/dashboard/web_metrics/by_output.py",
                 title="By output",
-                url_path="/web_traffic_by_output",
+                url_path="/web_metrics_by_output",
                 icon="📊"
             ),
         ],

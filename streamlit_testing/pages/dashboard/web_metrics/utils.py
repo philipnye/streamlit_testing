@@ -1,6 +1,6 @@
 from st_aggrid import JsCode
 
-import streamlit_testing.pages.dashboard.web_traffic.config as config
+import streamlit_testing.pages.dashboard.web_metrics.config as config
 
 apply_locale_string = JsCode("""
     function stringFormatter(params) {

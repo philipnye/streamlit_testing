@@ -3,7 +3,7 @@ from datetime import date, timedelta
 import pandas as pd
 import streamlit as st
 
-import streamlit_testing.pages.dashboard.web_traffic.config as config
+import streamlit_testing.pages.dashboard.web_metrics.config as config
 
 
 def draw_date_range_inputs(
