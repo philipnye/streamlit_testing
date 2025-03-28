@@ -159,7 +159,7 @@ with tab1:
     column_defs["date"]["sort"] = "asc"
 
     for metric in METRICS:
-        column_defs[selected_metric]["valueFormatter"] = apply_locale_string
+        column_defs[metric]["valueFormatter"] = apply_locale_string
 
     AgGrid(
         df_web_traffic,
