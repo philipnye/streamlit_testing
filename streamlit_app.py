@@ -12,25 +12,21 @@ pg = st.navigation(
                 "streamlit_testing/pages/dashboard/web_metrics/summary.py",
                 title="Summary",
                 url_path="/web_metrics_summary",
-                icon="📊"
             ),
             st.Page(
                 "streamlit_testing/pages/dashboard/web_metrics/by_page.py",
                 title="By page",
                 url_path="/web_metrics_by_page",
-                icon="📊"
             ),
             st.Page(
                 "streamlit_testing/pages/dashboard/web_metrics/page_detail.py",
                 title="Page detail",
                 url_path="/web_metrics_page_detail",
-                icon="📊"
             ),
             st.Page(
                 "streamlit_testing/pages/dashboard/web_metrics/by_output.py",
                 title="By output",
                 url_path="/web_metrics_by_output",
-                icon="📊"
             ),
         ],
     },
