@@ -88,3 +88,13 @@ def draw_line_chart_section(
         )
 
     return
+
+
+@st.dialog("Page not found")
+def raise_page_not_found_message():
+    """Raise page not found message"""
+    st.write(
+        "The page that you have requested does not seem to exist."
+    )
+
+    return

@@ -15,10 +15,7 @@ import ds_utils.database_operations as dbo
 
 # HANDLE DIRECT ACCESS
 if "url" not in st.query_params:
-    st.write("""
-        Direct access to this page not developed yet - please navigate here using one of the links
-        in the table on the 'By page' page
-    """)
+    elements.raise_page_not_found_message()
     st.stop()
 
 # DISABLE SIDEBAR
@@ -82,6 +79,11 @@ def load_data(script: str, _connection: engine.base.Engine) -> pd.DataFrame:
 
 
 df_content_metadata = load_data(script_content_metadata, connection)
+
+if df_content_metadata.empty:
+    elements.raise_page_not_found_message()
+    st.stop()
+
 df_web_traffic = load_data(script_web_traffic, connection)
 
 # DRAW PAGE HEADER
