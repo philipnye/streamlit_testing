@@ -23,47 +23,48 @@ st.title("Summary")
 # DRAW INPUT WIDGETS
 # Controls
 start_date, end_date = elements.draw_date_range_inputs(
-    min_date=df["date"].min(),
-    max_date=df["date"].max(),
+    min_date=df["Date"].min(),
+    max_date=df["Date"].max(),
 )
 
 breakdowns = st.pills(
     label="Breakdowns",
     options=[
-        "type",
-        "research_area",
-        "tag",
-        "author",
-        "published_year",
-        "published_month",
-        "published_day",
-        "updated_year",
-        "updated_month",
-        "updated_day",
+        "Content type",
+        "Publication type",
+        "Research area",
+        "Tag",
+        "Author",
+        "Published date: year",
+        "Published date: month",
+        "Published date: day",
+        "Updated date: year",
+        "Updated date: month",
+        "Updated date: day",
     ],
     selection_mode="multi",
-    default="type",
+    default="Content type",
     key="breakdowns",
 )
 
 # EDIT DATA
 df = df[
-    (df["date"] >= start_date) &
-    (df["date"] <= end_date)
+    (df["Date"] >= start_date) &
+    (df["Date"] <= end_date)
 ]
 
-df_grouped_by_day = df[["date"] + METRICS].\
-    groupby("date").sum().reset_index()
+df_grouped_by_day = df[["Date"] + METRICS].\
+    groupby("Date").sum().reset_index()
 
 if breakdowns != []:
-    df_grouped = df[breakdowns + ["partial"] + METRICS].groupby(breakdowns).agg(
-        pages=("partial", "nunique"),
+    df_grouped = df[breakdowns + ["URL"] + METRICS].groupby(breakdowns).agg(
+        Pages=("URL", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
 else:
-    df.insert(0, "category", "All pages")
-    df_grouped = df[["category", "partial"] + METRICS].groupby("category").agg(
-        pages=("partial", "nunique"),
+    df.insert(0, "Category", "All pages")
+    df_grouped = df[["Category", "URL"] + METRICS].groupby("Category").agg(
+        Pages=("URL", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
 
@@ -71,7 +72,7 @@ else:
 # Chart
 elements.draw_line_chart_section(
     df=df_grouped_by_day,
-    x="date",
+    x="Date",
     metrics=METRICS,
     default_metric=DEFAULT_METRIC,
 )
@@ -95,7 +96,7 @@ if breakdowns != []:
         column_defs[breakdown]["pinned"] = "left"
 column_defs[breakdowns[0]]["sort"] = "asc"
 
-column_defs["pages"]["valueFormatter"] = apply_locale_string
+column_defs["Pages"]["valueFormatter"] = apply_locale_string
 
 for metric in METRICS:
     column_defs[metric]["valueFormatter"] = apply_locale_string

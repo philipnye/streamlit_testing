@@ -1,17 +1,17 @@
 -- NB: By using an outer apply to corporate.ifg_content this picks up
 -- the page title of the page from which an output is most commonly downloaded
 select
-    d.date,
-    c.page_title output_title,
-    d.fileName,
-    d.fileExtension,
-    c.type,
-    c.published_date,
-    c.updated_date_alternative,
-    a.authors,
-    ra.research_areas,
-    t.tags,
-    d.eventCount
+    d.date Date,
+    c.page_title [Output title],
+    d.fileName [File name],
+    d.fileExtension [File extension],
+    c.type [Content type],
+    c.published_date [Published date],
+    c.updated_date_alternative [Updated date],
+    a.authors Authors,
+    ra.research_areas [Research areas],
+    t.tags Tags,
+    d.eventCount Downloads
 from corporate.ga_downloads_by_date d
     outer apply (
         select top 1 *

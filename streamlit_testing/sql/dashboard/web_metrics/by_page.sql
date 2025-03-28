@@ -1,19 +1,39 @@
 select
-    pv.date,
-    c.page_title,
-    pv.pagePath,
-    c.type,
-    c.published_date,
-    c.updated_date_alternative,
-    a.authors,
-    ra.research_areas,
-    t.tags,
-    pv.activeUsers,
-    pv.engagedSessions,
-    pv.screenPageViews,
-    pv.sessions,
-    pv.userEngagementDuration,
-    d.eventCount
+    pv.date Date,
+    c.page_title [Page title],
+    pv.pagePath URL,
+    case
+        when c.type in (
+            'Analysis paper',
+            'Case study',
+            'Insight paper',
+            'Report'
+        ) then 'Publication'
+        when c.type in (
+            'Interview'
+        ) then 'Special output'
+        else c.type
+    end [Content type],
+    case
+        when c.type in (
+            'Analysis paper',
+            'Case study',
+            'Insight paper',
+            'Report'
+        ) then c.type
+        else null
+    end [Publication type],
+    c.published_date [Published date],
+    c.updated_date_alternative [Updated date],
+    a.authors Authors,
+    ra.research_areas [Research areas],
+    t.tags Tags,
+    pv.screenPageViews [Page views],
+    pv.activeUsers [Active users],
+    pv.sessions Sessions,
+    pv.engagedSessions [Engaged sessions],
+    d.eventCount Downloads,
+    pv.userEngagementDuration [User engagement duration]
 from corporate.ifg_content c
     inner join corporate.ga_page_views_by_date pv on
         pv.pagePath = c.partial

@@ -1,27 +1,27 @@
 web_traffic_metrics = [
-    "activeUsers",
-    "engagedSessions",
-    "screenPageViews",
-    "sessions",
-    "userEngagementDuration",
-    "eventCount",
+    "Page views",
+    "Active users",
+    "Sessions",
+    "Engaged sessions",
+    "User engagement duration",
+    "Downloads",
 ]
 web_traffic_metric_aggregations = {
-    "activeUsers": ("activeUsers", "sum"),
-    "engagedSessions": ("engagedSessions", "sum"),
-    "screenPageViews": ("screenPageViews", "sum"),
-    "sessions": ("sessions", "sum"),
-    "userEngagementDuration": ("userEngagementDuration", "sum"),
-    "eventCount": ("eventCount", "sum"),
+    "Page views": ("Page views", "sum"),
+    "Active users": ("Active users", "sum"),
+    "Sessions": ("Sessions", "sum"),
+    "Engaged sessions": ("Engaged sessions", "sum"),
+    "User engagement duration": ("User engagement duration", "sum"),
+    "Downloads": ("Downloads", "sum"),
 }
-default_web_traffic_metric = "screenPageViews"
+default_web_traffic_metric = "Page views"
 download_metrics = [
-    "eventCount",
+    "Downloads",
 ]
 download_metric_aggregations = {
-    "eventCount": ("eventCount", "sum"),
+    "Downloads": ("Downloads", "sum"),
 }
-default_download_metric = "eventCount"
+default_download_metric = "Downloads"
 date_ranges = {
     "Last 7 days": 7,
     "Last 30 days": 30,

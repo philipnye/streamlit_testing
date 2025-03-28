@@ -54,14 +54,14 @@ if df_content_metadata.empty:
 df_web_traffic = elements.load_data(script_web_traffic, connection)
 
 # DRAW PAGE HEADER
-st.title(df_content_metadata["page_title"].iloc[0])
-st.subheader(df_content_metadata["authors"].iloc[0])
-st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["partial"].iloc[0])
+st.title(df_content_metadata["Page title"].iloc[0])
+st.subheader(df_content_metadata["Authors"].iloc[0])
+st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["URL"].iloc[0])
 
 # DRAW OUTPUT WIDGETS
 st.dataframe(
     df_content_metadata[[
-        "type", "published_date", "updated_date_alternative", "research_areas", "tags"
+        "Content type", "Published date", "Updated date", "Research areas", "Tags"
     ]].T,
 )
 
@@ -69,25 +69,25 @@ tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
 
 with tab1:
     start_date, end_date = elements.draw_date_range_inputs(
-        min_date=df_web_traffic["date"].min(),
-        max_date=df_web_traffic["date"].max(),
+        min_date=df_web_traffic["Date"].min(),
+        max_date=df_web_traffic["Date"].max(),
     )
 
     # EDIT DATA
     df_web_traffic = df_web_traffic[
-        (df_web_traffic["date"] >= start_date) &
-        (df_web_traffic["date"] <= end_date)
+        (df_web_traffic["Date"] >= start_date) &
+        (df_web_traffic["Date"] <= end_date)
     ]
 
     elements.draw_line_chart_section(
         df=df_web_traffic,
-        x="date",
+        x="Date",
         metrics=METRICS,
         default_metric=DEFAULT_METRIC,
     )
 
-    df_web_traffic["date"] = pd.to_datetime(
-        df_web_traffic["date"]
+    df_web_traffic["Date"] = pd.to_datetime(
+        df_web_traffic["Date"]
     ).dt.strftime("%Y-%m-%d")
 
     grid_builder = GridOptionsBuilder.from_dataframe(df_web_traffic)
@@ -104,12 +104,12 @@ with tab1:
 
     column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
 
-    column_defs["date"]["type"] = "date"
-    column_defs["date"]["cellClass"] = "ag-right-aligned-cell"
-    column_defs["date"]["headerClass"] = "ag-right-aligned-header"
-    column_defs["date"]["valueFormatter"] = format_date
-    column_defs["date"]["comparator"] = format_date_comparator
-    column_defs["date"]["sort"] = "asc"
+    column_defs["Date"]["Content type"] = "Date"
+    column_defs["Date"]["cellClass"] = "ag-right-aligned-cell"
+    column_defs["Date"]["headerClass"] = "ag-right-aligned-header"
+    column_defs["Date"]["valueFormatter"] = format_date
+    column_defs["Date"]["comparator"] = format_date_comparator
+    column_defs["Date"]["sort"] = "asc"
 
     for metric in METRICS:
         column_defs[metric]["valueFormatter"] = apply_locale_string

@@ -27,52 +27,52 @@ st.title("By page")
 # DRAW INPUT WIDGETS
 # Controls
 start_date, end_date = elements.draw_date_range_inputs(
-    min_date=df["date"].min(),
-    max_date=df["date"].max(),
+    min_date=df["Date"].min(),
+    max_date=df["Date"].max(),
 )
 
 # EDIT DATA
 df = df[
-    (df["date"] >= start_date) &
-    (df["date"] <= end_date)
+    (df["Date"] >= start_date) &
+    (df["Date"] <= end_date)
 ]
 
-df_by_day = df[["date"] + METRICS].groupby("date").sum().reset_index()
+df_by_day = df[["Date"] + METRICS].groupby("Date").sum().reset_index()
 
 df_by_page = df[
     [
-        "page_title",
-        "pagePath",
-        "type",
-        "published_date",
-        "updated_date_alternative",
-        "authors",
-        "research_areas",
-        "tags",
+        "Page title",
+        "URL",
+        "Content type",
+        "Published date",
+        "Updated date",
+        "Authors",
+        "Research areas",
+        "Tags",
     ] + METRICS
 ].groupby([
-    "page_title",
-    "pagePath",
-    "type",
-    "published_date",
-    "updated_date_alternative",
-    "authors",
-    "research_areas",
-    "tags",
+    "Page title",
+    "URL",
+    "Content type",
+    "Published date",
+    "Updated date",
+    "Authors",
+    "Research areas",
+    "Tags",
 ]).sum().reset_index()
 
-df_by_page["published_date"] = pd.to_datetime(
-    df_by_page["published_date"]
+df_by_page["Published date"] = pd.to_datetime(
+    df_by_page["Published date"]
 ).dt.strftime("%Y-%m-%d")
-df_by_page["updated_date_alternative"] = pd.to_datetime(
-    df_by_page["updated_date_alternative"]
+df_by_page["Updated date"] = pd.to_datetime(
+    df_by_page["Updated date"]
 ).dt.strftime("%Y-%m-%d")
 
 # DRAW OUTPUT WIDGETS
 # Chart
 elements.draw_line_chart_section(
     df=df_by_day,
-    x="date",
+    x="Date",
     metrics=METRICS,
     default_metric=DEFAULT_METRIC,
 )
@@ -91,14 +91,14 @@ grid_options["defaultColDef"] = {
 }
 
 column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
-column_defs["page_title"]["pinned"] = "left"
-column_defs["page_title"]["cellRenderer"] = JsCode("""
+column_defs["Page title"]["pinned"] = "left"
+column_defs["Page title"]["cellRenderer"] = JsCode("""
     class UrlCellRenderer {
         init(params) {
             this.eGui = document.createElement("a");
             this.eGui.innerText = params.value;
             this.eGui.setAttribute(
-                "href", "/web_metrics_page_detail?url=" + params.data.pagePath
+                "href", "/web_metrics_page_detail?url=" + params.data.URL
             );
             this.eGui.setAttribute("style", "text-decoration:none");
             this.eGui.setAttribute("target", "_blank");
@@ -108,7 +108,7 @@ column_defs["page_title"]["cellRenderer"] = JsCode("""
         }
     }
 """)
-column_defs["pagePath"]["cellRenderer"] = JsCode("""
+column_defs["URL"]["cellRenderer"] = JsCode("""
     class UrlCellRenderer {
         init(params) {
             this.eGui = document.createElement("a");
@@ -124,16 +124,16 @@ column_defs["pagePath"]["cellRenderer"] = JsCode("""
         }
     }
 """)
-column_defs["published_date"]["type"] = "date"
-column_defs["published_date"]["cellClass"] = "ag-right-aligned-cell"
-column_defs["published_date"]["headerClass"] = "ag-right-aligned-header"
-column_defs["published_date"]["valueFormatter"] = format_date
-column_defs["published_date"]["comparator"] = format_date_comparator
-column_defs["updated_date_alternative"]["type"] = "date"
-column_defs["updated_date_alternative"]["cellClass"] = "ag-right-aligned-cell"
-column_defs["updated_date_alternative"]["headerClass"] = "ag-right-aligned-header"
-column_defs["updated_date_alternative"]["valueFormatter"] = format_date
-column_defs["updated_date_alternative"]["comparator"] = format_date_comparator
+column_defs["Published date"]["Content type"] = "Date"
+column_defs["Published date"]["cellClass"] = "ag-right-aligned-cell"
+column_defs["Published date"]["headerClass"] = "ag-right-aligned-header"
+column_defs["Published date"]["valueFormatter"] = format_date
+column_defs["Published date"]["comparator"] = format_date_comparator
+column_defs["Updated date"]["Content type"] = "Date"
+column_defs["Updated date"]["cellClass"] = "ag-right-aligned-cell"
+column_defs["Updated date"]["headerClass"] = "ag-right-aligned-header"
+column_defs["Updated date"]["valueFormatter"] = format_date
+column_defs["Updated date"]["comparator"] = format_date_comparator
 
 column_defs[DEFAULT_METRIC]["sort"] = "desc"
 for metric in METRICS:
