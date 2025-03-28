@@ -129,7 +129,8 @@ with tab1:
             x="date",
             y=selected_metric,
             use_container_width=True,
-            x_label=""
+            x_label="",
+            y_label="",
         )
 
     df_web_traffic["date"] = pd.to_datetime(

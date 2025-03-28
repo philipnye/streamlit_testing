@@ -122,7 +122,8 @@ with st.container(
         x="date",
         y=selected_metric,
         use_container_width=True,
-        x_label=""
+        x_label="",
+        y_label="",
     )
 
 # Table
