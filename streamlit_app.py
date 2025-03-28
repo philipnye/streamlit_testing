@@ -32,5 +32,17 @@ pg = st.navigation(
     },
 )
 
+# HIDE PAGES IN SIDEBAR
+st.markdown(
+    """
+        <style>
+            a[href$="web_metrics_page_detail"]{
+                display: none;
+            }
+        </style>
+    """,
+    unsafe_allow_html=True
+)
+
 with streamlit_analytics.track():
     pg.run()
