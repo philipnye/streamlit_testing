@@ -53,17 +53,16 @@ df = df[
     (df["Date"] <= end_date)
 ]
 
-df_grouped_by_day = df[["Date"] + METRICS].\
-    groupby("Date").sum().reset_index()
+df_grouped_by_day = df[["Date"] + METRICS].drop_duplicates().groupby("Date").sum().reset_index()
 
 if breakdowns != []:
-    df_grouped = df[breakdowns + ["URL"] + METRICS].groupby(breakdowns).agg(
+    df_grouped = df[breakdowns + ["URL"] + METRICS].drop_duplicates().groupby(breakdowns).agg(
         Pages=("URL", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
 else:
     df.insert(0, "Category", "All pages")
-    df_grouped = df[["Category", "URL"] + METRICS].groupby("Category").agg(
+    df_grouped = df[["Category", "URL"] + METRICS].drop_duplicates().groupby("Category").agg(
         Pages=("URL", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
