@@ -93,7 +93,7 @@ column_defs = {column_def["field"]: column_def for column_def in grid_options["c
 if breakdowns != []:
     for breakdown in breakdowns:
         column_defs[breakdown]["pinned"] = "left"
-column_defs[breakdowns[0]]["sort"] = "asc"
+    column_defs[breakdowns[0]]["sort"] = "asc"
 
 column_defs["Pages"]["valueFormatter"] = apply_locale_string
 
