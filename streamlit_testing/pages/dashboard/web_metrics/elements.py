@@ -10,10 +10,36 @@ import streamlit_testing.pages.dashboard.web_metrics.config as config
 import ds_utils.database_operations as dbo
 
 
-# CONNECT TO DATABASE
+@st.cache_data()
+def calculate_derived_metrics(
+    df: pd.DataFrame,
+    calculations: dict
+) -> pd.DataFrame:
+    """Calculate derived metrics"""
+
+    def _divide(x, y):
+        if pd.isna(x) or pd.isna(y):
+            return 0
+        else:
+            return x / y if y != 0 else 0
+
+    if not calculations:
+        return df
+
+    for metric, (metric_1, metric_2, calculation) in calculations.items():
+        if calculation == "divide":
+            calculation = _divide
+        df[metric] = df[metric_1].combine(
+            df[metric_2], calculation
+        )
+
+    return df
+
+
 @st.cache_resource
 def connect_database():
     """Connect to SQL database"""
+
     return dbo.connect_sql_db(
         driver="pyodbc",
         driver_version=os.environ["ODBC_DRIVER"],

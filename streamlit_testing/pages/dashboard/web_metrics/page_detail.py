@@ -30,7 +30,9 @@ st.markdown(
 
 # SET METRIC TYPE
 METRIC_TYPE = "web_traffic"
-METRICS, METRIC_AGGREGATIONS, DEFAULT_METRIC = set_metrics(METRIC_TYPE)
+(
+    METRICS_RAW, METRICS_DISPLAY, METRIC_AGGREGATIONS, METRIC_CALCULATIONS, DEFAULT_METRIC
+) = set_metrics(METRIC_TYPE)
 
 # CONNECT TO DATABASE
 connection = elements.connect_database()
@@ -79,10 +81,16 @@ with tab1:
         (df_web_traffic["Date"] <= end_date)
     ]
 
+    df_web_traffic = elements.calculate_derived_metrics(df_web_traffic, METRIC_CALCULATIONS)
+
+    df_web_traffic = df_web_traffic[
+        ["Date"] + METRICS_DISPLAY
+    ]
+
     elements.draw_line_chart_section(
         df=df_web_traffic,
         x="Date",
-        metrics=METRICS,
+        metrics=METRICS_DISPLAY,
         default_metric=DEFAULT_METRIC,
     )
 
@@ -111,7 +119,7 @@ with tab1:
     column_defs["Date"]["comparator"] = format_date_comparator
     column_defs["Date"]["sort"] = "asc"
 
-    for metric in METRICS:
+    for metric in METRICS_DISPLAY:
         column_defs[metric]["valueFormatter"] = apply_locale_string
 
     AgGrid(

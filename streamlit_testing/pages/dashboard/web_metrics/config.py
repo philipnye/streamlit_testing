@@ -1,4 +1,4 @@
-web_traffic_metrics = [
+web_traffic_metrics_raw = [
     "Page views",
     "Active users",
     "Sessions",
@@ -14,13 +14,48 @@ web_traffic_metric_aggregations = {
     "User engagement duration": ("User engagement duration", "sum"),
     "Downloads": ("Downloads", "sum"),
 }
+web_traffic_metric_calculations = {
+    "Page views per active user": (
+        "Page views",
+        "Active users",
+        "divide"
+    ),
+    "Engagement rate": (
+        "Engaged sessions",
+        "Sessions",
+        "divide"
+    ),
+    "Average engagement time per active user": (
+        "User engagement duration",
+        "Active users",
+        "divide"
+    ),
+    "Download rate": (
+        "Downloads",
+        "Page views",
+        "divide"
+    ),
+}
+web_traffic_metrics_display = [
+    "Page views",
+    "Active users",
+    "Page views per active user",
+    "Engagement rate",
+    "Average engagement time per active user",
+    "Downloads",
+    "Download rate",
+]
 default_web_traffic_metric = "Page views"
-download_metrics = [
+download_metrics_raw = [
     "Downloads",
 ]
 download_metric_aggregations = {
     "Downloads": ("Downloads", "sum"),
 }
+download_metric_calculations = None
+download_metrics_display = [
+    "Downloads",
+]
 default_download_metric = "Downloads"
 date_ranges = {
     "Last 7 days": 7,

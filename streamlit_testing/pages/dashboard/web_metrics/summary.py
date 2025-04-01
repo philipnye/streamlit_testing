@@ -6,7 +6,9 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import apply_locale_str
 
 # SET METRIC TYPE
 METRIC_TYPE = "web_traffic"
-METRICS, METRIC_AGGREGATIONS, DEFAULT_METRIC = set_metrics(METRIC_TYPE)
+(
+    METRICS_RAW, METRICS_DISPLAY, METRIC_AGGREGATIONS, METRIC_CALCULATIONS, DEFAULT_METRIC
+) = set_metrics(METRIC_TYPE)
 
 # CONNECT TO DATABASE
 connection = elements.connect_database()
@@ -53,26 +55,38 @@ df = df[
     (df["Date"] <= end_date)
 ]
 
-df_grouped_by_day = df[["Date"] + METRICS].drop_duplicates().groupby("Date").sum().reset_index()
+df_grouped_by_day = df[["Date"] + METRICS_RAW].drop_duplicates().groupby("Date").sum().reset_index()
 
-if breakdowns != []:
-    df_grouped = df[breakdowns + ["URL"] + METRICS].drop_duplicates().groupby(breakdowns).agg(
+if breakdowns == []:
+    df.insert(0, "Category", "All pages")
+    df_grouped = df[["Category", "URL"] + METRICS_RAW].drop_duplicates().groupby("Category").agg(
         Pages=("URL", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
 else:
-    df.insert(0, "Category", "All pages")
-    df_grouped = df[["Category", "URL"] + METRICS].drop_duplicates().groupby("Category").agg(
+    df_grouped = df[breakdowns + ["URL"] + METRICS_RAW].drop_duplicates().groupby(breakdowns).agg(
         Pages=("URL", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
+
+df_grouped_by_day = elements.calculate_derived_metrics(df_grouped_by_day, METRIC_CALCULATIONS)
+df_grouped = elements.calculate_derived_metrics(df_grouped, METRIC_CALCULATIONS)
+
+if breakdowns == []:
+    df_grouped = df_grouped[
+        ["Category", "Pages"] + METRICS_DISPLAY
+    ]
+else:
+    df_grouped = df_grouped[
+        breakdowns + ["Pages"] + METRICS_DISPLAY
+    ]
 
 # DRAW OUTPUT WIDGETS
 # Chart
 elements.draw_line_chart_section(
     df=df_grouped_by_day,
     x="Date",
-    metrics=METRICS,
+    metrics=METRICS_DISPLAY,
     default_metric=DEFAULT_METRIC,
 )
 
@@ -97,7 +111,7 @@ if breakdowns != []:
 
 column_defs["Pages"]["valueFormatter"] = apply_locale_string
 
-for metric in METRICS:
+for metric in METRICS_DISPLAY:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(

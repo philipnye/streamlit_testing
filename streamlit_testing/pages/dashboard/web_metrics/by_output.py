@@ -10,7 +10,9 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import (
 
 # SET METRIC TYPE
 METRIC_TYPE = "download"
-METRICS, METRIC_AGGREGATIONS, DEFAULT_METRIC = set_metrics(METRIC_TYPE)
+(
+    METRICS_RAW, METRICS_DISPLAY, METRIC_AGGREGATIONS, METRIC_CALCULATIONS, DEFAULT_METRIC
+) = set_metrics(METRIC_TYPE)
 
 # CONNECT TO DATABASE
 connection = elements.connect_database()
@@ -37,7 +39,7 @@ df = df[
     (df["Date"] <= end_date)
 ]
 
-df_by_day = df[["Date"] + METRICS].groupby("Date").sum().reset_index()
+df_by_day = df[["Date"] + METRICS_RAW].groupby("Date").sum().reset_index()
 
 df_by_output = df[
     [
@@ -50,7 +52,7 @@ df_by_output = df[
         "Authors",
         "Research areas",
         "Tags",
-    ] + METRICS
+    ] + METRICS_RAW
 ].groupby([
     "Output title",
     "File name",
@@ -62,6 +64,23 @@ df_by_output = df[
     "Research areas",
     "Tags",
 ]).sum().reset_index()
+
+df_by_day = elements.calculate_derived_metrics(df_by_day, METRIC_CALCULATIONS)
+df_by_output = elements.calculate_derived_metrics(df_by_output, METRIC_CALCULATIONS)
+
+df_by_output = df_by_output[
+    [
+        "Output title",
+        "File name",
+        "File extension",
+        "Content type",
+        "Published date",
+        "Updated date",
+        "Authors",
+        "Research areas",
+        "Tags",
+    ] + METRICS_DISPLAY
+]
 
 df_by_output["Published date"] = pd.to_datetime(
     df_by_output["Published date"]
@@ -75,7 +94,7 @@ df_by_output["Updated date"] = pd.to_datetime(
 elements.draw_line_chart_section(
     df=df_by_day,
     x="Date",
-    metrics=METRICS,
+    metrics=METRICS_DISPLAY,
     default_metric=DEFAULT_METRIC,
 )
 
@@ -122,7 +141,7 @@ column_defs["Updated date"]["valueFormatter"] = format_date
 column_defs["Updated date"]["comparator"] = format_date_comparator
 
 column_defs[DEFAULT_METRIC]["sort"] = "desc"
-for metric in METRICS:
+for metric in METRICS_DISPLAY:
     column_defs[metric]["valueFormatter"] = apply_locale_string
 
 AgGrid(
