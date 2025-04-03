@@ -1,3 +1,7 @@
+from streamlit_testing.pages.dashboard.web_metrics.utils import (
+    format_integer, format_decimal, format_percentage
+)
+
 web_traffic_metrics_raw = [
     "Page views",
     "Active users",
@@ -36,15 +40,15 @@ web_traffic_metric_calculations = {
         "divide"
     ),
 }
-web_traffic_metrics_display = [
-    "Page views",
-    "Active users",
-    "Page views per active user",
-    "Engagement rate",
-    "Average engagement time per active user",
-    "Downloads",
-    "Download rate",
-]
+web_traffic_metrics_display = {
+    "Page views": format_integer,
+    "Active users": format_integer,
+    "Page views per active user": format_decimal,
+    "Engagement rate": format_percentage,
+    "Average engagement time per active user": format_integer,
+    "Downloads": format_integer,
+    "Download rate": format_percentage,
+}
 default_web_traffic_metric = "Page views"
 download_metrics_raw = [
     "Downloads",
@@ -53,9 +57,9 @@ download_metric_aggregations = {
     "Downloads": ("Downloads", "sum"),
 }
 download_metric_calculations = None
-download_metrics_display = [
-    "Downloads",
-]
+download_metrics_display = {
+    "Downloads": format_integer,
+}
 default_download_metric = "Downloads"
 date_ranges = {
     "Last 7 days": 7,

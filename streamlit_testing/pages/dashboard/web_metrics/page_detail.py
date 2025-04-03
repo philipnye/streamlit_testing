@@ -4,7 +4,7 @@ from st_aggrid import AgGrid, GridOptionsBuilder
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
-    apply_locale_string, format_date, format_date_comparator,
+    format_date, compare_dates,
     set_metrics
 )
 
@@ -84,13 +84,13 @@ with tab1:
     df_web_traffic = elements.calculate_derived_metrics(df_web_traffic, METRIC_CALCULATIONS)
 
     df_web_traffic = df_web_traffic[
-        ["Date"] + METRICS_DISPLAY
+        ["Date"] + list(METRICS_DISPLAY.keys())
     ]
 
     elements.draw_line_chart_section(
         df=df_web_traffic,
         x="Date",
-        metrics=METRICS_DISPLAY,
+        metrics=list(METRICS_DISPLAY.keys()),
         default_metric=DEFAULT_METRIC,
     )
 
@@ -116,11 +116,11 @@ with tab1:
     column_defs["Date"]["cellClass"] = "ag-right-aligned-cell"
     column_defs["Date"]["headerClass"] = "ag-right-aligned-header"
     column_defs["Date"]["valueFormatter"] = format_date
-    column_defs["Date"]["comparator"] = format_date_comparator
+    column_defs["Date"]["comparator"] = compare_dates
     column_defs["Date"]["sort"] = "asc"
 
-    for metric in METRICS_DISPLAY:
-        column_defs[metric]["valueFormatter"] = apply_locale_string
+    for metric, formatter in METRICS_DISPLAY.items():
+        column_defs[metric]["valueFormatter"] = formatter
 
     AgGrid(
         df_web_traffic,

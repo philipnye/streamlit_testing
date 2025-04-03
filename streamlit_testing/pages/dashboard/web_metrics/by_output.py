@@ -4,7 +4,7 @@ from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
-    apply_locale_string, format_date, format_date_comparator,
+    format_date, compare_dates,
     set_metrics
 )
 
@@ -79,7 +79,7 @@ df_by_output = df_by_output[
         "Authors",
         "Research areas",
         "Tags",
-    ] + METRICS_DISPLAY
+    ] + list(METRICS_DISPLAY.keys())
 ]
 
 df_by_output["Published date"] = pd.to_datetime(
@@ -94,7 +94,7 @@ df_by_output["Updated date"] = pd.to_datetime(
 elements.draw_line_chart_section(
     df=df_by_day,
     x="Date",
-    metrics=METRICS_DISPLAY,
+    metrics=list(METRICS_DISPLAY.keys()),
     default_metric=DEFAULT_METRIC,
 )
 
@@ -133,16 +133,16 @@ column_defs["Published date"]["Content type"] = "Date"
 column_defs["Published date"]["cellClass"] = "ag-right-aligned-cell"
 column_defs["Published date"]["headerClass"] = "ag-right-aligned-header"
 column_defs["Published date"]["valueFormatter"] = format_date
-column_defs["Published date"]["comparator"] = format_date_comparator
+column_defs["Published date"]["comparator"] = compare_dates
 column_defs["Updated date"]["Content type"] = "Date"
 column_defs["Updated date"]["cellClass"] = "ag-right-aligned-cell"
 column_defs["Updated date"]["headerClass"] = "ag-right-aligned-header"
 column_defs["Updated date"]["valueFormatter"] = format_date
-column_defs["Updated date"]["comparator"] = format_date_comparator
+column_defs["Updated date"]["comparator"] = compare_dates
 
 column_defs[DEFAULT_METRIC]["sort"] = "desc"
-for metric in METRICS_DISPLAY:
-    column_defs[metric]["valueFormatter"] = apply_locale_string
+for metric, formatter in METRICS_DISPLAY.items():
+    column_defs[metric]["valueFormatter"] = formatter
 
 AgGrid(
     df_by_output,

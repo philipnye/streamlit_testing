@@ -2,7 +2,7 @@ import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
-from streamlit_testing.pages.dashboard.web_metrics.utils import apply_locale_string, set_metrics
+from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer, set_metrics
 
 # SET METRIC TYPE
 METRIC_TYPE = "web_traffic"
@@ -74,11 +74,11 @@ df_grouped = elements.calculate_derived_metrics(df_grouped, METRIC_CALCULATIONS)
 
 if breakdowns == []:
     df_grouped = df_grouped[
-        ["Category", "Pages"] + METRICS_DISPLAY
+        ["Category", "Pages"] + list(METRICS_DISPLAY.keys())
     ]
 else:
     df_grouped = df_grouped[
-        breakdowns + ["Pages"] + METRICS_DISPLAY
+        breakdowns + ["Pages"] + list(METRICS_DISPLAY.keys())
     ]
 
 # DRAW OUTPUT WIDGETS
@@ -86,7 +86,7 @@ else:
 elements.draw_line_chart_section(
     df=df_grouped_by_day,
     x="Date",
-    metrics=METRICS_DISPLAY,
+    metrics=list(METRICS_DISPLAY.keys()),
     default_metric=DEFAULT_METRIC,
 )
 
@@ -109,10 +109,10 @@ if breakdowns != []:
         column_defs[breakdown]["pinned"] = "left"
     column_defs[breakdowns[0]]["sort"] = "asc"
 
-column_defs["Pages"]["valueFormatter"] = apply_locale_string
+column_defs["Pages"]["valueFormatter"] = format_integer
 
-for metric in METRICS_DISPLAY:
-    column_defs[metric]["valueFormatter"] = apply_locale_string
+for metric, formatter in METRICS_DISPLAY.items():
+    column_defs[metric]["valueFormatter"] = formatter
 
 AgGrid(
     df_grouped,
