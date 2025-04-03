@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit_analytics2 as streamlit_analytics
 
 st.set_page_config(
     layout="wide",
@@ -43,6 +42,3 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-with streamlit_analytics.track():
-    pg.run()
