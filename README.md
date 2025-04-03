@@ -1,7 +1,7 @@
 # IfG Analytics Dashboard
 ## Serving the dashboard
 ### Web
-Hosted on Streamlit Community Cloud at [https://ifganalytics.streamlit.app/](https://ifganalytics.streamlit.app/)
+Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit.app/](https://instituteforgovernment.streamlit.app/)
 
 ### Local development
 1. Create a new virtual environment using `python -m venv env`
