@@ -1,9 +1,12 @@
 # IfG Analytics Dashboard
 ## Serving the dashboard
 ### Web
-Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit.app/](https://instituteforgovernment.streamlit.app/)
+Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit.app/](https://instituteforgovernment.streamlit.app/).
+
+[Environment variables](#environment-variables) are held as [app secrets](https://docs.streamlit.io/develop/concepts/connections/secrets-management).
 
 ### Local development
+1. Add [environment variables](#environment-variables) as system environment variables
 1. Create a new virtual environment using `python -m venv env`
 1. Activate the virtual environment using `env\Scripts\activate`
 1. Run `pip install -r requirements.txt` to install packages
@@ -38,3 +41,12 @@ streamlit_testing/
 ├── streamlit_app.py
 └── requirements.txt
 ```
+
+## Environment variables
+The following environment variables are used by the app:
+- `ODBC_DRIVER`: ODBC driver name to be used in database connection
+- `ODBC_SERVER`: Server name to be used in database connection
+- `ODBC_DATABASE`: Database name to be used in database connection
+- `ODBC_AUTHENTICATION`: Authentication type to be used in database connection
+- `AZURE_CLIENT_ID`: Username to be used in database connection
+- `AZURE_CLIENT_SECRET`: Password to be used in database connection
