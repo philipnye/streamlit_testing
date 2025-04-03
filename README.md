@@ -1,12 +1,16 @@
 # IfG Analytics Dashboard
+## Authentication
+The dashboard uses Microsoft Entra authentication, following [Streamlit's guide to implementing this](https://docs.streamlit.io/develop/tutorials/authentication/microsoft).
+
 ## Serving the dashboard
 ### Web
 Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit.app/](https://instituteforgovernment.streamlit.app/).
 
-[Environment variables](#environment-variables) are held as [app secrets](https://docs.streamlit.io/develop/concepts/connections/secrets-management).
+[Environment variables](#environment-variables) and [authentication secrets](#authentication) are held as [app secrets](https://docs.streamlit.io/develop/concepts/connections/secrets-management).
 
 ### Local development
 1. Add [environment variables](#environment-variables) as system environment variables
+1. Add a `secrets.toml` file in a `.streamlit` directory containing [authentication](#authentication) details
 1. Create a new virtual environment using `python -m venv env`
 1. Activate the virtual environment using `env\Scripts\activate`
 1. Run `pip install -r requirements.txt` to install packages

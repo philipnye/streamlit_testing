@@ -4,6 +4,13 @@ st.set_page_config(
     layout="wide",
 )
 
+if not st.experimental_user.is_logged_in:
+    st.header("Please log in to access this page")
+    st.button("Log in", on_click=st.login)
+    st.stop()
+
+st.sidebar.button("Log out", type="tertiary", on_click=st.logout)
+
 pg = st.navigation(
     {
         "Web traffic": [

@@ -3,5 +3,6 @@
 /temp
 
 *.pyc
+secrets.toml
 temp.py
 todo.txt
