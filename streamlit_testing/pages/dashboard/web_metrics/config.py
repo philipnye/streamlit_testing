@@ -1,5 +1,5 @@
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
-    format_integer, format_decimal, format_percentage
+    format_integer, format_decimal, format_percentage, format_time
 )
 
 web_traffic_metrics_raw = [
@@ -45,7 +45,7 @@ web_traffic_metrics_display = {
     "Active users": format_integer,
     "Page views per active user": format_decimal,
     "Engagement rate": format_percentage,
-    "Average engagement time per active user": format_integer,
+    "Average engagement time per active user": format_time,
     "Downloads": format_integer,
     "Download rate": format_percentage,
 }

@@ -14,6 +14,9 @@ with open("streamlit_testing/js/format_integer.js", "r") as f:
 with open("streamlit_testing/js/format_percentage.js", "r") as f:
     script = f.read()
     format_percentage = JsCode(script)
+with open("streamlit_testing/js/format_time.js", "r") as f:
+    script = f.read()
+    format_time = JsCode(script)
 
 with open("streamlit_testing/js/compare_dates.js", "r") as f:
     script = f.read()
