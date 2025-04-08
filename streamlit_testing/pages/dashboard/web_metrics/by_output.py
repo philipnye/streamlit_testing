@@ -97,7 +97,7 @@ df_by_output["Updated date"] = pd.to_datetime(
 
 # DRAW OUTPUT WIDGETS
 # Chart
-elements.draw_line_chart_section(
+selected_metric = elements.draw_line_chart_section(
     df=df_by_day,
     x="Date",
     metrics=list(METRICS_DISPLAY.keys()),

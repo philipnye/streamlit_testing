@@ -106,7 +106,7 @@ def draw_line_chart_section(
     x: str,
     metrics: list[str],
     default_metric: str,
-) -> None:
+) -> str:
     """Draw line chart section"""
 
     with st.container(
@@ -133,7 +133,7 @@ def draw_line_chart_section(
             y_label="",
         )
 
-    return
+    return selected_metric
 
 
 @st.cache_data(show_spinner="Loading data...")
