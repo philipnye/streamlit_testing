@@ -54,7 +54,7 @@ if df_content_metadata.empty:
     elements.raise_page_not_found_message()
     st.stop()
 
-df_web_traffic = elements.load_data(
+df_metrics = elements.load_data(
     script_web_traffic,
     connection,
     (st.query_params["url"],)
@@ -76,34 +76,34 @@ tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
 
 with tab1:
     start_date, end_date = elements.draw_date_range_inputs(
-        min_date=df_web_traffic["Date"].min(),
-        max_date=df_web_traffic["Date"].max(),
+        min_date=df_metrics["Date"].min(),
+        max_date=df_metrics["Date"].max(),
     )
 
     # EDIT DATA
-    df_web_traffic = df_web_traffic[
-        (df_web_traffic["Date"] >= start_date) &
-        (df_web_traffic["Date"] <= end_date)
+    df_metrics = df_metrics[
+        (df_metrics["Date"] >= start_date) &
+        (df_metrics["Date"] <= end_date)
     ]
 
-    df_web_traffic = elements.calculate_derived_metrics(df_web_traffic, METRIC_CALCULATIONS)
+    df_metrics = elements.calculate_derived_metrics(df_metrics, METRIC_CALCULATIONS)
 
-    df_web_traffic = df_web_traffic[
+    df_metrics = df_metrics[
         ["Date"] + list(METRICS_DISPLAY.keys())
     ]
 
     elements.draw_line_chart_section(
-        df=df_web_traffic,
+        df=df_metrics,
         x="Date",
         metrics=list(METRICS_DISPLAY.keys()),
         default_metric=DEFAULT_METRIC,
     )
 
-    df_web_traffic["Date"] = pd.to_datetime(
-        df_web_traffic["Date"]
+    df_metrics["Date"] = pd.to_datetime(
+        df_metrics["Date"]
     ).dt.strftime("%Y-%m-%d")
 
-    grid_builder = GridOptionsBuilder.from_dataframe(df_web_traffic)
+    grid_builder = GridOptionsBuilder.from_dataframe(df_metrics)
     grid_options = grid_builder.build()
 
     grid_options["pagination"] = True
@@ -128,7 +128,7 @@ with tab1:
         column_defs[metric]["valueFormatter"] = formatter
 
     AgGrid(
-        df_web_traffic,
+        df_metrics,
         key="ag",
         update_on=[],
         gridOptions=grid_options,
