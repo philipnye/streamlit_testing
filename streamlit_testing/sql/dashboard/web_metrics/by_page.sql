@@ -32,8 +32,8 @@ select
     pv.activeUsers [Active users],
     pv.sessions Sessions,
     pv.engagedSessions [Engaged sessions],
-    d.eventCount Downloads,
-    pv.userEngagementDuration [User engagement duration]
+    pv.userEngagementDuration [User engagement duration],
+    d.eventCount Downloads
 from corporate.ifg_content c
     inner join corporate.ga_page_views_by_date pv on
         pv.pagePath = c.partial
