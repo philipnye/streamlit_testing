@@ -72,7 +72,7 @@ st.dataframe(
     ]].T,
 )
 
-start_date, end_date = elements.draw_date_range_inputs(
+date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     min_date=df_date_range["min_date"][0],
     max_date=df_date_range["max_date"][0],
 )

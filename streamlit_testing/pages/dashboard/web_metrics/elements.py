@@ -55,7 +55,7 @@ def connect_database():
 def draw_date_range_inputs(
     min_date: str,
     max_date: str,
-) -> tuple[pd.Timestamp, pd.Timestamp]:
+) -> tuple[str, pd.Timestamp, pd.Timestamp]:
     """Draw date range option inputs"""
 
     col1, col2 = st.columns([1, 5])
@@ -98,7 +98,7 @@ def draw_date_range_inputs(
     start_date = pd.to_datetime(start_date).date()
     end_date = pd.to_datetime(end_date).date()
 
-    return start_date, end_date
+    return date_range_option, start_date, end_date
 
 
 def draw_line_chart_section(
