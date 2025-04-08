@@ -137,18 +137,24 @@ def draw_line_chart_section(
 
 
 @st.cache_data(show_spinner="Loading data...")
-def load_data(script: str, _connection: engine.base.Engine) -> pd.DataFrame:
+def load_data(
+    script: str,
+    _connection: engine.base.Engine,
+    params: dict = None,
+) -> pd.DataFrame:
     """Load data from database"""
 
     try:
         df = pd.read_sql_query(
             sql=script,
             con=_connection,
+            params=params,
         )
     except exc.DBAPIError:
         df = pd.read_sql_query(
             sql=script,
             con=_connection,
+            params=params,
         )
 
     return df

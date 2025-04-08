@@ -44,16 +44,21 @@ with open("streamlit_testing/sql/dashboard/web_metrics/page_detail.sql", "r") as
 script_content_metadata = script.split(';')[0]
 script_web_traffic = script.split(';')[1]
 
-script_content_metadata = script_content_metadata.replace("''", "'" + st.query_params["url"] + "'")
-script_web_traffic = script_web_traffic.replace("''", "'" + st.query_params["url"] + "'")
-
-df_content_metadata = elements.load_data(script_content_metadata, connection)
+df_content_metadata = elements.load_data(
+    script_content_metadata,
+    connection,
+    (st.query_params["url"], )
+)
 
 if df_content_metadata.empty:
     elements.raise_page_not_found_message()
     st.stop()
 
-df_web_traffic = elements.load_data(script_web_traffic, connection)
+df_web_traffic = elements.load_data(
+    script_web_traffic,
+    connection,
+    (st.query_params["url"],)
+)
 
 # DRAW PAGE HEADER
 st.title(df_content_metadata["Page title"].iloc[0])

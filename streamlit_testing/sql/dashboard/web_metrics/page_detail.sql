@@ -57,7 +57,7 @@ from corporate.ifg_content c
             a.partial
     ) a
 where
-    c.partial = '';
+    c.partial = ?;
 
 
 -- Web traffic
@@ -74,6 +74,6 @@ from corporate.ga_page_views_by_date pv
         pv.pagePath = d.pagePath and
         pv.date = d.date
 where
-    pv.pagePath = ''
+    pv.pagePath = ?
 order by
     pv.date;
