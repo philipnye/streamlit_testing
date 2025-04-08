@@ -38,12 +38,18 @@ METRIC_TYPE = "web_traffic"
 connection = elements.connect_database()
 
 # LOAD DATA
+with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
+    script_date_range = file.read()
 with open("streamlit_testing/sql/dashboard/web_metrics/page_detail.sql", "r") as file:
     script = file.read()
 
 script_content_metadata = script.split(';')[0]
-script_web_traffic = script.split(';')[1]
+script_metrics = script.split(';')[1]
 
+df_date_range = elements.load_data(
+    script_date_range,
+    connection,
+)
 df_content_metadata = elements.load_data(
     script_content_metadata,
     connection,
@@ -53,12 +59,6 @@ df_content_metadata = elements.load_data(
 if df_content_metadata.empty:
     elements.raise_page_not_found_message()
     st.stop()
-
-df_metrics = elements.load_data(
-    script_web_traffic,
-    connection,
-    (st.query_params["url"],)
-)
 
 # DRAW PAGE HEADER
 st.title(df_content_metadata["Page title"].iloc[0])
@@ -72,19 +72,21 @@ st.dataframe(
     ]].T,
 )
 
+start_date, end_date = elements.draw_date_range_inputs(
+    min_date=df_date_range["min_date"][0],
+    max_date=df_date_range["max_date"][0],
+)
+
 tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
 
 with tab1:
-    start_date, end_date = elements.draw_date_range_inputs(
-        min_date=df_metrics["Date"].min(),
-        max_date=df_metrics["Date"].max(),
-    )
 
     # EDIT DATA
-    df_metrics = df_metrics[
-        (df_metrics["Date"] >= start_date) &
-        (df_metrics["Date"] <= end_date)
-    ]
+    df_metrics = elements.load_data(
+        script_metrics,
+        connection,
+        (st.query_params["url"], start_date, end_date)
+    )
 
     df_metrics = elements.calculate_derived_metrics(df_metrics, METRIC_CALCULATIONS)
 

@@ -52,3 +52,5 @@ from corporate.ifg_content c
         c.partial = t.partial
     left join corporate.ifg_authors a on
         c.partial = a.partial
+where
+    pv.date between ? and ?;

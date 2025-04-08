@@ -60,7 +60,7 @@ where
     c.partial = ?;
 
 
--- Web traffic
+-- Metrics
 select
     pv.date Date,
     pv.screenPageViews [Page views],
@@ -74,6 +74,7 @@ from corporate.ga_page_views_by_date pv
         pv.pagePath = d.pagePath and
         pv.date = d.date
 where
-    pv.pagePath = ?
+    pv.pagePath = ? and
+    pv.date between ? and ?
 order by
     pv.date;

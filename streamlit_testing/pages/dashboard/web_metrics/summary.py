@@ -14,10 +14,15 @@ METRIC_TYPE = "web_traffic"
 connection = elements.connect_database()
 
 # LOAD DATA
+with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
+    script_date_range = file.read()
 with open("streamlit_testing/sql/dashboard/web_metrics/summary.sql", "r") as file:
     script = file.read()
 
-df = elements.load_data(script, connection)
+df_date_range = elements.load_data(
+    script_date_range,
+    connection,
+)
 
 # DRAW PAGE HEADER
 st.title("Summary")
@@ -25,8 +30,8 @@ st.title("Summary")
 # DRAW INPUT WIDGETS
 # Controls
 start_date, end_date = elements.draw_date_range_inputs(
-    min_date=df["Date"].min(),
-    max_date=df["Date"].max(),
+    min_date=df_date_range["min_date"][0],
+    max_date=df_date_range["max_date"][0],
 )
 
 breakdowns = st.pills(
@@ -50,10 +55,11 @@ breakdowns = st.pills(
 )
 
 # EDIT DATA
-df = df[
-    (df["Date"] >= start_date) &
-    (df["Date"] <= end_date)
-]
+df = elements.load_data(
+    script,
+    connection,
+    (start_date, end_date)
+)
 
 df_grouped_by_day = df[["Date"] + METRICS_RAW].drop_duplicates().groupby("Date").sum().reset_index()
 

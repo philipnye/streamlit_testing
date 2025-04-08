@@ -47,6 +47,7 @@ from corporate.ga_downloads_by_date d
             a.partial
     ) a
 where
-    c.page_title is not null
+    c.page_title is not null and
+    d.date between ? and ?
 order by
     d.eventCount;

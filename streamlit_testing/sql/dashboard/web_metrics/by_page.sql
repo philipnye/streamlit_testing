@@ -68,4 +68,5 @@ from corporate.ifg_content c
             a.partial
     ) a
 where
-    c.page_title is not null;
+    c.page_title is not null and
+    pv.date between ? and ?;
