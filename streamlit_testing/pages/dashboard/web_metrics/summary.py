@@ -1,6 +1,7 @@
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 
+import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer, set_metrics
 
@@ -50,7 +51,7 @@ breakdowns = st.pills(
         "Updated date: day",
     ],
     selection_mode="multi",
-    default="Content type",
+    default=config.default_breakdowns,
     key="breakdowns",
 )
 
