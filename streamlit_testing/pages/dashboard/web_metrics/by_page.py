@@ -43,6 +43,7 @@ df = elements.load_data(
 
 # EDIT DATA
 df_by_day = df[["Date"] + METRICS_RAW].groupby("Date").sum().reset_index()
+df_by_day = elements.calculate_derived_metrics(df_by_day, METRIC_CALCULATIONS)
 
 df_by_page = elements.group_df(
     df=df,
@@ -58,7 +59,6 @@ df_by_page = elements.group_df(
     ] + METRICS_RAW,
 )
 
-df_by_day = elements.calculate_derived_metrics(df_by_day, METRIC_CALCULATIONS)
 df_by_page = elements.calculate_derived_metrics(df_by_page, METRIC_CALCULATIONS)
 
 df_by_page = df_by_page[
