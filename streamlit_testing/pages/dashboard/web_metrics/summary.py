@@ -101,7 +101,7 @@ column_defs, grid_options = elements.set_table_defaults(
 if breakdowns != []:
     for breakdown in breakdowns:
         column_defs[breakdown]["pinned"] = "left"
-    column_defs[breakdowns[0]]["sort"] = "asc"
+        column_defs[breakdowns[0]]["sort"] = "asc"
 
 column_defs["Pages"]["valueFormatter"] = format_integer
 
