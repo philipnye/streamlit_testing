@@ -65,9 +65,9 @@ default_breakdowns = "Content type"
 breakdowns = [
     "Content type",
     "Publication type",
-    "Research areas",
-    "Tags",
-    "Authors",
+    "Research area",
+    "Tag",
+    "Author",
     "Published date: year",
     "Published date: month",
     "Published date: day",
