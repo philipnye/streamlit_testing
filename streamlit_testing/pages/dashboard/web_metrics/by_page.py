@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 from st_aggrid import AgGrid
 
+import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import (set_metrics)
 
@@ -47,32 +48,12 @@ df_by_day = elements.calculate_derived_metrics(df_by_day, METRIC_CALCULATIONS)
 
 df_by_page = elements.group_df(
     df=df,
-    columns=[
-        "Page title",
-        "URL",
-        "Content type",
-        "Published date",
-        "Updated date",
-        "Authors",
-        "Research areas",
-        "Tags",
-    ] + METRICS_RAW,
+    columns=config.metrics_by_page + METRICS_RAW,
 )
 
 df_by_page = elements.calculate_derived_metrics(df_by_page, METRIC_CALCULATIONS)
 
-df_by_page = df_by_page[
-    [
-        "Page title",
-        "URL",
-        "Content type",
-        "Published date",
-        "Updated date",
-        "Authors",
-        "Research areas",
-        "Tags",
-    ] + list(METRICS_DISPLAY.keys())
-]
+df_by_page = df_by_page[config.metrics_by_page + list(METRICS_DISPLAY.keys())]
 
 df_by_page["Published date"] = pd.to_datetime(
     df_by_page["Published date"]

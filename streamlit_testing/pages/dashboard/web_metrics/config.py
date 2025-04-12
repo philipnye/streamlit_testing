@@ -2,6 +2,27 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import (
     format_integer, format_decimal, format_percentage, format_time
 )
 
+metrics_by_page = [
+    "Page title",
+    "URL",
+    "Content type",
+    "Published date",
+    "Updated date",
+    "Authors",
+    "Research areas",
+    "Tags",
+]
+metrics_by_output = [
+    "Output title",
+    "File name",
+    "File extension",
+    "Content type",
+    "Published date",
+    "Updated date",
+    "Authors",
+    "Research areas",
+    "Tags",
+]
 web_traffic_metrics_raw = [
     "Page views",
     "Active users",
