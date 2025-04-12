@@ -62,7 +62,10 @@ if breakdowns == []:
         **METRIC_AGGREGATIONS
     ).reset_index()
 else:
-    df_grouped = df[breakdowns + ["URL"] + METRICS_RAW].drop_duplicates().groupby(breakdowns).agg(
+    df_grouped = df[breakdowns + ["URL"] + METRICS_RAW].drop_duplicates().groupby(
+        breakdowns,
+        dropna=False
+    ).agg(
         Pages=("URL", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
