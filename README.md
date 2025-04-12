@@ -46,6 +46,9 @@ streamlit_testing/
 └── requirements.txt
 ```
 
+## Design decisions
+Documentation of key design decisions can be found in [design_notes.md](/docs/design_notes.md).
+
 ## Environment variables
 The following environment variables are used by the app:
 - `ODBC_DRIVER`: ODBC driver name to be used in database connection
