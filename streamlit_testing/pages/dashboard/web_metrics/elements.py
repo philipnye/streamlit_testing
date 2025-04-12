@@ -90,6 +90,17 @@ def create_internal_link(
     return column_defs
 
 
+def group_df(
+    df: pd.DataFrame,
+    columns: list[str],
+) -> pd.DataFrame:
+    """Group dataframe by column"""
+
+    df_grouped = df(columns).groupby(columns).sum().reset_index()
+
+    return df_grouped
+
+
 def set_table_defaults(
     df: pd.DataFrame,
     default_metric: str,

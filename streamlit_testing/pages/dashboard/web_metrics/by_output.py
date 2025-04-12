@@ -44,8 +44,9 @@ df = elements.load_data(
 # EDIT DATA
 df_by_day = df[["Date"] + METRICS_RAW].groupby("Date").sum().reset_index()
 
-df_by_output = df[
-    [
+df_by_output = elements.group_df(
+    df=df,
+    columns=[
         "Output title",
         "File name",
         "File extension",
@@ -55,18 +56,8 @@ df_by_output = df[
         "Authors",
         "Research areas",
         "Tags",
-    ] + METRICS_RAW
-].groupby([
-    "Output title",
-    "File name",
-    "File extension",
-    "Content type",
-    "Published date",
-    "Updated date",
-    "Authors",
-    "Research areas",
-    "Tags",
-]).sum().reset_index()
+    ] + METRICS_RAW,
+)
 
 df_by_day = elements.calculate_derived_metrics(df_by_day, METRIC_CALCULATIONS)
 df_by_output = elements.calculate_derived_metrics(df_by_output, METRIC_CALCULATIONS)
