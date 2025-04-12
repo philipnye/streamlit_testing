@@ -14,19 +14,7 @@ if "url" not in st.query_params:
     st.stop()
 
 # DISABLE SIDEBAR
-st.markdown(
-    """
-        <style>
-            div[data-testid="stSidebarCollapsedControl"]{
-                display: none;
-            }
-            section[data-testid="stSidebar"][aria-expanded="true"]{
-                display: none;
-            }
-        </style>
-    """,
-    unsafe_allow_html=True
-)
+elements.disable_sidebar()
 
 # SET METRIC TYPE
 METRIC_TYPE = "web_traffic"

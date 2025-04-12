@@ -52,6 +52,24 @@ def connect_database():
     )
 
 
+def disable_sidebar():
+    """Disable sidebar"""
+
+    st.markdown(
+        """
+            <style>
+                div[data-testid="stSidebarCollapsedControl"]{
+                    display: none;
+                }
+                section[data-testid="stSidebar"][aria-expanded="true"]{
+                    display: none;
+                }
+            </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+
 def draw_date_range_inputs(
     min_date: str,
     max_date: str,
