@@ -40,9 +40,9 @@ breakdowns = st.pills(
     options=[
         "Content type",
         "Publication type",
-        "Research area",
-        "Tag",
-        "Author",
+        "Research areas",
+        "Tags",
+        "Authors",
         "Published date: year",
         "Published date: month",
         "Published date: day",
