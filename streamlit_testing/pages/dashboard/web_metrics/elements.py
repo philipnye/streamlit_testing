@@ -74,7 +74,7 @@ def set_table_defaults(
 
 
 @st.cache_resource
-def connect_database():
+def connect_database() -> engine.base.Engine:
     """Connect to SQL database"""
 
     return dbo.connect_sql_db(
@@ -105,6 +105,8 @@ def disable_sidebar():
         """,
         unsafe_allow_html=True
     )
+
+    return
 
 
 def draw_date_range_inputs(
