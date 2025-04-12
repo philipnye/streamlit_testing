@@ -25,19 +25,31 @@ df_date_range = elements.load_data(
     script_date_range,
     connection,
 )
+if all(x in st.query_params for x in ["date_range_option", "start_date", "end_date"]):
+    date_range_option = st.query_params["date_range_option"]
+    start_date = st.query_params["start_date"]
+    end_date = st.query_params["end_date"]
 date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     min_date=df_date_range["min_date"][0],
     max_date=df_date_range["max_date"][0],
 )
+st.query_params["date_range_option"] = date_range_option
+st.query_params["start_date"] = start_date
+st.query_params["end_date"] = end_date
 
 # DRAW BREAKDOWNS INPUT
 breakdowns = st.pills(
     label="Choose breakdown",
     options=config.breakdowns,
     selection_mode="multi",
-    default=config.default_breakdowns,
+    default=(
+        st.query_params.get_all("breakdowns")
+        if "breakdowns" in st.query_params
+        else config.default_breakdowns
+    ),
     key="breakdowns",
 )
+st.query_params["breakdowns"] = breakdowns
 
 # Sort breakdowns for consistent ordering
 breakdowns.sort(key=lambda x: config.breakdowns.index(x))
