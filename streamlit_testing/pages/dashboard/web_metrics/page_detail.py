@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder
+from st_aggrid import AgGrid
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
@@ -100,19 +100,11 @@ with tab1:
     ).dt.strftime("%Y-%m-%d")
 
     # DRAW TABLE
-    grid_builder = GridOptionsBuilder.from_dataframe(df_metrics)
-    grid_options = grid_builder.build()
-
-    grid_options["pagination"] = True
-    grid_options["paginationPageSize"] = 25
-    grid_options["defaultColDef"] = {
-        "filter": True,
-        "filterParams": {
-            "excelMode": "windows",
-        },
-    }
-
-    column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
+    column_defs, grid_options = elements.set_table_defaults(
+        df_metrics,
+        DEFAULT_METRIC,
+        METRICS_DISPLAY,
+    )
 
     column_defs["Date"]["Content type"] = "Date"
     column_defs["Date"]["cellClass"] = "ag-right-aligned-cell"

@@ -1,12 +1,13 @@
 from datetime import date, timedelta
 import os
+from typing import List, Optional
 
 import pandas as pd
 from sqlalchemy import engine, exc
+from st_aggrid import GridOptionsBuilder
 import streamlit as st
 
 import streamlit_testing.pages.dashboard.web_metrics.config as config
-
 import ds_utils.database_operations as dbo
 
 
@@ -34,6 +35,39 @@ def calculate_derived_metrics(
         )
 
     return df
+
+
+def set_table_defaults(
+    df: pd.DataFrame,
+    default_metric: str,
+    metrics: dict,
+    pinned_columns: Optional[List] = None
+) -> tuple[dict, dict]:
+    """Configure default table options"""
+
+    grid_builder = GridOptionsBuilder.from_dataframe(df)
+    grid_options = grid_builder.build()
+
+    grid_options["pagination"] = True
+    grid_options["paginationPageSize"] = 25
+    grid_options["defaultColDef"] = {
+        "filter": True,
+        "filterParams": {
+            "excelMode": "windows",
+        },
+    }
+
+    column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
+
+    if pinned_columns:
+        for column in pinned_columns:
+            column_defs[column]["pinned"] = "left"
+
+    column_defs[default_metric]["sort"] = "desc"
+    for metric, formatter in metrics.items():
+        column_defs[metric]["valueFormatter"] = formatter
+
+    return column_defs, grid_options
 
 
 @st.cache_resource

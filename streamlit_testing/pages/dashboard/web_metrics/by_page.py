@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
+from st_aggrid import AgGrid, JsCode
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
@@ -101,20 +101,13 @@ selected_metric = elements.draw_line_chart_section(
 )
 
 # DRAW TABLE
-grid_builder = GridOptionsBuilder.from_dataframe(df_by_page)
-grid_options = grid_builder.build()
+column_defs, grid_options = elements.set_table_defaults(
+    df_by_page,
+    DEFAULT_METRIC,
+    METRICS_DISPLAY,
+    pinned_columns=["Page title"]
+)
 
-grid_options["pagination"] = True
-grid_options["paginationPageSize"] = 25
-grid_options["defaultColDef"] = {
-    "filter": True,
-    "filterParams": {
-        "excelMode": "windows",
-    },
-}
-
-column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
-column_defs["Page title"]["pinned"] = "left"
 column_defs["Page title"]["cellRenderer"] = JsCode("""
     class UrlCellRenderer {
         init(params) {

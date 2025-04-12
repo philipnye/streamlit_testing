@@ -1,5 +1,5 @@
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder
+from st_aggrid import AgGrid
 
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
@@ -91,19 +91,13 @@ selected_metric = elements.draw_line_chart_section(
 )
 
 # DRAW TABLE
-grid_builder = GridOptionsBuilder.from_dataframe(df_grouped)
-grid_options = grid_builder.build()
+column_defs, grid_options = elements.set_table_defaults(
+    df_grouped,
+    DEFAULT_METRIC,
+    METRICS_DISPLAY,
+    pinned_columns=breakdowns if breakdowns else None
+)
 
-grid_options["pagination"] = True
-grid_options["paginationPageSize"] = 25
-grid_options["defaultColDef"] = {
-    "filter": True,
-    "filterParams": {
-        "excelMode": "windows",
-    },
-}
-
-column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
 if breakdowns != []:
     for breakdown in breakdowns:
         column_defs[breakdown]["pinned"] = "left"
