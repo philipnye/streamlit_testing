@@ -62,6 +62,19 @@ download_metrics_display = {
 }
 default_download_metric = "Downloads"
 default_breakdowns = "Content type"
+breakdowns = [
+    "Content type",
+    "Publication type",
+    "Research areas",
+    "Tags",
+    "Authors",
+    "Published date: year",
+    "Published date: month",
+    "Published date: day",
+    "Updated date: year",
+    "Updated date: month",
+    "Updated date: day",
+]
 date_ranges = {
     "Last 7 days": 7,
     "Last 30 days": 30,

@@ -37,19 +37,7 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
 
 breakdowns = st.pills(
     label="Choose breakdown",
-    options=[
-        "Content type",
-        "Publication type",
-        "Research areas",
-        "Tags",
-        "Authors",
-        "Published date: year",
-        "Published date: month",
-        "Published date: day",
-        "Updated date: year",
-        "Updated date: month",
-        "Updated date: day",
-    ],
+    options=config.breakdowns,
     selection_mode="multi",
     default=config.default_breakdowns,
     key="breakdowns",
