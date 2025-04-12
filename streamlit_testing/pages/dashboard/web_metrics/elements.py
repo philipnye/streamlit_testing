@@ -96,7 +96,7 @@ def group_df(
 ) -> pd.DataFrame:
     """Group dataframe by column"""
 
-    df_grouped = df(columns).groupby(columns).sum().reset_index()
+    df_grouped = df[columns].groupby(columns).sum().reset_index()
 
     return df_grouped
 
