@@ -3,10 +3,7 @@ import streamlit as st
 from st_aggrid import AgGrid
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
-from streamlit_testing.pages.dashboard.web_metrics.utils import (
-    format_date, compare_dates,
-    set_metrics
-)
+from streamlit_testing.pages.dashboard.web_metrics.utils import (set_metrics)
 
 # HANDLE DIRECT ACCESS
 if "url" not in st.query_params:
@@ -106,11 +103,10 @@ with tab1:
         METRICS_DISPLAY,
     )
 
-    column_defs["Date"]["Content type"] = "Date"
-    column_defs["Date"]["cellClass"] = "ag-right-aligned-cell"
-    column_defs["Date"]["headerClass"] = "ag-right-aligned-header"
-    column_defs["Date"]["valueFormatter"] = format_date
-    column_defs["Date"]["comparator"] = compare_dates
+    column_defs = elements.format_date_cols(
+        column_defs,
+        ["Date"]
+    )
     column_defs["Date"]["sort"] = "asc"
 
     for metric, formatter in METRICS_DISPLAY.items():

@@ -8,6 +8,9 @@ from st_aggrid import GridOptionsBuilder
 import streamlit as st
 
 import streamlit_testing.pages.dashboard.web_metrics.config as config
+from streamlit_testing.pages.dashboard.web_metrics.utils import (
+    format_date, compare_dates,
+)
 import ds_utils.database_operations as dbo
 
 
@@ -186,6 +189,22 @@ def draw_line_chart_section(
         )
 
     return selected_metric
+
+
+def format_date_cols(
+    column_defs: dict,
+    metrics: list[str],
+) -> dict:
+    """Format date columns"""
+
+    for metric in metrics:
+        column_defs[metric]["Content type"] = "Date"
+        column_defs[metric]["cellClass"] = "ag-right-aligned-cell"
+        column_defs[metric]["headerClass"] = "ag-right-aligned-header"
+        column_defs[metric]["valueFormatter"] = format_date
+        column_defs[metric]["comparator"] = compare_dates
+
+    return column_defs
 
 
 @st.cache_data(show_spinner="Loading data...")

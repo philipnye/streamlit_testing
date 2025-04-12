@@ -3,10 +3,7 @@ import streamlit as st
 from st_aggrid import AgGrid, JsCode
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
-from streamlit_testing.pages.dashboard.web_metrics.utils import (
-    format_date, compare_dates,
-    set_metrics
-)
+from streamlit_testing.pages.dashboard.web_metrics.utils import (set_metrics)
 
 # SET METRIC TYPE
 METRIC_TYPE = "download"
@@ -127,16 +124,10 @@ column_defs["File name"]["cellRenderer"] = JsCode("""
         }
     }
 """)
-column_defs["Published date"]["Content type"] = "Date"
-column_defs["Published date"]["cellClass"] = "ag-right-aligned-cell"
-column_defs["Published date"]["headerClass"] = "ag-right-aligned-header"
-column_defs["Published date"]["valueFormatter"] = format_date
-column_defs["Published date"]["comparator"] = compare_dates
-column_defs["Updated date"]["Content type"] = "Date"
-column_defs["Updated date"]["cellClass"] = "ag-right-aligned-cell"
-column_defs["Updated date"]["headerClass"] = "ag-right-aligned-header"
-column_defs["Updated date"]["valueFormatter"] = format_date
-column_defs["Updated date"]["comparator"] = compare_dates
+column_defs = elements.format_date_cols(
+    column_defs,
+    ["Published date", "Updated date"]
+)
 
 column_defs[DEFAULT_METRIC]["sort"] = "desc"
 for metric, formatter in METRICS_DISPLAY.items():
