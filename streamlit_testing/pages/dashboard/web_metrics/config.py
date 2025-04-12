@@ -61,7 +61,7 @@ download_metrics_display = {
     "Downloads": format_integer,
 }
 default_download_metric = "Downloads"
-default_breakdowns = None
+default_breakdowns = "Content type"
 date_ranges = {
     "Last 7 days": 7,
     "Last 30 days": 30,
