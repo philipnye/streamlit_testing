@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, JsCode
+from st_aggrid import AgGrid
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import (set_metrics)
@@ -108,22 +108,11 @@ column_defs, grid_options = elements.set_table_defaults(
     pinned_columns=["Output title"]
 )
 
-column_defs["File name"]["cellRenderer"] = JsCode("""
-    class UrlCellRenderer {
-        init(params) {
-            this.eGui = document.createElement("a");
-            this.eGui.innerText = "View output ⮺";
-            this.eGui.setAttribute(
-                "href", "https://www.instituteforgovernment.org.uk" + params.value
-            );
-            this.eGui.setAttribute("style", "text-decoration:none");
-            this.eGui.setAttribute("target", "_blank");
-        }
-        getGui() {
-            return this.eGui;
-        }
-    }
-""")
+column_defs = elements.create_internal_link(
+    column_defs,
+    "File name",
+)
+
 column_defs = elements.format_date_cols(
     column_defs,
     ["Published date", "Updated date"]

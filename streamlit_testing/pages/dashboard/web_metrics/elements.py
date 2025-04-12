@@ -4,7 +4,7 @@ from typing import List, Optional
 
 import pandas as pd
 from sqlalchemy import engine, exc
-from st_aggrid import GridOptionsBuilder
+from st_aggrid import GridOptionsBuilder, JsCode
 import streamlit as st
 
 import streamlit_testing.pages.dashboard.web_metrics.config as config
@@ -38,6 +38,56 @@ def calculate_derived_metrics(
         )
 
     return df
+
+
+def create_external_link(
+    column_defs: dict,
+    column: str,
+) -> dict:
+    """Create external link column"""
+
+    column_defs[column]["cellRenderer"] = JsCode("""
+        class UrlCellRenderer {
+            init(params) {
+                this.eGui = document.createElement("a");
+                this.eGui.innerText = "View output ⮺";
+                this.eGui.setAttribute(
+                    "href", "https://www.instituteforgovernment.org.uk" + params.value
+                );
+                this.eGui.setAttribute("style", "text-decoration:none");
+                this.eGui.setAttribute("target", "_blank");
+            }
+            getGui() {
+                return this.eGui;
+            }
+        }
+    """)
+    return column_defs
+
+
+def create_internal_link(
+    column_defs: dict,
+    column: str,
+) -> dict:
+    """Create internal link column"""
+
+    column_defs[column]["cellRenderer"] = JsCode("""
+        class UrlCellRenderer {
+            init(params) {
+                this.eGui = document.createElement("a");
+                this.eGui.innerText = params.value;
+                this.eGui.setAttribute(
+                    "href", "/web_metrics_page_detail?url=" + params.data.URL
+                );
+                this.eGui.setAttribute("style", "text-decoration:none");
+                this.eGui.setAttribute("target", "_blank");
+            }
+            getGui() {
+                return this.eGui;
+            }
+        }
+    """)
+    return column_defs
 
 
 def set_table_defaults(

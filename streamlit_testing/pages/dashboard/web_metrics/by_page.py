@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, JsCode
+from st_aggrid import AgGrid
 
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import (set_metrics)
@@ -105,38 +105,14 @@ column_defs, grid_options = elements.set_table_defaults(
     pinned_columns=["Page title"]
 )
 
-column_defs["Page title"]["cellRenderer"] = JsCode("""
-    class UrlCellRenderer {
-        init(params) {
-            this.eGui = document.createElement("a");
-            this.eGui.innerText = params.value;
-            this.eGui.setAttribute(
-                "href", "/web_metrics_page_detail?url=" + params.data.URL
-            );
-            this.eGui.setAttribute("style", "text-decoration:none");
-            this.eGui.setAttribute("target", "_blank");
-        }
-        getGui() {
-            return this.eGui;
-        }
-    }
-""")
-column_defs["URL"]["cellRenderer"] = JsCode("""
-    class UrlCellRenderer {
-        init(params) {
-            this.eGui = document.createElement("a");
-            this.eGui.innerText = "View page ⮺";
-            this.eGui.setAttribute(
-                "href", "https://www.instituteforgovernment.org.uk" + params.value
-            );
-            this.eGui.setAttribute("style", "text-decoration:none");
-            this.eGui.setAttribute("target", "_blank");
-        }
-        getGui() {
-            return this.eGui;
-        }
-    }
-""")
+column_defs = elements.create_internal_link(
+    column_defs,
+    "Page title",
+)
+column_defs = elements.create_external_link(
+    column_defs,
+    "URL",
+)
 column_defs = elements.format_date_cols(
     column_defs,
     ["Published date", "Updated date"]
