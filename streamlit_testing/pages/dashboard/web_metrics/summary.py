@@ -43,6 +43,9 @@ breakdowns = st.pills(
     key="breakdowns",
 )
 
+# Sort breakdowns for consistent ordering
+breakdowns.sort(key=lambda x: config.breakdowns.index(x))
+
 # EDIT DATA
 df = elements.load_data(
     script,
