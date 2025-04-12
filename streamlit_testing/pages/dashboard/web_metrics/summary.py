@@ -14,27 +14,23 @@ METRIC_TYPE = "web_traffic"
 # CONNECT TO DATABASE
 connection = elements.connect_database()
 
-# LOAD DATA
+# DRAW PAGE HEADER
+st.title("Summary")
+
+# DRAW DATE RANGE INPUTS
 with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
     script_date_range = file.read()
-with open("streamlit_testing/sql/dashboard/web_metrics/summary.sql", "r") as file:
-    script = file.read()
 
 df_date_range = elements.load_data(
     script_date_range,
     connection,
 )
-
-# DRAW PAGE HEADER
-st.title("Summary")
-
-# DRAW INPUT WIDGETS
-# Controls
 date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     min_date=df_date_range["min_date"][0],
     max_date=df_date_range["max_date"][0],
 )
 
+# DRAW BREAKDOWNS INPUT
 breakdowns = st.pills(
     label="Choose breakdown",
     options=config.breakdowns,
@@ -46,13 +42,17 @@ breakdowns = st.pills(
 # Sort breakdowns for consistent ordering
 breakdowns.sort(key=lambda x: config.breakdowns.index(x))
 
-# EDIT DATA
+# LOAD DATA
+with open("streamlit_testing/sql/dashboard/web_metrics/summary.sql", "r") as file:
+    script = file.read()
+
 df = elements.load_data(
     script,
     connection,
     (start_date, end_date)
 )
 
+# EDIT DATA
 df_grouped_by_day = df[["Date"] + METRICS_RAW].drop_duplicates().groupby("Date").sum().reset_index()
 
 if breakdowns == []:
@@ -82,8 +82,7 @@ else:
         breakdowns + ["Pages"] + list(METRICS_DISPLAY.keys())
     ]
 
-# DRAW OUTPUT WIDGETS
-# Chart
+# DRAW LINE CHART SECTION
 selected_metric = elements.draw_line_chart_section(
     df=df_grouped_by_day,
     x="Date",
@@ -91,7 +90,7 @@ selected_metric = elements.draw_line_chart_section(
     default_metric=DEFAULT_METRIC,
 )
 
-# Table
+# DRAW TABLE
 grid_builder = GridOptionsBuilder.from_dataframe(df_grouped)
 grid_options = grid_builder.build()
 

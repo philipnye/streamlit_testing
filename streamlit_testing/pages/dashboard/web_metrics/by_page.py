@@ -17,34 +17,34 @@ METRIC_TYPE = "web_traffic"
 # CONNECT TO DATABASE
 connection = elements.connect_database()
 
-# LOAD DATA
+# DRAW PAGE HEADER
+st.title("By page")
+
+# DRAW DATE RANGE INPUTS
 with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
     script_date_range = file.read()
-with open("streamlit_testing/sql/dashboard/web_metrics/by_page.sql", "r") as file:
-    script = file.read()
 
 df_date_range = elements.load_data(
     script_date_range,
     connection,
 )
 
-# DRAW PAGE HEADER
-st.title("By page")
-
-# DRAW INPUT WIDGETS
-# Controls
 date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     min_date=df_date_range["min_date"][0],
     max_date=df_date_range["max_date"][0],
 )
 
-# EDIT DATA
+# LOAD DATA
+with open("streamlit_testing/sql/dashboard/web_metrics/by_page.sql", "r") as file:
+    script = file.read()
+
 df = elements.load_data(
     script,
     connection,
     (start_date, end_date)
 )
 
+# EDIT DATA
 df_by_day = df[["Date"] + METRICS_RAW].groupby("Date").sum().reset_index()
 
 df_by_page = df[
@@ -92,8 +92,7 @@ df_by_page["Updated date"] = pd.to_datetime(
     df_by_page["Updated date"]
 ).dt.strftime("%Y-%m-%d")
 
-# DRAW OUTPUT WIDGETS
-# Chart
+# DRAW LINE CHART SECTION
 selected_metric = elements.draw_line_chart_section(
     df=df_by_day,
     x="Date",
@@ -101,7 +100,7 @@ selected_metric = elements.draw_line_chart_section(
     default_metric=DEFAULT_METRIC,
 )
 
-# Table
+# DRAW TABLE
 grid_builder = GridOptionsBuilder.from_dataframe(df_by_page)
 grid_options = grid_builder.build()
 

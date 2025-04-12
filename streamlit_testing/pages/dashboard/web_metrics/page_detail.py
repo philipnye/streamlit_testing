@@ -38,18 +38,11 @@ METRIC_TYPE = "web_traffic"
 connection = elements.connect_database()
 
 # LOAD DATA
-with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
-    script_date_range = file.read()
 with open("streamlit_testing/sql/dashboard/web_metrics/page_detail.sql", "r") as file:
     script = file.read()
 
 script_content_metadata = script.split(';')[0]
-script_metrics = script.split(';')[1]
 
-df_date_range = elements.load_data(
-    script_date_range,
-    connection,
-)
 df_content_metadata = elements.load_data(
     script_content_metadata,
     connection,
@@ -65,11 +58,19 @@ st.title(df_content_metadata["Page title"].iloc[0])
 st.subheader(df_content_metadata["Authors"].iloc[0])
 st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["URL"].iloc[0])
 
-# DRAW OUTPUT WIDGETS
 st.dataframe(
     df_content_metadata[[
         "Content type", "Published date", "Updated date", "Research areas", "Tags"
     ]].T,
+)
+
+# DRAW DATE RANGE INPUTS
+with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
+    script_date_range = file.read()
+
+df_date_range = elements.load_data(
+    script_date_range,
+    connection,
 )
 
 date_range_option, start_date, end_date = elements.draw_date_range_inputs(
@@ -77,23 +78,28 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     max_date=df_date_range["max_date"][0],
 )
 
+# DRAW TABS
 tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
 
 with tab1:
 
-    # EDIT DATA
+    # LOAD DATA
+    script_metrics = script.split(';')[1]
+
     df_metrics = elements.load_data(
         script_metrics,
         connection,
         (st.query_params["url"], start_date, end_date)
     )
 
+    # EDIT DATA
     df_metrics = elements.calculate_derived_metrics(df_metrics, METRIC_CALCULATIONS)
 
     df_metrics = df_metrics[
         ["Date"] + list(METRICS_DISPLAY.keys())
     ]
 
+    # DRAW LINE CHART SECTION
     selected_metric = elements.draw_line_chart_section(
         df=df_metrics,
         x="Date",
@@ -105,6 +111,7 @@ with tab1:
         df_metrics["Date"]
     ).dt.strftime("%Y-%m-%d")
 
+    # DRAW TABLE
     grid_builder = GridOptionsBuilder.from_dataframe(df_metrics)
     grid_options = grid_builder.build()
 
