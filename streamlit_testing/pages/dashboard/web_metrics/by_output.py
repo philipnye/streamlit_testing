@@ -26,18 +26,10 @@ df_date_range = elements.load_data(
     script_date_range,
     connection,
 )
-
-if all(x in st.query_params for x in ["date_range_option", "start_date", "end_date"]):
-    date_range_option = st.query_params["date_range_option"]
-    start_date = st.query_params["start_date"]
-    end_date = st.query_params["end_date"]
 date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     min_date=df_date_range["min_date"][0],
     max_date=df_date_range["max_date"][0],
 )
-st.query_params["date_range_option"] = date_range_option
-st.query_params["start_date"] = start_date
-st.query_params["end_date"] = end_date
 
 # LOAD DATA
 with open("streamlit_testing/sql/dashboard/web_metrics/by_output.sql", "r") as file:
