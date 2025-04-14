@@ -38,7 +38,6 @@ breakdowns = st.pills(
     default=config.default_breakdowns,
     key="breakdowns",
 )
-st.query_params["breakdowns"] = breakdowns
 
 # Sort breakdowns for consistent ordering
 breakdowns.sort(key=lambda x: config.breakdowns.index(x))
