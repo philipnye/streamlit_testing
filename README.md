@@ -2,6 +2,8 @@
 ## Authentication
 The dashboard uses Microsoft Entra authentication, following [Streamlit's guide to implementing this](https://docs.streamlit.io/develop/tutorials/authentication/microsoft).
 
+The identity app registration that has been created has an expiry date: 3 April 2027.
+
 ## Serving the dashboard
 ### Web
 Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit.app/](https://instituteforgovernment.streamlit.app/).
