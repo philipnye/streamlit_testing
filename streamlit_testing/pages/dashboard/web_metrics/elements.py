@@ -11,6 +11,8 @@ import streamlit_testing.pages.dashboard.web_metrics.config as config
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
     format_date, compare_dates,
 )
+from streamlit_testing.config.colours import COLOURS
+
 import ds_utils.database_operations as dbo
 
 
@@ -249,6 +251,7 @@ def draw_line_chart_section(
             use_container_width=True,
             x_label="",
             y_label="",
+            color=COLOURS["blue"],
         )
 
     return selected_metric
