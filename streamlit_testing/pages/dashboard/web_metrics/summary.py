@@ -1,3 +1,5 @@
+import os
+
 import streamlit as st
 from st_aggrid import AgGrid
 
@@ -111,6 +113,7 @@ for metric, formatter in METRICS_DISPLAY.items():
 AgGrid(
     df_grouped,
     key="ag",
+    license_key=os.environ["AG_GRID_LICENCE_KEY"],
     update_on=[],
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
