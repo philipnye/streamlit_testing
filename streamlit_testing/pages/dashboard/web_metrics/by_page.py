@@ -94,7 +94,7 @@ column_defs = elements.format_date_cols(
 
 column_defs[DEFAULT_METRIC]["sort"] = "desc"
 for metric, formatter in METRICS_DISPLAY.items():
-    column_defs[metric]["valuBeFormatter"] = formatter
+    column_defs[metric]["valueFormatter"] = formatter
 
 AgGrid(
     df_by_page,
