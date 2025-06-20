@@ -80,7 +80,7 @@ column_defs, grid_options = elements.set_table_defaults(
     pinned_columns=["Output title"]
 )
 
-column_defs = elements.create_internal_link(
+column_defs = elements.create_external_link(
     column_defs,
     "File name",
 )
