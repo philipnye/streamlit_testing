@@ -36,14 +36,14 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
 # DRAW BREAKDOWNS INPUT
 breakdowns = st.pills(
     label="Choose breakdown",
-    options=config.breakdowns,
+    options=config.BREAKDOWNS,
     selection_mode="multi",
-    default=config.default_breakdowns,
+    default=config.DEFAULT_BREAKDOWNS,
     key="breakdowns",
 )
 
 # Sort breakdowns for consistent ordering
-breakdowns.sort(key=lambda x: config.breakdowns.index(x))
+breakdowns.sort(key=lambda x: config.BREAKDOWNS.index(x))
 
 # LOAD DATA
 with open("streamlit_testing/sql/dashboard/web_metrics/summary.sql", "r") as file:

@@ -49,13 +49,13 @@ df_by_day = df[["Date"] + METRICS_RAW].groupby("Date").sum().reset_index()
 df_by_day = elements.calculate_derived_metrics(df_by_day, METRIC_CALCULATIONS)
 
 df_by_output = elements.group_df(
-    df=df[config.metrics_by_output + METRICS_RAW],
-    group_by=config.metrics_by_output,
+    df=df[config.METRICS_BY_OUTPUT + METRICS_RAW],
+    group_by=config.METRICS_BY_OUTPUT,
 )
 
 df_by_output = elements.calculate_derived_metrics(df_by_output, METRIC_CALCULATIONS)
 
-df_by_output = df_by_output[config.metrics_by_output + list(METRICS_DISPLAY.keys())]
+df_by_output = df_by_output[config.METRICS_BY_OUTPUT + list(METRICS_DISPLAY.keys())]
 
 df_by_output["Published date"] = pd.to_datetime(
     df_by_output["Published date"]

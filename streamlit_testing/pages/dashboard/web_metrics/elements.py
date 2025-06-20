@@ -183,14 +183,14 @@ def draw_date_range_inputs(
     with col1:
         date_range_option = st.selectbox(
             label="Choose date range",
-            options=config.date_ranges.keys(),
-            index=list(config.date_ranges.keys()).index(config.default_date_range),
+            options=config.DATE_RANGES.keys(),
+            index=list(config.DATE_RANGES.keys()).index(config.DEFAULT_DATE_RANGE),
             key="date_range_option",
         )
 
-    if config.date_ranges[date_range_option]:
+    if config.DATE_RANGES[date_range_option]:
         start_date = (
-            date.today() - timedelta(days=config.date_ranges[date_range_option])
+            date.today() - timedelta(days=config.DATE_RANGES[date_range_option])
         ).strftime("%Y-%m-%d")
         end_date = (date.today() - timedelta(days=1)).strftime("%Y-%m-%d")
     elif date_range_option == "Year to date":

@@ -2,7 +2,7 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import (
     format_integer, format_decimal, format_percentage, format_time
 )
 
-breakdowns = [
+BREAKDOWNS = [
     "Content type",
     "Publication type",
     "Research area",
@@ -15,7 +15,7 @@ breakdowns = [
     "Updated date: month",
     "Updated date: day",
 ]
-date_ranges = {
+DATE_RANGES = {
     "Last 7 days": 7,
     "Last 30 days": 30,
     "Last 90 days": 90,
@@ -23,21 +23,21 @@ date_ranges = {
     "Year to date": None,
     "Custom": None,
 }
-default_breakdowns = "Content type"
-default_date_range = "Last 30 days"
-default_download_metric = "Downloads"
-default_web_traffic_metric = "Page views"
-download_metric_aggregations = {
+DEFAULT_BREAKDOWNS = "Content type"
+DEFAULT_DATE_RANGE = "Last 30 days"
+DEFAULT_DOWNLOAD_METRIC = "Downloads"
+DEFAULT_WEB_TRAFFIC_METRIC = "Page views"
+DOWNLOAD_METRIC_AGGREGATIONS = {
     "Downloads": ("Downloads", "sum"),
 }
-download_metric_calculations = None
-download_metrics_display = {
+DOWNLOAD_METRIC_CALCULATIONS = None
+DOWNLOAD_METRICS_DISPLAY = {
     "Downloads": format_integer,
 }
-download_metrics_raw = [
+DOWNLOAD_METRICS_RAW = [
     "Downloads",
 ]
-metrics_by_output = [
+METRICS_BY_OUTPUT = [
     "Output title",
     "File name",
     "File extension",
@@ -48,7 +48,7 @@ metrics_by_output = [
     "Research areas",
     "Tags",
 ]
-metrics_by_page = [
+METRICS_BY_PAGE = [
     "Page title",
     "URL",
     "Content type",
@@ -58,7 +58,7 @@ metrics_by_page = [
     "Research areas",
     "Tags",
 ]
-web_traffic_metric_aggregations = {
+WEB_TRAFFIC_METRIC_AGGREGATIONS = {
     "Page views": ("Page views", "sum"),
     "Active users": ("Active users", "sum"),
     "Sessions": ("Sessions", "sum"),
@@ -66,7 +66,7 @@ web_traffic_metric_aggregations = {
     "User engagement duration": ("User engagement duration", "sum"),
     "Downloads": ("Downloads", "sum"),
 }
-web_traffic_metric_calculations = {
+WEB_TRAFFIC_METRIC_CALCULATIONS = {
     "Page views per active user": (
         "Page views",
         "Active users",
@@ -88,7 +88,7 @@ web_traffic_metric_calculations = {
         "divide"
     ),
 }
-web_traffic_metrics_display = {
+WEB_TRAFFIC_METRICS_DISPLAY = {
     "Page views": format_integer,
     "Active users": format_integer,
     "Page views per active user": format_decimal,
@@ -97,7 +97,7 @@ web_traffic_metrics_display = {
     "Downloads": format_integer,
     "Download rate": format_percentage,
 }
-web_traffic_metrics_raw = [
+WEB_TRAFFIC_METRICS_RAW = [
     "Page views",
     "Active users",
     "Sessions",
