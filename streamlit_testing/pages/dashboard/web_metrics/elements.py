@@ -298,7 +298,7 @@ def draw_line_chart_section(
                 ),
                 gridcolor=COLOURS["grey_lighter_80pct"],
                 range=[0, y_axis_max],
-                tickformat=",d",
+                tickformat=config.YAXIS_TICKFORMAT.get(selected_metric),
                 fixedrange=True,
             ),
             plot_bgcolor="white",
@@ -314,8 +314,6 @@ def draw_line_chart_section(
                 "showAxisDragHandles": False,
                 "showAxisRangeEntryBoxes": False,
                 "editSelection": False,
-
-
             }
         )
 

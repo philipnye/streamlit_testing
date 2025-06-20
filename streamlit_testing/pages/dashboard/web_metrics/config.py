@@ -105,3 +105,12 @@ WEB_TRAFFIC_METRICS_RAW = [
     "User engagement duration",
     "Downloads",
 ]
+YAXIS_TICKFORMAT = {
+    "Page views": ",d",
+    "Active users": ",d",
+    "Page views per active user": ".1f",
+    "Engagement rate": ".0%",
+    "Average engagement time per active user": ",d",
+    "Downloads": ",d",
+    "Download rate": ".0%",
+}
