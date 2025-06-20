@@ -7,11 +7,11 @@ from sqlalchemy import engine, exc
 from st_aggrid import GridOptionsBuilder, JsCode
 import streamlit as st
 
+from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
     format_date, compare_dates,
 )
-from streamlit_testing.config.colours import COLOURS
 
 import ds_utils.database_operations as dbo
 
