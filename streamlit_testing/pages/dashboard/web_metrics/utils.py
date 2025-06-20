@@ -29,17 +29,17 @@ def set_metrics(
     """Set metrics based on metric type"""
 
     if metric_type == "web_traffic":
-        metrics_raw = config.web_traffic_metrics_raw
-        metrics_display = config.web_traffic_metrics_display
-        metric_aggregations = config.web_traffic_metric_aggregations
-        metric_calculations = config.web_traffic_metric_calculations
-        default_metric = config.default_web_traffic_metric
+        metrics_raw = config.WEB_TRAFFIC_METRICS_RAW
+        metrics_display = config.WEB_TRAFFIC_METRICS_DISPLAY
+        metric_aggregations = config.WEB_TRAFFIC_METRIC_AGGREGATIONS
+        metric_calculations = config.WEB_TRAFFIC_METRIC_CALCULATIONS
+        default_metric = config.DEFAULT_WEB_TRAFFIC_METRIC
     elif metric_type == "download":
-        metrics_raw = config.download_metrics_raw
-        metrics_display = config.download_metrics_display
-        metric_aggregations = config.download_metric_aggregations
-        metric_calculations = config.download_metric_calculations
-        default_metric = config.default_download_metric
+        metrics_raw = config.DOWNLOAD_METRICS_RAW
+        metrics_display = config.DOWNLOAD_METRICS_DISPLAY
+        metric_aggregations = config.DOWNLOAD_METRIC_AGGREGATIONS
+        metric_calculations = config.DOWNLOAD_METRIC_CALCULATIONS
+        default_metric = config.DEFAULT_DOWNLOAD_METRIC
 
     return (
         metrics_raw,
