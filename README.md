@@ -21,25 +21,33 @@ Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit
 
 ## Project structure
 ```
-streamlit_testing/
+
+├── .streamlit/
+│   ├── config.toml
+│
 ├── docs/
 │   ├── design_notes.md
 │
-├── js/
-│   ├── <function name>.js
-│
-├── pages/
-│   ├── dashboard/
-│       ├── web_metrics/
-│          ├── <page name>.py
-│          ├── config.py        <<< Variables used across multiple pages
-│          ├── elements.py     <<< Page elements used across multiple pages
-│          ├── utils.py     <<< (Non-page element) functions and code snippets used across multiple pages
-│
-├── sql/
-│   ├── dashboard/
-│       ├── web_metrics/
-│          ├── <page name>.sql
+├── streamlit_testing/
+|   ├── config/        <<< Variables used app-wide
+|   │   ├── ag_grid_theme.py
+|   │   ├── colours.py
+|   │
+|   ├── js/     <<< JS functions used app-wide
+|   │   ├── <function name>.js
+|   │
+|   ├── pages/
+|   │   ├── dashboard/
+|   │       ├── web_metrics/
+|   │          ├── <page name>.py
+|   │          ├── config.py        <<< Variables used across multiple pages
+|   │          ├── elements.py     <<< Page elements used across multiple pages
+|   │          ├── utils.py     <<< (Non-page element) functions and code snippets used across multiple pages
+|   │
+|   ├── sql/
+|   │   ├── dashboard/
+|   │       ├── web_metrics/
+|   │          ├── <page name>.sql
 │
 ├── .gitignore
 ├── .pre-commit-config.yaml

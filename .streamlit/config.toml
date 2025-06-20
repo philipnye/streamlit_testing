@@ -1,0 +1,17 @@
+[theme]
+base = "light"
+primaryColor = "#d0006f"
+linkColor ="#d0006f"
+textColor = "#333F48"
+secondaryBackgroundColor = "#F2F3F4"
+font = "Open Sans, sans-serif"
+headingFont = "Aller, sans-serif"
+baseFontSize = 14
+
+[[theme.fontFaces]]
+family = "Aller"
+url = ""
+
+[[theme.fontFaces]]
+family = "Open Sans"
+url = ""

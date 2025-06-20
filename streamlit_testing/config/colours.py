@@ -7,4 +7,5 @@ COLOURS = {
     "gold": "#ffb511",
     "dark_grey": "#333F48",
     "grey": "#c1c5c8",
+    "grey_lighter_80pct": "#F2F3F4"
 }

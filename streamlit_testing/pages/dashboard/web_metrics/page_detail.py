@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 from st_aggrid import AgGrid
 
+from streamlit_testing.config.ag_grid_theme import ag_grid_theme
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import (set_metrics)
 
@@ -120,6 +121,7 @@ with tab1:
         update_on=[],
         gridOptions=grid_options,
         allow_unsafe_jscode=True,
+        theme=ag_grid_theme
     )
 
 with tab2:

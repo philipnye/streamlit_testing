@@ -3,6 +3,7 @@ import os
 import streamlit as st
 from st_aggrid import AgGrid
 
+from streamlit_testing.config.ag_grid_theme import ag_grid_theme
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer, set_metrics
@@ -117,4 +118,5 @@ AgGrid(
     update_on=[],
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
+    theme=ag_grid_theme
 )

@@ -48,21 +48,21 @@ def create_external_link(
 ) -> dict:
     """Create external link column"""
 
-    column_defs[column]["cellRenderer"] = JsCode("""
-        class UrlCellRenderer {
-            init(params) {
+    column_defs[column]["cellRenderer"] = JsCode(f"""
+        class UrlCellRenderer {{
+            init(params) {{
                 this.eGui = document.createElement("a");
                 this.eGui.innerText = "View output ⮺";
                 this.eGui.setAttribute(
                     "href", "https://www.instituteforgovernment.org.uk" + params.value
                 );
-                this.eGui.setAttribute("style", "text-decoration:none");
+                this.eGui.setAttribute("style", "text-decoration: none; color:{COLOURS['pink']};");
                 this.eGui.setAttribute("target", "_blank");
-            }
-            getGui() {
+            }}
+            getGui() {{
                 return this.eGui;
-            }
-        }
+            }}
+        }}
     """)
     return column_defs
 
@@ -73,21 +73,21 @@ def create_internal_link(
 ) -> dict:
     """Create internal link column"""
 
-    column_defs[column]["cellRenderer"] = JsCode("""
-        class UrlCellRenderer {
-            init(params) {
+    column_defs[column]["cellRenderer"] = JsCode(f"""
+        class UrlCellRenderer {{
+            init(params) {{
                 this.eGui = document.createElement("a");
                 this.eGui.innerText = params.value;
                 this.eGui.setAttribute(
                     "href", "/web_metrics_page_detail?url=" + params.data.URL
                 );
-                this.eGui.setAttribute("style", "text-decoration:none");
+                this.eGui.setAttribute("style", "text-decoration:none; color:{COLOURS['pink']};");
                 this.eGui.setAttribute("target", "_blank");
-            }
-            getGui() {
+            }}
+            getGui() {{
                 return this.eGui;
-            }
-        }
+            }}
+        }}
     """)
     return column_defs
 
@@ -251,7 +251,7 @@ def draw_line_chart_section(
             use_container_width=True,
             x_label="",
             y_label="",
-            color=COLOURS["blue"],
+            color=COLOURS["pink"],
         )
 
     return selected_metric
