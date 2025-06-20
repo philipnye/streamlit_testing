@@ -3,6 +3,7 @@ import os
 from typing import List, Optional
 
 import pandas as pd
+import plotly.express as px
 from sqlalchemy import engine, exc
 from st_aggrid import GridOptionsBuilder, JsCode
 import streamlit as st
@@ -227,7 +228,12 @@ def draw_line_chart_section(
     metrics: list[str],
     default_metric: str,
 ) -> str:
-    """Draw line chart section"""
+    """
+    Draw line chart section
+
+    Notes:
+    - fixedrange=True is required to disable zooming
+    """
 
     with st.container(
         border=True,
@@ -244,14 +250,73 @@ def draw_line_chart_section(
                 key="selected_metric",
             )
 
-        st.line_chart(
-            data=df,
+        # Calculate sensible y-axis max
+        y_data = df[selected_metric].dropna()
+        if not y_data.empty:
+            y_max = y_data.max()
+
+            import math
+            if y_max == 0:
+                y_axis_max = 1
+            else:
+                magnitude = 10 ** math.floor(math.log10(y_max))
+                for factor in [1, 2, 5, 10, 100, 1000]:
+                    if y_max <= factor * magnitude:
+                        y_axis_max = factor * magnitude
+                        break
+                else:
+                    y_axis_max = 10 * magnitude
+        else:
+            y_axis_max = 1
+
+        fig = px.line(
+            df,
             x=x,
             y=selected_metric,
+            color_discrete_sequence=[COLOURS["pink"]],
+        )
+        fig.update_layout(
+            xaxis_title="",
+            yaxis_title="",
+            xaxis=dict(
+                zeroline=False,
+                tickfont=dict(
+                    color=COLOURS["dark_grey"],
+                    family="Open Sans, sans-serif",
+                    size=14,
+                ),
+                gridcolor=COLOURS["grey_lighter_80pct"],
+                fixedrange=True,
+            ),
+            yaxis=dict(
+                zeroline=True,
+                zerolinecolor=COLOURS["dark_grey"],
+                tickfont=dict(
+                    color=COLOURS["dark_grey"],
+                    family="Open Sans, sans-serif",
+                    size=14,
+                ),
+                gridcolor=COLOURS["grey_lighter_80pct"],
+                range=[0, y_axis_max],
+                tickformat=",d",
+                fixedrange=True,
+            ),
+            plot_bgcolor="white",
+        )
+        st.plotly_chart(
+            fig,
             use_container_width=True,
-            x_label="",
-            y_label="",
-            color=COLOURS["pink"],
+            config={
+                "displayModeBar": False,
+                "displaylogo": False,
+                "scrollZoom": False,
+                "doubleClick": False,
+                "showAxisDragHandles": False,
+                "showAxisRangeEntryBoxes": False,
+                "editSelection": False,
+
+
+            }
         )
 
     return selected_metric
