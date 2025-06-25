@@ -289,6 +289,7 @@ def draw_line_chart_section(
                 ),
                 gridcolor=COLOURS["grey_lighter_80pct"],
                 fixedrange=True,
+                tickformat="%a %d %b",
             ),
             yaxis=dict(
                 zeroline=True,
