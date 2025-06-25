@@ -96,10 +96,11 @@ def create_internal_link(
 def group_df(
     df: pd.DataFrame,
     group_by: list[str],
+    dropna: bool = False
 ) -> pd.DataFrame:
     """Group dataframe by column"""
 
-    df_grouped = df.groupby(group_by).sum().reset_index()
+    df_grouped = df.groupby(group_by, dropna=dropna).sum().reset_index()
 
     return df_grouped
 
