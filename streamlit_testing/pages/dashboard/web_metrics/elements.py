@@ -233,6 +233,7 @@ def draw_line_chart_section(
 
     Notes:
     - fixedrange=True is required to disable zooming
+    - y-axis range is extended slightly beyond the highest value to force plotly to draw a gridline - it won't draw a gridline at the edge of the chart
     """
 
     with st.container(
@@ -297,7 +298,7 @@ def draw_line_chart_section(
                     size=14,
                 ),
                 gridcolor=COLOURS["grey_lighter_80pct"],
-                range=[0, y_axis_max],
+                range=[0, y_axis_max * 1.01],
                 tickformat=config.YAXIS_TICKFORMAT.get(selected_metric),
                 fixedrange=True,
             ),
