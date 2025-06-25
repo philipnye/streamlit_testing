@@ -5,8 +5,8 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import (
 BREAKDOWNS = [
     "Content type",
     "Publication type",
-    "Research area",
-    "Tag",
+    "Team",
+    "Topic",
     "Author",
     "Published date: year",
     "Published date: month",
@@ -45,8 +45,8 @@ METRICS_BY_OUTPUT = [
     "Published date",
     "Updated date",
     "Authors",
-    "Research areas",
-    "Tags",
+    "Teams",
+    "Topics",
 ]
 METRICS_BY_PAGE = [
     "Page title",
@@ -55,8 +55,8 @@ METRICS_BY_PAGE = [
     "Published date",
     "Updated date",
     "Authors",
-    "Research areas",
-    "Tags",
+    "Teams",
+    "Topics",
 ]
 WEB_TRAFFIC_METRIC_AGGREGATIONS = {
     "Page views": ("Page views", "sum"),

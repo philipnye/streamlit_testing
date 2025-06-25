@@ -48,7 +48,7 @@ st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["U
 
 st.dataframe(
     df_content_metadata[[
-        "Content type", "Published date", "Updated date", "Research areas", "Tags"
+        "Content type", "Published date", "Updated date", "Teams", "Topics"
     ]].T,
 )
 

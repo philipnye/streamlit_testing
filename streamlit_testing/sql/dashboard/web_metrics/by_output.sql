@@ -1,53 +1,55 @@
--- NB: By using an outer apply to corporate.ifg_content this picks up
--- the page title of the page from which an output is most commonly downloaded
+-- NB: By using an outer apply to corporate.content_basic_metadata_latest this picks up
+-- details of the page from which an output is most commonly downloaded
 select
     d.date Date,
-    c.page_title [Output title],
+    pt.pageTitle [Output title],
     d.fileName [File name],
     d.fileExtension [File extension],
-    c.type [Content type],
-    c.published_date [Published date],
-    c.updated_date_alternative [Updated date],
+    bm.content_label [Content type],
+    bm.publication_date [Published date],
+    bm.update_date [Updated date],
     a.authors Authors,
-    ra.research_areas [Research areas],
-    t.tags Tags,
+    t.teams [Teams],
+    p.topics Topics,
     d.eventCount Downloads
-from corporate.ga_downloads_by_date d
+from corporate.downloads_by_date d
     outer apply (
         select top 1 *
-        from corporate.ifg_content c
+        from corporate.content_basic_metadata_latest bm
         where
-            d.pagePath = c.partial
-    ) c
+            d.pagePath = bm.pagePath
+    ) bm
+    left join corporate.content_page_titles_latest pt on
+        bm.pagePath = pt.pagePath
     outer apply (
         select
-            string_agg(ra.research_area, ', ') as research_areas
-        from corporate.ifg_research_areas ra
+            string_agg(t.team, ', ') as teams
+        from corporate.content_teams_latest t
         where
-            c.partial = ra.partial
+            bm.pagePath = t.pagePath
         group by
-            ra.partial
-    ) ra
-    outer apply (
-        select
-            string_agg(t.tag, ', ') as tags
-        from corporate.ifg_tags t
-        where
-            c.partial = t.partial
-        group by
-            t.partial
+            t.pagePath
     ) t
     outer apply (
         select
-            string_agg(a.author, ', ') as authors
-        from corporate.ifg_authors a
+            string_agg(p.topic, ', ') as topics
+        from corporate.content_topics_latest p
         where
-            c.partial = a.partial
+            bm.pagePath = p.pagePath
         group by
-            a.partial
+            p.pagePath
+    ) p
+    outer apply (
+        select
+            string_agg(a.author, ', ') as authors
+        from corporate.content_authors_latest a
+        where
+            bm.pagePath = a.pagePath
+        group by
+            a.pagePath
     ) a
 where
-    c.page_title is not null and
+    pt.pageTitle is not null and
     d.date between ? and ?
 order by
     d.eventCount;
