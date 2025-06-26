@@ -1,82 +1,63 @@
 -- Content metadata
 select
-    pt.pageTitle [Page title],
-    bm.pagePath URL,
-    case
-        when bm.content_label in (
-            'Analysis paper',
-            'Case study',
-            'Insight paper',
-            'Report'
-        ) then 'Publication'
-        when bm.content_label in (
-            'Interview'
-        ) then 'Special output'
-        else bm.content_label
-    end [Content type],
-    case
-        when bm.content_label in (
-            'Analysis paper',
-            'Case study',
-            'Insight paper',
-            'Report'
-        ) then bm.content_label
-        else null
-    end [Publication type],
-    bm.publication_date [Published date],
-    bm.update_date [Updated date],
+    pt.page_title [Page title],
+    bm.url URL,
+    bm.content_type [Content type],
+    bm.publication_type [Publication type],
+    bm.published_date [Published date],
+    bm.updated_date [Updated date],
     a.authors Authors,
-    t.teams [Teams],
+    t.teams Teams,
     p.topics Topics
-from corporate.content_basic_metadata_latest bm
-    left join corporate.content_page_titles_latest pt on
-        bm.pagePath = pt.pagePath
+from corporate.content_basic_metadata_canonical bm
+    left join corporate.content_page_titles_canonical pt on
+        bm.url = pt.url
     outer apply (
         select
             string_agg(t.team, ', ') as teams
-        from corporate.content_teams_latest t
+        from corporate.content_teams_canonical t
         where
-            bm.pagePath = t.pagePath
+            bm.url = t.url
         group by
-            t.pagePath
+            t.url
     ) t
     outer apply (
         select
             string_agg(p.topic, ', ') as topics
-        from corporate.content_topics_latest p
+        from corporate.content_topics_canonical p
         where
-            bm.pagePath = p.pagePath
+            bm.url = p.url
         group by
-            p.pagePath
+            p.url
     ) p
     outer apply (
         select
             string_agg(a.author, ', ') as authors
-        from corporate.content_authors_latest a
+        from corporate.content_authors_canonical a
         where
-            bm.pagePath = a.pagePath
+            bm.url = a.url
         group by
-            a.pagePath
+            a.url
     ) a
 where
-    bm.pagePath = ?;
+    bm.url = ?;
 
 
 -- Metrics
 select
     pv.date Date,
-    pv.screenPageViews [Page views],
-    pv.activeUsers [Active users],
+    pv.page_views [Page views],
+    pv.active_users [Active users],
     pv.sessions Sessions,
-    pv.engagedSessions [Engaged sessions],
-    d.eventCount Downloads,
-    pv.userEngagementDuration [User engagement duration]
-from corporate.page_views_by_date pv
-    left join corporate.downloads_by_date d on
-        pv.pagePath = d.pagePath and
+    pv.engaged_sessions [Engaged sessions],
+    pv.user_engagement_duration [User engagement duration],
+    d.event_count Downloads
+from corporate.page_views_canonical pv
+    left join corporate.downloads_canonical d on
+        pv.url = d.url and
         pv.date = d.date
 where
-    pv.pagePath = ? and
+    pv.url = ? and
     pv.date between ? and ?
 order by
     pv.date;

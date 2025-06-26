@@ -1,55 +1,56 @@
--- NB: By using an outer apply to corporate.content_basic_metadata_latest this picks up
+-- NB: By using an outer apply to corporate.content_basic_metadata_canonical this picks up
 -- details of the page from which an output is most commonly downloaded
 select
     d.date Date,
-    pt.pageTitle [Output title],
-    d.fileName [File name],
-    d.fileExtension [File extension],
-    bm.content_label [Content type],
-    bm.publication_date [Published date],
-    bm.update_date [Updated date],
+    pt.page_title [Output title],
+    d.file_name [File name],
+    d.file_extension [File extension],
+    bm.content_type [Content type],
+    bm.publication_type [Publication type],
+    bm.published_date [Published date],
+    bm.updated_date [Updated date],
     a.authors Authors,
-    t.teams [Teams],
+    t.teams Teams,
     p.topics Topics,
-    d.eventCount Downloads
-from corporate.downloads_by_date d
+    d.event_count Downloads
+from corporate.downloads_canonical d
     outer apply (
         select top 1 *
-        from corporate.content_basic_metadata_latest bm
+        from corporate.content_basic_metadata_canonical bm
         where
-            d.pagePath = bm.pagePath
+            d.url = bm.url
     ) bm
-    left join corporate.content_page_titles_latest pt on
-        bm.pagePath = pt.pagePath
+    left join corporate.content_page_titles_canonical pt on
+        bm.url = pt.url
     outer apply (
         select
             string_agg(t.team, ', ') as teams
-        from corporate.content_teams_latest t
+        from corporate.content_teams_canonical t
         where
-            bm.pagePath = t.pagePath
+            bm.url = t.url
         group by
-            t.pagePath
+            t.url
     ) t
     outer apply (
         select
             string_agg(p.topic, ', ') as topics
-        from corporate.content_topics_latest p
+        from corporate.content_topics_canonical p
         where
-            bm.pagePath = p.pagePath
+            bm.url = p.url
         group by
-            p.pagePath
+            p.url
     ) p
     outer apply (
         select
             string_agg(a.author, ', ') as authors
-        from corporate.content_authors_latest a
+        from corporate.content_authors_canonical a
         where
-            bm.pagePath = a.pagePath
+            bm.url = a.url
         group by
-            a.pagePath
+            a.url
     ) a
 where
-    pt.pageTitle is not null and
+    pt.page_title is not null and
     d.date between ? and ?
 order by
-    d.eventCount;
+    d.event_count;
