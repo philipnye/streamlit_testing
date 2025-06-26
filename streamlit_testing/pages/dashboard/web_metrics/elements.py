@@ -11,7 +11,7 @@ import streamlit as st
 from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
-    format_date, compare_dates,
+    compare_dates, format_date,
 )
 
 import ds_utils.database_operations as dbo
@@ -340,11 +340,13 @@ def format_date_cols(
     """Format date columns"""
 
     for metric in metrics:
-        column_defs[metric]["Content type"] = "Date"
+        column_defs[metric]["type"] = "dateColumn"
         column_defs[metric]["cellClass"] = "ag-right-aligned-cell"
         column_defs[metric]["headerClass"] = "ag-right-aligned-header"
-        column_defs[metric]["valueFormatter"] = format_date
+        column_defs[metric]["cellRenderer"] = format_date
         column_defs[metric]["comparator"] = compare_dates
+        column_defs[metric]["filter"] = "agDateColumnFilter"
+        column_defs[metric]["filterParams"] = {"comparator": compare_dates}
 
     return column_defs
 

@@ -57,12 +57,8 @@ df_by_page = elements.calculate_derived_metrics(df_by_page, METRIC_CALCULATIONS)
 
 df_by_page = df_by_page[config.METRICS_BY_PAGE + list(METRICS_DISPLAY.keys())]
 
-df_by_page["Published date"] = pd.to_datetime(
-    df_by_page["Published date"]
-).dt.strftime("%Y-%m-%d")
-df_by_page["Updated date"] = pd.to_datetime(
-    df_by_page["Updated date"]
-).dt.strftime("%Y-%m-%d")
+df_by_page["Published date"] = pd.to_datetime(df_by_page["Published date"], errors="coerce")
+df_by_page["Updated date"] = pd.to_datetime(df_by_page["Updated date"], errors="coerce")
 
 # DRAW LINE CHART SECTION
 selected_metric = elements.draw_line_chart_section(

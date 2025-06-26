@@ -57,12 +57,8 @@ df_by_output = elements.calculate_derived_metrics(df_by_output, METRIC_CALCULATI
 
 df_by_output = df_by_output[config.METRICS_BY_OUTPUT + list(METRICS_DISPLAY.keys())]
 
-df_by_output["Published date"] = pd.to_datetime(
-    df_by_output["Published date"]
-).dt.strftime("%Y-%m-%d")
-df_by_output["Updated date"] = pd.to_datetime(
-    df_by_output["Updated date"]
-).dt.strftime("%Y-%m-%d")
+df_by_output["Published date"] = pd.to_datetime(df_by_output["Published date"], errors="coerce")
+df_by_output["Updated date"] = pd.to_datetime(df_by_output["Updated date"], errors="coerce")
 
 # DRAW LINE CHART SECTION
 selected_metric = elements.draw_line_chart_section(
