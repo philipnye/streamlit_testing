@@ -102,15 +102,14 @@ with tab1:
     column_defs, grid_options = elements.set_table_defaults(
         df=df_metrics,
         metrics=METRICS_DISPLAY,
-        sort_columns=DEFAULT_METRIC,
-        sort_order="desc",
+        sort_columns="Date",
+        sort_order="asc",
     )
 
     column_defs = elements.format_date_cols(
         column_defs,
         ["Date"]
     )
-    column_defs["Date"]["sort"] = "asc"
 
     for metric, formatter in METRICS_DISPLAY.items():
         column_defs[metric]["valueFormatter"] = formatter

@@ -91,7 +91,6 @@ column_defs = elements.format_date_cols(
     ["Published date", "Updated date"]
 )
 
-column_defs[DEFAULT_METRIC]["sort"] = "desc"
 for metric, formatter in METRICS_DISPLAY.items():
     column_defs[metric]["valueFormatter"] = formatter
 
