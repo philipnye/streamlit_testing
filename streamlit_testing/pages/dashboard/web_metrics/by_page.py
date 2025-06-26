@@ -74,10 +74,11 @@ selected_metric = elements.draw_line_chart_section(
 
 # DRAW TABLE
 column_defs, grid_options = elements.set_table_defaults(
-    df_by_page,
-    DEFAULT_METRIC,
-    METRICS_DISPLAY,
-    pinned_columns=["Page title"]
+    df=df_by_page,
+    metrics=METRICS_DISPLAY,
+    sort_columns=DEFAULT_METRIC,
+    sort_order="desc",
+    pin_columns=["Page title"]
 )
 
 column_defs = elements.create_internal_link(

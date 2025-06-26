@@ -95,16 +95,12 @@ selected_metric = elements.draw_line_chart_section(
 
 # DRAW TABLE
 column_defs, grid_options = elements.set_table_defaults(
-    df_grouped,
-    DEFAULT_METRIC,
-    METRICS_DISPLAY,
-    pinned_columns=breakdowns if breakdowns else None
+    df=df_grouped,
+    metrics=METRICS_DISPLAY,
+    sort_columns=breakdowns if breakdowns else None,
+    sort_order="asc",
+    pin_columns=breakdowns if breakdowns else None
 )
-
-if breakdowns != []:
-    for breakdown in breakdowns:
-        column_defs[breakdown]["pinned"] = "left"
-        column_defs[breakdowns[0]]["sort"] = "asc"
 
 column_defs["Pages"]["valueFormatter"] = format_integer
 

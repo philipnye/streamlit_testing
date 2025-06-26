@@ -100,9 +100,10 @@ with tab1:
 
     # DRAW TABLE
     column_defs, grid_options = elements.set_table_defaults(
-        df_metrics,
-        DEFAULT_METRIC,
-        METRICS_DISPLAY,
+        df=df_metrics,
+        metrics=METRICS_DISPLAY,
+        sort_columns=DEFAULT_METRIC,
+        sort_order="desc",
     )
 
     column_defs = elements.format_date_cols(

@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 import os
-from typing import List, Optional
+from typing import List
 
 import pandas as pd
 import plotly.express as px
@@ -107,9 +107,10 @@ def group_df(
 
 def set_table_defaults(
     df: pd.DataFrame,
-    default_metric: str,
     metrics: dict,
-    pinned_columns: Optional[List] = None
+    sort_columns: str | List[str] | None = None,
+    sort_order: str = "asc",
+    pin_columns: str | List[str] | None = None
 ) -> tuple[dict, dict]:
     """Configure default table options"""
 
@@ -127,11 +128,20 @@ def set_table_defaults(
 
     column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
 
-    if pinned_columns:
-        for column in pinned_columns:
-            column_defs[column]["pinned"] = "left"
+    if sort_columns:
+        if isinstance(sort_columns, str):
+            sort_columns = [sort_columns]
+        for column in sort_columns:
+            if column in column_defs:
+                column_defs[column]["sort"] = sort_order
 
-    column_defs[default_metric]["sort"] = "desc"
+    if pin_columns:
+        if isinstance(pin_columns, str):
+            pin_columns = [pin_columns]
+            for column in pin_columns:
+                if column in column_defs:
+                    column_defs[column]["pinned"] = "left"
+
     for metric, formatter in metrics.items():
         column_defs[metric]["valueFormatter"] = formatter
 

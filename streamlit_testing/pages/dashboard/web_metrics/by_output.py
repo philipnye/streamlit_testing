@@ -74,10 +74,11 @@ selected_metric = elements.draw_line_chart_section(
 
 # DRAW TABLE
 column_defs, grid_options = elements.set_table_defaults(
-    df_by_output,
-    DEFAULT_METRIC,
-    METRICS_DISPLAY,
-    pinned_columns=["Output title"]
+    df=df_by_output,
+    metrics=METRICS_DISPLAY,
+    sort_columns=DEFAULT_METRIC,
+    sort_order="desc",
+    pin_columns=["Output title"]
 )
 
 column_defs = elements.create_external_link(
