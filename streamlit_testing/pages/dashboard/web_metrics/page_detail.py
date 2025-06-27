@@ -6,7 +6,7 @@ from st_aggrid import AgGrid
 
 from streamlit_testing.config.ag_grid_theme import ag_grid_theme
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
-from streamlit_testing.pages.dashboard.web_metrics.utils import (set_metrics)
+from streamlit_testing.pages.dashboard.web_metrics.utils import set_metrics
 
 # HANDLE DIRECT ACCESS
 if "url" not in st.query_params:
