@@ -118,7 +118,7 @@ def set_table_defaults(
     grid_options = grid_builder.build()
 
     grid_options["pagination"] = True
-    grid_options["paginationPageSize"] = 25
+    grid_options["paginationPageSize"] = 20
     grid_options["defaultColDef"] = {
         "filter": True,
         "filterParams": {
