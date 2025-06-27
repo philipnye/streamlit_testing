@@ -20,7 +20,7 @@ import ds_utils.database_operations as dbo
 @st.cache_data()
 def calculate_derived_metrics(
     df: pd.DataFrame,
-    calculations: dict
+    calculations: dict | None
 ) -> pd.DataFrame:
     """Calculate derived metrics"""
 
@@ -164,7 +164,7 @@ def connect_database() -> engine.base.Engine:
     )
 
 
-def disable_sidebar():
+def disable_sidebar() -> None:
     """Disable sidebar"""
 
     st.markdown(
@@ -376,7 +376,7 @@ def format_date_cols(
 def load_data(
     script: str,
     _connection: engine.base.Engine,
-    params: tuple = None,
+    params: tuple | None = None,
 ) -> pd.DataFrame:
     """Load data from database"""
 
@@ -397,7 +397,7 @@ def load_data(
 
 
 @st.dialog("Page not found")
-def raise_page_not_found_message():
+def raise_page_not_found_message() -> None:
     """Raise page not found message"""
     st.write(
         "The page that you have requested does not seem to exist."

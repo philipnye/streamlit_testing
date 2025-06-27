@@ -25,7 +25,7 @@ with open("streamlit_testing/js/compare_dates.js", "r") as f:
 
 def set_metrics(
     metric_type: str
-) -> tuple[list, dict, str]:
+) -> tuple[list, dict, dict, dict | None, str]:
     """Set metrics based on metric type"""
 
     if metric_type == "web_traffic":
