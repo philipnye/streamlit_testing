@@ -355,7 +355,7 @@ def format_date_cols(
 def load_data(
     script: str,
     _connection: engine.base.Engine,
-    params: dict = None,
+    params: tuple = None,
 ) -> pd.DataFrame:
     """Load data from database"""
 
