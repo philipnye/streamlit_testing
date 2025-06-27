@@ -148,6 +148,7 @@ def set_table_defaults(
 
     for metric, formatter in metrics.items():
         column_defs[metric]["valueFormatter"] = formatter
+        column_defs[metric]["sortingOrder"] = ["desc", "asc", None]
 
     return column_defs, grid_options
 
