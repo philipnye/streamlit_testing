@@ -138,9 +138,9 @@ def set_table_defaults(
     if pin_columns:
         if isinstance(pin_columns, str):
             pin_columns = [pin_columns]
-            for column in pin_columns:
-                if column in column_defs:
-                    column_defs[column]["pinned"] = "left"
+        for column in pin_columns:
+            if column in column_defs:
+                column_defs[column]["pinned"] = "left"
 
     for metric, formatter in metrics.items():
         column_defs[metric]["valueFormatter"] = formatter
