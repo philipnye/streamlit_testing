@@ -187,7 +187,7 @@ def disable_sidebar():
 def draw_date_range_inputs(
     min_date: str,
     max_date: str,
-) -> tuple[str, pd.Timestamp, pd.Timestamp]:
+) -> tuple[str, date, date]:
     """Draw date range option inputs"""
 
     col1, col2 = st.columns([1, 5])
