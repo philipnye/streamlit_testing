@@ -8,6 +8,10 @@ from sqlalchemy import engine, exc
 from st_aggrid import GridOptionsBuilder, JsCode
 import streamlit as st
 
+from streamlit_testing.config.ag_grid_theme import (
+    AG_GRID_ROW_HEIGHT, AG_GRID_HEADER_HEIGHT,
+    AG_GRID_MIN_HEIGHT, AG_GRID_MAX_HEIGHT
+)
 from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
@@ -404,3 +408,22 @@ def raise_page_not_found_message() -> None:
     )
 
     return
+
+
+@st.cache_data()
+def calculate_ag_grid_height(
+    num_rows: int,
+    row_height: int = None,
+    header_height: int = None,
+    min_height: int = None,
+    max_height: int = None
+) -> int:
+    """Calculate dynamic height for AgGrid based on number of rows"""
+
+    row_height = row_height or AG_GRID_ROW_HEIGHT
+    header_height = header_height or AG_GRID_HEADER_HEIGHT
+    min_height = min_height or AG_GRID_MIN_HEIGHT
+    max_height = max_height or AG_GRID_MAX_HEIGHT
+
+    calculated_height = num_rows * row_height + header_height
+    return min(max(calculated_height, min_height), max_height)

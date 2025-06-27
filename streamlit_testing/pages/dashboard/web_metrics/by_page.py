@@ -101,5 +101,6 @@ AgGrid(
     update_on=[],
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
-    theme=ag_grid_theme
+    theme=ag_grid_theme,
+    height=elements.calculate_ag_grid_height(len(df_by_page)),
 )
