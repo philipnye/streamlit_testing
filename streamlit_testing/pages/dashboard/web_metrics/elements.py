@@ -236,6 +236,7 @@ def draw_date_range_inputs(
 def draw_line_chart_section(
     df: pd.DataFrame,
     x: str,
+    start_date: date,
     metrics: list[str],
     default_metric: str,
 ) -> str:
@@ -262,8 +263,28 @@ def draw_line_chart_section(
                 key="selected_metric",
             )
 
+        # Handle case where start_date is earlier than first date in data
+        df_chart = df.copy()
+        if start_date is not None:
+            df_chart[x] = pd.to_datetime(df_chart[x])
+            data_first_date = df_chart[x].min().date()
+            if start_date < data_first_date:
+                missing_dates = pd.date_range(
+                    start=start_date,
+                    end=data_first_date - pd.Timedelta(days=1),
+                    freq='D'
+                )
+
+                missing_data = {x: missing_dates}
+                for metric in metrics:
+                    missing_data[metric] = pd.NA
+
+                missing_df = pd.DataFrame(missing_data)
+
+                df_chart = pd.concat([missing_df, df_chart], ignore_index=True).sort_values(x)
+
         # Calculate sensible y-axis max
-        y_data = df[selected_metric].dropna()
+        y_data = df_chart[selected_metric].dropna()
         if not y_data.empty:
             y_max = y_data.max()
 
@@ -282,7 +303,7 @@ def draw_line_chart_section(
             y_axis_max = 1
 
         fig = px.line(
-            df,
+            df_chart,
             x=x,
             y=selected_metric,
             color_discrete_sequence=[COLOURS["pink"]],

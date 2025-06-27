@@ -90,6 +90,7 @@ with tab1:
     selected_metric = elements.draw_line_chart_section(
         df=df_metrics,
         x="Date",
+        start_date=start_date,
         metrics=list(METRICS_DISPLAY.keys()),
         default_metric=DEFAULT_METRIC,
     )
