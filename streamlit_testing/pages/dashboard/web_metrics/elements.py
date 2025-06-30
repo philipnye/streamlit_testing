@@ -113,7 +113,7 @@ def set_table_defaults(
     df: pd.DataFrame,
     metrics: dict,
     sort_columns: str | List[str] | None = None,
-    sort_order: str = "asc",
+    sort_order: str | dict[str, str] = "asc",
     pin_columns: str | List[str] | None = None
 ) -> tuple[dict, dict]:
     """Configure default table options"""
@@ -137,7 +137,19 @@ def set_table_defaults(
             sort_columns = [sort_columns]
         for column in sort_columns:
             if column in column_defs:
-                column_defs[column]["sort"] = sort_order
+                column_defs[column]["sort"] = sort_order if isinstance(sort_order, str) else sort_order.get(column, "asc")
+
+    st.write("hey")
+    st.write(sort_order)
+    if isinstance(sort_order, dict):
+        for column, first_sort in sort_order.items():
+            if column in column_defs:
+                if first_sort == "desc":
+                    column_defs[column]["sortingOrder"] = ["desc", "asc", None]
+                    st.write(column_defs[column])
+                else:
+                    column_defs[column]["sortingOrder"] = ["asc", "desc", None]
+                    st.write(column_defs[column])
 
     if pin_columns:
         if isinstance(pin_columns, str):

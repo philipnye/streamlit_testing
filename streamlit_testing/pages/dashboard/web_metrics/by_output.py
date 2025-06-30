@@ -74,7 +74,11 @@ column_defs, grid_options = elements.set_table_defaults(
     df=df_by_output,
     metrics=METRICS_DISPLAY,
     sort_columns=DEFAULT_METRIC,
-    sort_order="desc",
+    sort_order={
+        DEFAULT_METRIC: "desc",
+        "Published date": "desc",
+        "Updated date": "desc"
+    },
     pin_columns=["Output title"]
 )
 
