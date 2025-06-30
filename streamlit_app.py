@@ -38,11 +38,25 @@ pg = st.navigation(
     },
 )
 
-# HIDE PAGES IN SIDEBAR
+# APPLY CUSTOM CSS
+# Hide pages in sidebar
 st.markdown(
     """
         <style>
-            a[href$="web_metrics_page_detail"]{
+            a[href$="web_metrics_page_detail"] {
+                display: none;
+            }
+        </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Disable watermark
+# NB: Done as a workaround until this issue is fixed: https://github.com/PablocFonseca/streamlit-aggrid/issues/313
+st.markdown(
+    """
+        <style>
+            div.ag-watermark {
                 display: none;
             }
         </style>
