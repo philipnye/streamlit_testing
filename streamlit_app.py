@@ -57,7 +57,7 @@ st.markdown(
     """
         <style>
             div.ag-watermark {
-                display: none;
+                display: none !important;
             }
         </style>
     """,
