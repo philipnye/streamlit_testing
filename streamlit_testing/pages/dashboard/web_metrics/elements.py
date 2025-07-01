@@ -3,7 +3,7 @@ import os
 from typing import List
 
 import pandas as pd
-import plotly.express as px
+import plotly.graph_objects as go
 from sqlalchemy import engine, exc
 from st_aggrid import GridOptionsBuilder, JsCode
 import streamlit as st
@@ -259,6 +259,7 @@ def draw_line_chart_section(
     Notes:
     - fixedrange=True is required to disable zooming
     - y-axis range is extended slightly beyond the highest value to force plotly to draw a gridline - it won't draw a gridline at the edge of the chart
+    - Most recent two days shown as dotted line to indicate provisional data
     """
 
     with st.container(
@@ -315,15 +316,42 @@ def draw_line_chart_section(
         else:
             y_axis_max = 1
 
-        fig = px.line(
-            df_chart,
-            x=x,
-            y=selected_metric,
-            color_discrete_sequence=[COLOURS["pink"]],
-        )
+        # Split data into confirmed and provisional
+        df_chart_sorted = df_chart.sort_values(x)
+        provisional_cutoff_date = df_chart_sorted[x].max() - pd.Timedelta(days=1)
+
+        df_confirmed = df_chart_sorted[df_chart_sorted[x] <= provisional_cutoff_date]
+        df_provisional = df_chart_sorted[df_chart_sorted[x] >= provisional_cutoff_date]
+
+        # Create figure with go.Figure for more control
+        fig = go.Figure()
+
+        # Add confirmed data line
+        if not df_confirmed.empty:
+            fig.add_trace(go.Scatter(
+                x=df_confirmed[x],
+                y=df_confirmed[selected_metric],
+                mode="lines",
+                line=dict(color=COLOURS["pink"], width=2),
+                name="Confirmed",
+                showlegend=True
+            ))
+
+        # Add provisional data line
+        if not df_provisional.empty:
+            fig.add_trace(go.Scatter(
+                x=df_provisional[x],
+                y=df_provisional[selected_metric],
+                mode="lines",
+                line=dict(color=COLOURS["pink"], width=2, dash="dot"),
+                name="Provisional",
+                showlegend=True
+            ))
+
         fig.update_layout(
             xaxis_title="",
             yaxis_title="",
+            showlegend=False,
             xaxis=dict(
                 zeroline=False,
                 tickfont=dict(
@@ -350,6 +378,7 @@ def draw_line_chart_section(
             ),
             plot_bgcolor="white",
         )
+
         st.plotly_chart(
             fig,
             use_container_width=True,
