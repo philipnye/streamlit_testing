@@ -229,6 +229,7 @@ def draw_date_range_inputs(
                 value=min_date,
                 min_value=min_date,
                 max_value=max_date,
+                format="DD/MM/YYYY",
                 key="start_date",
             )
         with col2:
@@ -237,6 +238,7 @@ def draw_date_range_inputs(
                 value=max_date,
                 min_value=min_date,
                 max_value=max_date,
+                format="DD/MM/YYYY",
                 key="end_date",
             )
 
