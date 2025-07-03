@@ -49,7 +49,12 @@ for tab_index, (tab_name, content_types) in enumerate(tab_config.items()):
             )
 
         # CREATE COLUMNS DYNAMICALLY
-        columns = st.columns(len(content_types))
+        if len(content_types) == 1:
+            # For single content type, use full width
+            columns = [st.container()]
+        else:
+            # For multiple content types, split into columns
+            columns = st.columns(len(content_types))
 
         # LOAD DATA AND CREATE TABLES FOR EACH CONTENT TYPE
         for i, content_type in enumerate(content_types):
