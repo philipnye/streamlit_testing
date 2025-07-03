@@ -4,6 +4,7 @@ import streamlit as st
 from st_aggrid import AgGrid
 
 from streamlit_testing.config.ag_grid_theme import ag_grid_theme
+import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer
 
@@ -26,6 +27,17 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     max_date=df_date_range["max_date"][0],
 )
 
+# DRAW PAGE FILTER INPUT
+col1, col2 = st.columns([1, 5])
+with col1:
+    page_filter = st.selectbox(
+        label="Page filter",
+        options=["All pages", "New/updated pages"],
+        index=0,
+        help="Select whether to include all pages or only those that were published or updated during the selected date range.",
+        key="page_filter",
+    )
+
 # CONTENT TYPES TO DISPLAY
 content_types = ["Publication", "Comment", "Explainer", "Event"]
 
@@ -43,11 +55,18 @@ for i, content_type in enumerate(content_types):
         with open("streamlit_testing/sql/dashboard/web_metrics/home.sql", "r") as file:
             script = file.read()
 
-        df = elements.load_data(
-            script,
-            connection,
-            (start_date, end_date, content_type)
-        )
+        if page_filter == "All pages":
+            df = elements.load_data(
+                script,
+                connection,
+                (start_date, end_date, content_type, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE)
+            )
+        elif page_filter == "New/updated pages":
+            df = elements.load_data(
+                script,
+                connection,
+                (start_date, end_date, content_type, start_date, end_date, start_date, end_date)
+            )
 
         # DRAW TABLE
         column_defs, grid_options = elements.set_table_defaults(

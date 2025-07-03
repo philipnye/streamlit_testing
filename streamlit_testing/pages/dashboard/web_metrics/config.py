@@ -58,6 +58,8 @@ METRICS_BY_PAGE = [
     "Authors",
     "Topics",
 ]
+SQL_EARLIEST_DATE = "1900-01-01"
+SQL_LATEST_DATE = "9999-12-31"
 WEB_TRAFFIC_METRIC_AGGREGATIONS = {
     "Page views": ("Page views", "sum"),
     "Active users": ("Active users", "sum"),

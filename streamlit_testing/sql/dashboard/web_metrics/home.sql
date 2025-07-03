@@ -9,7 +9,17 @@ from corporate.page_views_canonical pv
         bm.url = pt.url
 where
     pv.date between ? and ? and
-    bm.content_type = ?
+    bm.content_type = ? and
+    (
+        (
+            bm.published_date >= ? and
+            bm.published_date <= ?
+        ) or
+        (
+            bm.updated_date >= ? and
+            bm.updated_date <= ?
+        )
+    )
 group by
     pt.page_title,
     pv.url
