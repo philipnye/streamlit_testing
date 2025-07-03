@@ -15,6 +15,11 @@ pg = st.navigation(
     {
         "Web traffic": [
             st.Page(
+                "streamlit_testing/pages/dashboard/web_metrics/home.py",
+                title="Home",
+                url_path="/web_metrics_home",
+            ),
+            st.Page(
                 "streamlit_testing/pages/dashboard/web_metrics/summary.py",
                 title="Summary",
                 url_path="/web_metrics_summary",
