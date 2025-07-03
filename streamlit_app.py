@@ -57,6 +57,11 @@ st.markdown(
                 display: none;
             }
         </style>
+        <style>
+            a[href$="summary"] {
+                display: none;
+            }
+        </style>
     """,
     unsafe_allow_html=True
 )
