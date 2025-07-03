@@ -6,8 +6,8 @@ BREAKDOWNS = [
     "Content type",
     "Publication type",
     "Team",
-    "Topic",
     "Author",
+    "Topic",
     "Published date: year",
     "Published date: month",
     "Published date: day",
@@ -44,8 +44,8 @@ METRICS_BY_OUTPUT = [
     "Content type",
     "Published date",
     "Updated date",
-    "Authors",
     "Teams",
+    "Authors",
     "Topics",
 ]
 METRICS_BY_PAGE = [
@@ -54,8 +54,8 @@ METRICS_BY_PAGE = [
     "Content type",
     "Published date",
     "Updated date",
-    "Authors",
     "Teams",
+    "Authors",
     "Topics",
 ]
 WEB_TRAFFIC_METRIC_AGGREGATIONS = {

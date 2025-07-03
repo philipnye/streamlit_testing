@@ -9,8 +9,8 @@ select
     bm.publication_type [Publication type],
     bm.published_date [Published date],
     bm.updated_date [Updated date],
-    a.authors Authors,
     t.teams Teams,
+    a.authors Authors,
     p.topics Topics,
     d.event_count Downloads
 from corporate.downloads_canonical d

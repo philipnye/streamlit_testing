@@ -6,8 +6,8 @@ select
     bm.publication_type [Publication type],
     bm.published_date [Published date],
     bm.updated_date [Updated date],
-    a.authors Authors,
     t.teams Teams,
+    a.authors Authors,
     p.topics Topics
 from corporate.content_basic_metadata_canonical bm
     left join corporate.content_page_titles_canonical pt on
