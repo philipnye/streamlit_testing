@@ -55,7 +55,6 @@ for i, content_type in enumerate(content_types):
             metrics={"Page views": format_integer},
             sort_columns="Page views",
             sort_order="desc",
-            pin_columns=["Page title"]
         )
 
         column_defs = elements.create_external_link(
