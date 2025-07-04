@@ -10,8 +10,35 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer
 
 # SET CONSTANTS
 TAB_CONFIG = {
-    "Publications, comments, explainers": ["Publication", "Comment", "Explainer"],
-    "Events": ["Event"]
+    "Publications, comments, explainers": [
+        {
+            "display_name": "Publication downloads",
+            "content_type": "Publication",
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_downloads.sql"
+        },
+        {
+            "display_name": "Publication page views",
+            "content_type": "Publication",
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql"
+        },
+        {
+            "display_name": "Comment page views",
+            "content_type": "Comment",
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql"
+        },
+        {
+            "display_name": "Explainer page views",
+            "content_type": "Explainer",
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql"
+        }
+    ],
+    "Events": [
+        {
+            "display_name": "Events",
+            "content_type": "Event",
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql"
+        }
+    ]
 }
 
 # CONNECT TO DATABASE
@@ -48,14 +75,14 @@ with col1:
 tab_names = list(TAB_CONFIG.keys())
 tabs = st.tabs(tab_names)
 
-for tab_index, (tab_name, content_types) in enumerate(TAB_CONFIG.items()):
+for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
     with tabs[tab_index]:
 
         # CREATE TWO COLUMNS TO HOLD CONTENT
-        num_content_types = len(content_types)
+        num_tables = len(tables)
         rows = []
-        for idx in range(0, num_content_types, 2):
-            row = list(range(idx, min(idx + 2, num_content_types)))
+        for idx in range(0, num_tables, 2):
+            row = list(range(idx, min(idx + 2, num_tables)))
             rows.append(row)
 
         # LOAD DATA AND CREATE TABLES FOR EACH CONTENT TYPE
@@ -63,12 +90,12 @@ for tab_index, (tab_name, content_types) in enumerate(TAB_CONFIG.items()):
             columns = st.columns(2)
 
             for col_idx, content_type_idx in enumerate(row_indices):
-                content_type = content_types[content_type_idx]
+                table_config = tables[content_type_idx]
                 with columns[col_idx]:
-                    st.subheader(f"{content_type}s")
+                    st.subheader(table_config["display_name"])
 
                     # LOAD DATA
-                    with open("streamlit_testing/sql/dashboard/web_metrics/home.sql", "r") as file:
+                    with open(f"{table_config['sql_script']}", "r") as file:
                         script = file.read()
 
                     # Determine parameters based on page filter
@@ -76,20 +103,27 @@ for tab_index, (tab_name, content_types) in enumerate(TAB_CONFIG.items()):
                         df = elements.load_data(
                             script,
                             connection,
-                            (start_date, end_date, content_type, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE)
+                            (start_date, end_date, table_config["content_type"], config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE)
                         )
                     elif page_filter == "New/updated pages":
                         df = elements.load_data(
                             script,
                             connection,
-                            (start_date, end_date, content_type, start_date, end_date, start_date, end_date)
+                            (start_date, end_date, table_config["content_type"], start_date, end_date, start_date, end_date)
                         )
 
                     # DRAW TABLE
+                    if table_config["sql_script"] == "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql":
+                        metrics = {"Page views": format_integer}
+                        sort_column = "Page views"
+                    elif table_config["sql_script"] == "streamlit_testing/sql/dashboard/web_metrics/home_downloads.sql":
+                        metrics = {"Downloads": format_integer}
+                        sort_column = "Downloads"
+
                     column_defs, grid_options = elements.set_table_defaults(
                         df=df,
-                        metrics={"Page views": format_integer},
-                        sort_columns="Page views",
+                        metrics=metrics,
+                        sort_columns=sort_column,
                         sort_order="desc",
                     )
 
@@ -98,7 +132,12 @@ for tab_index, (tab_name, content_types) in enumerate(TAB_CONFIG.items()):
                         "URL",
                     )
 
-                    column_defs["Page views"]["valueFormatter"] = format_integer
+                    column_defs[sort_column]["valueFormatter"] = format_integer
+
+                    # Set explicit column widths
+                    column_defs["Page title"]["width"] = 300
+                    column_defs["URL"]["width"] = 200
+                    column_defs[sort_column]["width"] = 100
 
                     # Disable pagination
                     grid_options["pagination"] = False
@@ -124,7 +163,7 @@ for tab_index, (tab_name, content_types) in enumerate(TAB_CONFIG.items()):
 
                     AgGrid(
                         df,
-                        key=f"ag_{content_type.lower()}_{tab_index}",
+                        key=f"ag_{table_config['content_type'].lower()}_{table_config['sql_script'].replace('.sql', '')}_{tab_index}",
                         license_key=os.environ["AG_GRID_LICENCE_KEY"],
                         update_on=[],
                         gridOptions=grid_options,
