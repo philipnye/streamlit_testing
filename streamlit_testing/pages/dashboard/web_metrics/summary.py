@@ -116,5 +116,6 @@ AgGrid(
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
     theme=ag_grid_theme,
+    custom_css={".ag-watermark": "display: none !important;"},
     height=elements.calculate_ag_grid_height(len(df_grouped)),
 )
