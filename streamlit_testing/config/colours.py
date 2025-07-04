@@ -1,11 +1,57 @@
 COLOURS = {
+    "blue_darker_50pct": "#005571",
+    "blue_darker_25pct": "#007ea8",
     "blue": "#00a8e1",
+    "blue_lighter_40pct": "#53d5ff",
+    "blue_lighter_60pct": "#8ce2ff",
+    "blue_lighter_80pct": "#c6f1ff",
+
+    "pink_darker_50pct": "#680036",
+    "pink_darker_25pct": "#9b0052",
     "pink": "#d0006f",
+    "pink_lighter_40pct": "#ff48a8",
+    "pink_lighter_60pct": "#ff86c6",
+    "pink_lighter_80pct": "#ffc1e1",
+
+    "purple_darker_50pct": "#42184e",
+    "purple_darker_25pct": "#622574",
     "purple": "#84329b",
+    "purple_lighter_40pct": "#bd73d2",
+    "purple_lighter_60pct": "#d3a2e1",
+    "purple_lighter_80pct": "#e9d0f0",
+
+    "green_darker_50pct": "#00645a",
+    "green_darker_25pct": "#009586",
     "green": "#00c7b1",
+    "green_lighter_40pct": "#44ffec",
+    "green_lighter_60pct": "#82fff2",
+    "green_lighter_80pct": "#bffff9",
+
+    "orange_darker_50pct": "#774400",
+    "orange_darker_25pct": "#b36700",
     "orange": "#ed8b00",
+    "orange_lighter_40pct": "#ffba5b",
+    "orange_lighter_60pct": "#ffd091",
+    "orange_lighter_80pct": "#ffe8c8",
+
+    "gold_darker_50pct": "#886000",
+    "gold_darker_25pct": "#cc8e00",
     "gold": "#ffb511",
-    "dark_grey": "#333F48",
+    "gold_lighter_40pct": "#ffd36f",
+    "gold_lighter_60pct": "#ffe29f",
+    "gold_lighter_80pct": "#fff0ce",
+
+    "dark_grey_darker_50pct": "#1a2024",
+    "dark_grey_darker_25pct": "#262f35",
+    "dark_grey": "#333f48",
+    "dark_grey_lighter_40pct": "#768d9e",
+    "dark_grey_lighter_60pct": "#a5b4be",
+    "dark_grey_lighter_80pct": "#d1d9de",
+
+    "grey_darker_50pct": "#5c6367",
+    "grey_darker_25pct": "#8c9499",
     "grey": "#c1c5c8",
-    "grey_lighter_80pct": "#F2F3F4"
+    "grey_lighter_40pct": "#dadcde",
+    "grey_lighter_60pct": "#e7e8e9",
+    "grey_lighter_80pct": "#f2f3f4"
 }
