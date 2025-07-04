@@ -49,81 +49,84 @@ for tab_index, (tab_name, content_types) in enumerate(tab_config.items()):
                 key=f"page_filter_{tab_index}",
             )
 
-        # CREATE COLUMNS DYNAMICALLY
-        # For single content type, use full width
-        if len(content_types) == 1:
-            columns = [st.container()]
-
-        # For multiple content types, split into columns
-        else:
-            columns = st.columns(len(content_types))
+        # CREATE TWO COLUMNS TO HOLD CONTENT
+        num_content_types = len(content_types)
+        rows = []
+        for idx in range(0, num_content_types, 2):
+            row = list(range(idx, min(idx + 2, num_content_types)))
+            rows.append(row)
 
         # LOAD DATA AND CREATE TABLES FOR EACH CONTENT TYPE
-        for i, content_type in enumerate(content_types):
-            with columns[i]:
-                st.subheader(f"{content_type}s")
+        for row_indices in rows:
+            columns = st.columns(2)
 
-                # LOAD DATA
-                with open("streamlit_testing/sql/dashboard/web_metrics/home.sql", "r") as file:
-                    script = file.read()
+            for col_idx, content_type_idx in enumerate(row_indices):
+                content_type = content_types[content_type_idx]
+                with columns[col_idx]:
+                    st.subheader(f"{content_type}s")
 
-                if page_filter == "All pages":
-                    df = elements.load_data(
-                        script,
-                        connection,
-                        (start_date, end_date, content_type, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE)
+                    # LOAD DATA
+                    with open("streamlit_testing/sql/dashboard/web_metrics/home.sql", "r") as file:
+                        script = file.read()
+
+                    # Determine parameters based on page filter
+                    if page_filter == "All pages":
+                        df = elements.load_data(
+                            script,
+                            connection,
+                            (start_date, end_date, content_type, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE)
+                        )
+                    elif page_filter == "New/updated pages":
+                        df = elements.load_data(
+                            script,
+                            connection,
+                            (start_date, end_date, content_type, start_date, end_date, start_date, end_date)
+                        )
+
+                    # DRAW TABLE
+                    column_defs, grid_options = elements.set_table_defaults(
+                        df=df,
+                        metrics={"Page views": format_integer},
+                        sort_columns="Page views",
+                        sort_order="desc",
                     )
-                elif page_filter == "New/updated pages":
-                    df = elements.load_data(
-                        script,
-                        connection,
-                        (start_date, end_date, content_type, start_date, end_date, start_date, end_date)
+
+                    column_defs = elements.create_external_link(
+                        column_defs,
+                        "URL",
                     )
 
-                # DRAW TABLE
-                column_defs, grid_options = elements.set_table_defaults(
-                    df=df,
-                    metrics={"Page views": format_integer},
-                    sort_columns="Page views",
-                    sort_order="desc",
-                )
+                    column_defs["Page views"]["valueFormatter"] = format_integer
 
-                column_defs = elements.create_external_link(
-                    column_defs,
-                    "URL",
-                )
+                    # Disable pagination
+                    grid_options["pagination"] = False
 
-                column_defs["Page views"]["valueFormatter"] = format_integer
+                    # Add row numbers to show index
+                    grid_options["rowClassRules"] = {
+                        "row-index": "true"
+                    }
 
-                # Make the grid smaller for the home page layout
-                grid_options["pagination"] = False
-                grid_options["domLayout"] = "autoHeight"
+                    # Add index column
+                    index_column = {
+                        "headerName": "#",
+                        "field": "index",
+                        "valueGetter": "node.rowIndex + 1",
+                        "width": 50,
+                        "pinned": "left",
+                        "suppressMenu": True,
+                        "sortable": False,
+                        "filter": False,
+                        "cellClass": "text-center"
+                    }
+                    grid_options["columnDefs"].insert(0, index_column)
 
-                # Add row numbers to show index
-                grid_options["rowClassRules"] = {
-                    "row-index": "true"
-                }
-
-                # Add index column
-                index_column = {
-                    "headerName": "#",
-                    "field": "index",
-                    "valueGetter": "node.rowIndex + 1",
-                    "width": 50,
-                    "pinned": "left",
-                    "suppressMenu": True,
-                    "sortable": False,
-                    "filter": False,
-                    "cellClass": "text-center"
-                }
-                grid_options["columnDefs"].insert(0, index_column)
-
-                AgGrid(
-                    df,
-                    key=f"ag_{content_type.lower()}_{tab_index}",
-                    license_key=os.environ["AG_GRID_LICENCE_KEY"],
-                    update_on=[],
-                    gridOptions=grid_options,
-                    allow_unsafe_jscode=True,
-                    theme=ag_grid_theme,
-                )
+                    AgGrid(
+                        df,
+                        key=f"ag_{content_type.lower()}_{tab_index}",
+                        license_key=os.environ["AG_GRID_LICENCE_KEY"],
+                        update_on=[],
+                        gridOptions=grid_options,
+                        allow_unsafe_jscode=True,
+                        theme=ag_grid_theme,
+                        height=500,
+                    )
