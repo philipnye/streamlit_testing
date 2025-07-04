@@ -71,7 +71,11 @@ st.markdown(
 st.markdown(
     """
         <style>
-            div.ag-watermark-text {
+            div.ag-watermark {
+                display: none !important;
+                opacity: 0 !important;
+            }
+            div.ag-watermark::before {
                 display: none !important;
                 opacity: 0 !important;
             }
