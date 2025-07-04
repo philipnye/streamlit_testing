@@ -14,29 +14,49 @@ TAB_CONFIG = {
         {
             "display_name": "Publication downloads",
             "content_type": "Publication",
-            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_downloads.sql"
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_downloads.sql",
+            "metrics": {"Downloads": format_integer},
+            "title_column": "Output title",
+            "external_link_column": "File name",
+            "sort_column": "Downloads"
         },
         {
             "display_name": "Publication page views",
             "content_type": "Publication",
-            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql"
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
+            "metrics": {"Page views": format_integer},
+            "title_column": "Page title",
+            "external_link_column": "URL",
+            "sort_column": "Page views"
         },
         {
             "display_name": "Comment page views",
             "content_type": "Comment",
-            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql"
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
+            "metrics": {"Page views": format_integer},
+            "title_column": "Page title",
+            "external_link_column": "URL",
+            "sort_column": "Page views"
         },
         {
             "display_name": "Explainer page views",
             "content_type": "Explainer",
-            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql"
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
+            "metrics": {"Page views": format_integer},
+            "title_column": "Page title",
+            "external_link_column": "URL",
+            "sort_column": "Page views"
         }
     ],
     "Events": [
         {
             "display_name": "Events",
             "content_type": "Event",
-            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql"
+            "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
+            "metrics": {"Page views": format_integer},
+            "title_column": "Page title",
+            "external_link_column": "URL",
+            "sort_column": "Page views"
         }
     ]
 }
@@ -113,31 +133,24 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         )
 
                     # DRAW TABLE
-                    if table_config["sql_script"] == "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql":
-                        metrics = {"Page views": format_integer}
-                        sort_column = "Page views"
-                    elif table_config["sql_script"] == "streamlit_testing/sql/dashboard/web_metrics/home_downloads.sql":
-                        metrics = {"Downloads": format_integer}
-                        sort_column = "Downloads"
-
                     column_defs, grid_options = elements.set_table_defaults(
                         df=df,
-                        metrics=metrics,
-                        sort_columns=sort_column,
+                        metrics=table_config["metrics"],
+                        sort_columns=table_config["sort_column"],
                         sort_order="desc",
                     )
 
                     column_defs = elements.create_external_link(
                         column_defs,
-                        "URL",
+                        table_config["external_link_column"],
                     )
 
-                    column_defs[sort_column]["valueFormatter"] = format_integer
+                    column_defs[table_config["sort_column"]]["valueFormatter"] = format_integer
 
                     # Set explicit column widths
-                    column_defs["Page title"]["width"] = 300
-                    column_defs["URL"]["width"] = 200
-                    column_defs[sort_column]["width"] = 100
+                    column_defs[table_config["title_column"]]["width"] = 300
+                    column_defs[table_config["external_link_column"]]["width"] = 200
+                    column_defs[table_config["sort_column"]]["width"] = 100
 
                     # Disable pagination
                     grid_options["pagination"] = False
