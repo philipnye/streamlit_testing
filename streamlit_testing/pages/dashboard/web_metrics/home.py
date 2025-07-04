@@ -18,7 +18,6 @@ TAB_CONFIG = {
             "metrics": {"Downloads": format_integer},
             "title_column": "Output title",
             "external_link_column": "File name",
-            "sort_column": "Downloads",
             "background_color": "#e2f8ff"       # Blue lighter 90%
         },
         {
@@ -27,8 +26,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
-            "external_link_column": "URL",
-            "sort_column": "Page views"
+            "external_link_column": "URL"
         },
         {
             "display_name": "Comment page views",
@@ -36,8 +34,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
-            "external_link_column": "URL",
-            "sort_column": "Page views"
+            "external_link_column": "URL"
         },
         {
             "display_name": "Explainer page views",
@@ -45,8 +42,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
-            "external_link_column": "URL",
-            "sort_column": "Page views"
+            "external_link_column": "URL"
         }
     ],
     "Events": [
@@ -56,8 +52,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
-            "external_link_column": "URL",
-            "sort_column": "Page views"
+            "external_link_column": "URL"
         }
     ]
 }
@@ -137,8 +132,8 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                     column_defs, grid_options = elements.set_table_defaults(
                         df=df,
                         metrics=table_config["metrics"],
-                        sort_columns=table_config["sort_column"],
-                        sort_order="desc",
+                        sort_columns="index",
+                        sort_order="asc",
                     )
 
                     column_defs = elements.create_external_link(
