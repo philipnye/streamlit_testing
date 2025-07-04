@@ -44,7 +44,7 @@ for tab_index, (tab_name, content_types) in enumerate(TAB_CONFIG.items()):
         col1, col2 = st.columns([1, 5])
         with col1:
             page_filter = st.selectbox(
-                label="Page filter",
+                label="Choose pages of interest",
                 options=["All pages", "New/updated pages"],
                 index=0,
                 help="Select whether to include all pages or only those that were published or updated during the selected date range.",
