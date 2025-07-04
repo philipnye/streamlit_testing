@@ -4,7 +4,6 @@ import streamlit as st
 from st_aggrid import AgGrid, StAggridTheme
 
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
-from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer
@@ -20,7 +19,7 @@ TAB_CONFIG = {
             "title_column": "Output title",
             "external_link_column": "File name",
             "sort_column": "Downloads",
-            "background_color": COLOURS["blue_lighter_80pct"]
+            "background_color": "#e2f8ff"       # Blue lighter 90%
         },
         {
             "display_name": "Publication page views",
