@@ -8,6 +8,12 @@ import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer
 
+# SET CONSTANTS
+TAB_CONFIG = {
+    "Publications, comments, explainers": ["Publication", "Comment", "Explainer"],
+    "Events": ["Event"]
+}
+
 # CONNECT TO DATABASE
 connection = elements.connect_database()
 
@@ -28,14 +34,10 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
 )
 
 # CREATE TABS
-tab_config = {
-    "Publications, comments, explainers": ["Publication", "Comment", "Explainer"],
-    "Events": ["Event"]
-}
-tab_names = list(tab_config.keys())
+tab_names = list(TAB_CONFIG.keys())
 tabs = st.tabs(tab_names)
 
-for tab_index, (tab_name, content_types) in enumerate(tab_config.items()):
+for tab_index, (tab_name, content_types) in enumerate(TAB_CONFIG.items()):
     with tabs[tab_index]:
 
         # DRAW PAGE FILTER INPUT
