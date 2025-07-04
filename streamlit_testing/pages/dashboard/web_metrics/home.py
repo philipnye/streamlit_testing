@@ -32,6 +32,17 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     min_date=df_date_range["min_date"][0],
     max_date=df_date_range["max_date"][0],
 )
+# # DRAW PAGE FILTER INPUT
+col1, col2 = st.columns([1, 5])
+
+with col1:
+    page_filter = st.selectbox(
+        label="Choose pages of interest",
+        options=["All pages", "New/updated pages"],
+        index=0,
+        help="Select whether to include all pages or only those that were published or updated during the selected date range.",
+        key="page_filter",
+    )
 
 # CREATE TABS
 tab_names = list(TAB_CONFIG.keys())
@@ -39,17 +50,6 @@ tabs = st.tabs(tab_names)
 
 for tab_index, (tab_name, content_types) in enumerate(TAB_CONFIG.items()):
     with tabs[tab_index]:
-
-        # DRAW PAGE FILTER INPUT
-        col1, col2 = st.columns([1, 5])
-        with col1:
-            page_filter = st.selectbox(
-                label="Choose pages of interest",
-                options=["All pages", "New/updated pages"],
-                index=0,
-                help="Select whether to include all pages or only those that were published or updated during the selected date range.",
-                key=f"page_filter_{tab_index}",
-            )
 
         # CREATE TWO COLUMNS TO HOLD CONTENT
         num_content_types = len(content_types)
