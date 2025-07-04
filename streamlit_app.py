@@ -73,6 +73,7 @@ st.markdown(
         <style>
             div.ag-watermark {
                 display: none !important;
+                opacity: 0 !important;
             }
         </style>
     """,
