@@ -141,12 +141,17 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         table_config["external_link_column"],
                     )
 
-                    column_defs[table_config["sort_column"]]["valueFormatter"] = format_integer
+                    # Apply formatting to metric columns
+                    for metric_column in table_config["metrics"]:
+                        column_defs[metric_column]["valueFormatter"] = format_integer
 
                     # Set explicit column widths
                     column_defs[table_config["title_column"]]["width"] = 300
                     column_defs[table_config["external_link_column"]]["width"] = 200
-                    column_defs[table_config["sort_column"]]["width"] = 100
+
+                    # Set width for metric columns
+                    for metric_column in table_config["metrics"]:
+                        column_defs[metric_column]["width"] = 100
 
                     # Disable pagination
                     grid_options["pagination"] = False
