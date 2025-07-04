@@ -37,6 +37,7 @@ tabs = st.tabs(tab_names)
 
 for tab_index, (tab_name, content_types) in enumerate(tab_config.items()):
     with tabs[tab_index]:
+
         # DRAW PAGE FILTER INPUT
         col1, col2 = st.columns([1, 5])
         with col1:
@@ -49,11 +50,13 @@ for tab_index, (tab_name, content_types) in enumerate(tab_config.items()):
             )
 
         # CREATE COLUMNS DYNAMICALLY
+        # For single content type, use full width
         if len(content_types) == 1:
-            # For single content type, use full width
+
             columns = [st.container()]
+
+        # For multiple content types, split into columns
         else:
-            # For multiple content types, split into columns
             columns = st.columns(len(content_types))
 
         # LOAD DATA AND CREATE TABLES FOR EACH CONTENT TYPE
