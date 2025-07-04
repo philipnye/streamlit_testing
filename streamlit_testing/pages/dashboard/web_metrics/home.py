@@ -52,7 +52,6 @@ for tab_index, (tab_name, content_types) in enumerate(tab_config.items()):
         # CREATE COLUMNS DYNAMICALLY
         # For single content type, use full width
         if len(content_types) == 1:
-
             columns = [st.container()]
 
         # For multiple content types, split into columns
