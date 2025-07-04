@@ -1,9 +1,9 @@
 import os
 
 import streamlit as st
-from st_aggrid import AgGrid
+from st_aggrid import AgGrid, StAggridTheme
 
-from streamlit_testing.config.ag_grid_theme import ag_grid_theme
+from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer, set_metrics
@@ -115,6 +115,6 @@ AgGrid(
     update_on=[],
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
-    theme=ag_grid_theme,
+    theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
     height=elements.calculate_ag_grid_height(len(df_grouped)),
 )

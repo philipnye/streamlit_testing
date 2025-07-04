@@ -1,9 +1,10 @@
 import os
 
 import streamlit as st
-from st_aggrid import AgGrid
+from st_aggrid import AgGrid, StAggridTheme
 
-from streamlit_testing.config.ag_grid_theme import ag_grid_theme
+from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
+from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer
@@ -18,7 +19,8 @@ TAB_CONFIG = {
             "metrics": {"Downloads": format_integer},
             "title_column": "Output title",
             "external_link_column": "File name",
-            "sort_column": "Downloads"
+            "sort_column": "Downloads",
+            "background_color": COLOURS["blue_lighter_80pct"]
         },
         {
             "display_name": "Publication page views",
@@ -174,6 +176,11 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                     }
                     grid_options["columnDefs"].insert(0, index_column)
 
+                    # Create theme with background color if specified
+                    theme_params = AG_GRID_THEME_DEFAULTS.copy()
+                    if "background_color" in table_config:
+                        theme_params["backgroundColor"] = table_config["background_color"]
+
                     AgGrid(
                         df,
                         key=f"ag_{table_config['content_type'].lower()}_{table_config['sql_script'].replace('.sql', '')}_{tab_index}",
@@ -181,6 +188,6 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         update_on=[],
                         gridOptions=grid_options,
                         allow_unsafe_jscode=True,
-                        theme=ag_grid_theme,
+                        theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**theme_params),
                         height=500,
                     )
