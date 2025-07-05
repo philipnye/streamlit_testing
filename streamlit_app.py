@@ -58,7 +58,7 @@ st.markdown(
             }
         </style>
         <style>
-            a[href$="summary"] {
+            a[href$="web_metrics_summary"] {
                 display: none;
             }
         </style>
