@@ -21,7 +21,6 @@ Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit
 
 ## Project structure
 ```
-
 ├── .streamlit/
 │   ├── config.toml
 │
@@ -39,6 +38,8 @@ Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit
 |   ├── pages/
 |   │   ├── dashboard/
 |   │       ├── web_metrics/
+|   │          ├── md/        <<< Markdown text to be rendered in pages
+|   │             ├── <page name>.md
 |   │          ├── <page name>.py
 |   │          ├── config.py        <<< Variables used across multiple pages
 |   │          ├── elements.py     <<< Page elements used across multiple pages
