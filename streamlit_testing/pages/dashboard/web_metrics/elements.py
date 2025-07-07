@@ -15,6 +15,7 @@ from streamlit_testing.config.ag_grid_theme import (
 )
 from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
+from streamlit_testing.pages.dashboard.web_metrics.definitions import DEFINITIONS
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
     compare_dates, format_date,
 )
@@ -99,6 +100,19 @@ def create_internal_link(
     return column_defs
 
 
+def add_column_header_tooltips(
+    column_defs: dict,
+    definitions: dict = DEFINITIONS
+) -> dict:
+    """Add tooltips to column headers using definitions"""
+
+    for column_name, column_def in column_defs.items():
+        if column_name in definitions:
+            column_def["headerTooltip"] = definitions[column_name]
+
+    return column_defs
+
+
 def group_df(
     df: pd.DataFrame,
     group_by: list[str],
@@ -159,6 +173,9 @@ def set_table_defaults(
     for metric, formatter in metrics.items():
         column_defs[metric]["valueFormatter"] = formatter
         column_defs[metric]["sortingOrder"] = ["desc", "asc", None]
+
+    # Add tooltips to column headers
+    column_defs = add_column_header_tooltips(column_defs)
 
     return column_defs, grid_options
 
