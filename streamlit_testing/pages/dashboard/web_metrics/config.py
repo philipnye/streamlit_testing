@@ -44,9 +44,9 @@ METRICS_BY_OUTPUT = [
     "Content type",
     "Published date",
     "Updated date",
-    "Teams",
-    "Authors",
-    "Topics",
+    "Team",
+    "Author",
+    "Topic",
 ]
 METRICS_BY_PAGE = [
     "Page title",
@@ -54,9 +54,9 @@ METRICS_BY_PAGE = [
     "Content type",
     "Published date",
     "Updated date",
-    "Teams",
-    "Authors",
-    "Topics",
+    "Team",
+    "Author",
+    "Topic",
 ]
 SQL_EARLIEST_DATE = "1900-01-01"
 SQL_LATEST_DATE = "9999-12-31"

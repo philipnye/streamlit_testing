@@ -6,15 +6,15 @@ select
     bm.publication_type [Publication type],
     bm.published_date [Published date],
     bm.updated_date [Updated date],
-    t.teams Teams,
-    a.authors Authors,
-    p.topics Topics
+    t.team Team,
+    a.author Author,
+    p.topic Topic
 from corporate.content_basic_metadata_canonical bm
     left join corporate.content_page_titles_canonical pt on
         bm.url = pt.url
     outer apply (
         select
-            string_agg(t.team, ', ') as teams
+            string_agg(t.team, ', ') team
         from corporate.content_teams_canonical t
         where
             bm.url = t.url
@@ -23,7 +23,7 @@ from corporate.content_basic_metadata_canonical bm
     ) t
     outer apply (
         select
-            string_agg(p.topic, ', ') as topics
+            string_agg(p.topic, ', ') topic
         from corporate.content_topics_canonical p
         where
             bm.url = p.url
@@ -32,7 +32,7 @@ from corporate.content_basic_metadata_canonical bm
     ) p
     outer apply (
         select
-            string_agg(a.author, ', ') as authors
+            string_agg(a.author, ', ') author
         from corporate.content_authors_canonical a
         where
             bm.url = a.url

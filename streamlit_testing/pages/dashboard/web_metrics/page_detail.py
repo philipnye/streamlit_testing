@@ -43,12 +43,12 @@ if df_content_metadata.empty:
 
 # DRAW PAGE HEADER
 st.title(df_content_metadata["Page title"].iloc[0])
-st.subheader(df_content_metadata["Authors"].iloc[0])
+st.subheader(df_content_metadata["Author"].iloc[0])
 st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["URL"].iloc[0])
 
 st.dataframe(
     df_content_metadata[[
-        "Content type", "Published date", "Updated date", "Teams", "Topics"
+        "Content type", "Published date", "Updated date", "Team", "Topic"
     ]].T,
 )
 

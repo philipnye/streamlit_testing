@@ -6,9 +6,9 @@ select
     bm.publication_type [Publication type],
     bm.published_date [Published date],
     bm.updated_date [Updated date],
-    t.teams Teams,
-    a.authors Authors,
-    p.topics Topics,
+    t.team Team,
+    a.author Author,
+    p.topic Topic,
     pv.page_views [Page views],
     pv.active_users [Active users],
     pv.user_engagement_duration [User engagement duration],
@@ -23,7 +23,7 @@ from corporate.page_views_canonical pv
         bm.url = pt.url
     outer apply (
         select
-            string_agg(t.team, ', ') as teams
+            string_agg(t.team, ', ') team
         from corporate.content_teams_canonical t
         where
             bm.url = t.url
@@ -32,7 +32,7 @@ from corporate.page_views_canonical pv
     ) t
     outer apply (
         select
-            string_agg(p.topic, ', ') as topics
+            string_agg(p.topic, ', ') topic
         from corporate.content_topics_canonical p
         where
             bm.url = p.url
@@ -41,7 +41,7 @@ from corporate.page_views_canonical pv
     ) p
     outer apply (
         select
-            string_agg(a.author, ', ') as authors
+            string_agg(a.author, ', ') author
         from corporate.content_authors_canonical a
         where
             bm.url = a.url

@@ -9,9 +9,9 @@ select
     bm.publication_type [Publication type],
     bm.published_date [Published date],
     bm.updated_date [Updated date],
-    t.teams Teams,
-    a.authors Authors,
-    p.topics Topics,
+    t.team Team,
+    a.author Author,
+    p.topic Topic,
     d.event_count Downloads
 from corporate.downloads_canonical d
     outer apply (
@@ -24,7 +24,7 @@ from corporate.downloads_canonical d
         bm.url = pt.url
     outer apply (
         select
-            string_agg(t.team, ', ') as teams
+            string_agg(t.team, ', ') team
         from corporate.content_teams_canonical t
         where
             bm.url = t.url
@@ -33,7 +33,7 @@ from corporate.downloads_canonical d
     ) t
     outer apply (
         select
-            string_agg(p.topic, ', ') as topics
+            string_agg(p.topic, ', ') topic
         from corporate.content_topics_canonical p
         where
             bm.url = p.url
@@ -42,7 +42,7 @@ from corporate.downloads_canonical d
     ) p
     outer apply (
         select
-            string_agg(a.author, ', ') as authors
+            string_agg(a.author, ', ') author
         from corporate.content_authors_canonical a
         where
             bm.url = a.url
