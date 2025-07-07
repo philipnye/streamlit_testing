@@ -42,7 +42,9 @@ Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit
 |   │             ├── <page name>.md
 |   │          ├── <page name>.py
 |   │          ├── config.py        <<< Variables used across multiple pages
+|   │          ├── definitions.py     <<< Definitions to be rendered in the UI
 |   │          ├── elements.py     <<< Page elements used across multiple pages
+|   │          ├── notes.py     <<< Notes to be rendered in the UI
 |   │          ├── utils.py     <<< (Non-page element) functions and code snippets used across multiple pages
 |   │
 |   ├── sql/
