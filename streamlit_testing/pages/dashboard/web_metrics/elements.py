@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import math
 import os
 from typing import List
 
@@ -305,7 +306,6 @@ def draw_line_chart_section(
         if not y_data.empty:
             y_max = y_data.max()
 
-            import math
             if y_max == 0:
                 y_axis_max = 1
             else:
@@ -351,6 +351,65 @@ def draw_line_chart_section(
                 showlegend=True
             ))
 
+        # Handle special formatting for time-based metrics
+        yaxis_config = dict(
+            zeroline=True,
+            zerolinecolor=COLOURS["dark_grey"],
+            tickfont=dict(
+                color=COLOURS["dark_grey"],
+                family="Open Sans, sans-serif",
+                size=14,
+            ),
+            gridcolor=COLOURS["grey_lighter_80pct"],
+            fixedrange=True,
+        )
+
+        # Special handling for time metrics
+        if config.YAXIS_TICKFORMAT.get(selected_metric) == "hh:mm:ss":
+
+            def format_seconds_to_hms(seconds):
+                """Convert seconds to hh:mm:ss format"""
+                if pd.isna(seconds) or seconds < 0:
+                    return "00:00:00"
+                hours = int(seconds // 3600)
+                minutes = int((seconds % 3600) // 60)
+                secs = int(seconds % 60)
+                return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
+            # Generate appropriate tick values based on the data range
+            if y_axis_max <= 60:
+                tick_interval = 10
+            elif y_axis_max <= 300:
+                tick_interval = 30
+            elif y_axis_max <= 600:
+                tick_interval = 60
+            elif y_axis_max <= 1800:
+                tick_interval = 300
+            elif y_axis_max <= 3600:
+                tick_interval = 600
+            else:
+                tick_interval = 900
+
+            # Round y_axis_max up to the next tick interval to ensure regular spacing
+            adjusted_y_axis_max = math.ceil(y_axis_max / tick_interval) * tick_interval
+
+            # Generate tick values at regular intervals
+            tick_vals = list(range(0, adjusted_y_axis_max + 1, tick_interval))
+            tick_text = [format_seconds_to_hms(val) for val in tick_vals]
+
+            # Update the y-axis range to match the adjusted maximum
+            yaxis_config["range"] = [0, adjusted_y_axis_max * 1.01]
+
+            yaxis_config.update({
+                "tickvals": tick_vals,
+                "ticktext": tick_text,
+            })
+
+        # Use standard tick formatting for other metrics
+        else:
+            yaxis_config["range"] = [0, y_axis_max * 1.01]
+            yaxis_config["tickformat"] = config.YAXIS_TICKFORMAT.get(selected_metric)
+
         fig.update_layout(
             xaxis_title="",
             yaxis_title="",
@@ -366,19 +425,7 @@ def draw_line_chart_section(
                 fixedrange=True,
                 tickformat="%a %e %b",
             ),
-            yaxis=dict(
-                zeroline=True,
-                zerolinecolor=COLOURS["dark_grey"],
-                tickfont=dict(
-                    color=COLOURS["dark_grey"],
-                    family="Open Sans, sans-serif",
-                    size=14,
-                ),
-                gridcolor=COLOURS["grey_lighter_80pct"],
-                range=[0, y_axis_max * 1.01],
-                tickformat=config.YAXIS_TICKFORMAT.get(selected_metric),
-                fixedrange=True,
-            ),
+            yaxis=yaxis_config,
             plot_bgcolor="white",
         )
 

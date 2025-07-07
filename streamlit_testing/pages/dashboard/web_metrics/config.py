@@ -101,7 +101,7 @@ YAXIS_TICKFORMAT = {
     "Page views": ",d",
     "Active users": ",d",
     "Page views per active user": ".1f",
-    "Average engagement time per active user": ",d",
+    "Average engagement time per active user": "hh:mm:ss",
     "Downloads": ",d",
     "Download rate": ".0%",
 }
