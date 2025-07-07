@@ -74,11 +74,6 @@ WEB_TRAFFIC_METRIC_CALCULATIONS = {
         "Active users",
         "divide"
     ),
-    "Engagement rate": (
-        "Engaged sessions",
-        "Sessions",
-        "divide"
-    ),
     "Average engagement time per active user": (
         "User engagement duration",
         "Active users",
@@ -94,7 +89,6 @@ WEB_TRAFFIC_METRICS_DISPLAY = {
     "Page views": format_integer,
     "Active users": format_integer,
     "Page views per active user": format_decimal,
-    "Engagement rate": format_percentage,
     "Average engagement time per active user": format_time,
     "Downloads": format_integer,
     "Download rate": format_percentage,
@@ -111,7 +105,6 @@ YAXIS_TICKFORMAT = {
     "Page views": ",d",
     "Active users": ",d",
     "Page views per active user": ".1f",
-    "Engagement rate": ".0%",
     "Average engagement time per active user": ",d",
     "Downloads": ",d",
     "Download rate": ".0%",

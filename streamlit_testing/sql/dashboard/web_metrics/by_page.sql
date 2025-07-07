@@ -12,7 +12,6 @@ select
     pv.page_views [Page views],
     pv.active_users [Active users],
     pv.sessions Sessions,
-    pv.engaged_sessions [Engaged sessions],
     pv.user_engagement_duration [User engagement duration],
     d.event_count Downloads
 from corporate.page_views_canonical pv
