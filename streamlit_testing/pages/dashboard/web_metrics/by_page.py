@@ -88,7 +88,8 @@ column_defs = elements.create_internal_link(
 )
 column_defs = elements.create_external_link(
     column_defs,
-    "URL",
+    "Link",
+    "View page ⮺"
 )
 column_defs = elements.format_date_cols(
     column_defs,

@@ -17,8 +17,9 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_downloads.sql",
             "metrics": {"Downloads": format_integer},
             "title_column": "Output title",
-            "external_link_column": "File name",
-            "background_color": "#e2f8ff"       # Blue lighter 90%
+            "external_link_column": "Link",
+            "external_link_text": "View output ⮺",
+            "background_color": "#e2f8ff",       # Blue lighter 90%
         },
         {
             "display_name": "Publication page views",
@@ -26,7 +27,8 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
-            "external_link_column": "URL"
+            "external_link_column": "Link",
+            "external_link_text": "View page ⮺",
         },
         {
             "display_name": "Comment page views",
@@ -34,7 +36,8 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
-            "external_link_column": "URL"
+            "external_link_column": "Link",
+            "external_link_text": "View page ⮺",
         },
         {
             "display_name": "Explainer page views",
@@ -42,7 +45,8 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
-            "external_link_column": "URL"
+            "external_link_column": "Link",
+            "external_link_text": "View page ⮺",
         }
     ],
     "Events": [
@@ -52,7 +56,8 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
-            "external_link_column": "URL"
+            "external_link_column": "Link",
+            "external_link_text": "View page ⮺",
         }
     ]
 }
@@ -139,6 +144,7 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                     column_defs = elements.create_external_link(
                         column_defs,
                         table_config["external_link_column"],
+                        table_config["external_link_text"]
                     )
 
                     # Apply formatting to metric columns

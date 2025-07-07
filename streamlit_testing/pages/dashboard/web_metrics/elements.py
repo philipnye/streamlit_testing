@@ -50,6 +50,7 @@ def calculate_derived_metrics(
 def create_external_link(
     column_defs: dict,
     column: str,
+    link_text: str
 ) -> dict:
     """Create external link column"""
 
@@ -57,7 +58,7 @@ def create_external_link(
         class UrlCellRenderer {{
             init(params) {{
                 this.eGui = document.createElement("a");
-                this.eGui.innerText = "View output ⮺";
+                this.eGui.innerText = "{link_text}";
                 this.eGui.setAttribute(
                     "href", "https://www.instituteforgovernment.org.uk" + params.value
                 );
@@ -84,7 +85,7 @@ def create_internal_link(
                 this.eGui = document.createElement("a");
                 this.eGui.innerText = params.value;
                 this.eGui.setAttribute(
-                    "href", "/web_metrics_page_detail?url=" + params.data.URL
+                    "href", "/web_metrics_page_detail?url=" + params.data.Link
                 );
                 this.eGui.setAttribute("style", "text-decoration:none; color:{COLOURS['pink']};");
                 this.eGui.setAttribute("target", "_blank");

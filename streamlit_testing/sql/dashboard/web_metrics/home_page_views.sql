@@ -1,6 +1,6 @@
 select top 10
     pt.page_title [Page title],
-    pv.url URL,
+    pv.url Link,
     sum(pv.page_views) [Page views]
 from corporate.page_views_canonical pv
     left join corporate.content_basic_metadata_canonical bm on

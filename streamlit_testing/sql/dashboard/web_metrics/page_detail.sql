@@ -1,7 +1,7 @@
 -- Content metadata
 select
     pt.page_title [Page title],
-    bm.url URL,
+    bm.url Link,
     bm.content_type [Content type],
     bm.publication_type [Publication type],
     bm.published_date [Published date],

@@ -60,16 +60,16 @@ df_grouped_by_day = df[["Date"] + METRICS_RAW].drop_duplicates().groupby("Date")
 
 if breakdowns == []:
     df.insert(0, "Category", "All pages")
-    df_grouped = df[["Category", "URL"] + METRICS_RAW].drop_duplicates().groupby("Category").agg(
-        Pages=("URL", "nunique"),
+    df_grouped = df[["Category", "Link"] + METRICS_RAW].drop_duplicates().groupby("Category").agg(
+        Pages=("Link", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
 else:
-    df_grouped = df[breakdowns + ["URL"] + METRICS_RAW].drop_duplicates().groupby(
+    df_grouped = df[breakdowns + ["Link"] + METRICS_RAW].drop_duplicates().groupby(
         breakdowns,
         dropna=False
     ).agg(
-        Pages=("URL", "nunique"),
+        Pages=("Link", "nunique"),
         **METRIC_AGGREGATIONS
     ).reset_index()
 

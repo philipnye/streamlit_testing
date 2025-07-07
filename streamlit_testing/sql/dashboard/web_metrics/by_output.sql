@@ -3,7 +3,7 @@
 select
     d.date Date,
     pt.page_title [Output title],
-    d.file_name [File name],
+    d.file_name Link,
     d.file_extension [File extension],
     bm.content_type [Content type],
     bm.publication_type [Publication type],

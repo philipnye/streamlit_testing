@@ -84,7 +84,8 @@ column_defs, grid_options = elements.set_table_defaults(
 
 column_defs = elements.create_external_link(
     column_defs,
-    "File name",
+    "Link",
+    "View output ⮺"
 )
 
 column_defs = elements.format_date_cols(

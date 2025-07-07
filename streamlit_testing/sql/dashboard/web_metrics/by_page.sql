@@ -1,7 +1,7 @@
 select
     pv.date Date,
     pt.page_title [Page title],
-    pv.url URL,
+    pv.url Link,
     bm.content_type [Content type],
     bm.publication_type [Publication type],
     bm.published_date [Published date],

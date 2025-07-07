@@ -39,7 +39,7 @@ DOWNLOAD_METRICS_RAW = [
 ]
 METRICS_BY_OUTPUT = [
     "Output title",
-    "File name",
+    "Link",
     "File extension",
     "Content type",
     "Published date",
@@ -50,7 +50,7 @@ METRICS_BY_OUTPUT = [
 ]
 METRICS_BY_PAGE = [
     "Page title",
-    "URL",
+    "Link",
     "Content type",
     "Published date",
     "Updated date",
