@@ -162,6 +162,11 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                     # Disable pagination
                     grid_options["pagination"] = False
 
+                    # Enable auto-sizing on second+ tabs
+                    # NB: This is to get around an issue with streamlit-aggrid, with autosizing not working for tabs bar the first (https://github.com/PablocFonseca/streamlit-aggrid/issues/249)
+                    if tab_index > 0:
+                        grid_options["autoSizeStrategy"] = "SizeColumnsToFitProvidedWidthStrategy"
+
                     # Add row numbers to show index
                     grid_options["rowClassRules"] = {
                         "row-index": "true"
