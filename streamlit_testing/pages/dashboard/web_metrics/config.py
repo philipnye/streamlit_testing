@@ -63,7 +63,6 @@ SQL_LATEST_DATE = "9999-12-31"
 WEB_TRAFFIC_METRIC_AGGREGATIONS = {
     "Page views": ("Page views", "sum"),
     "Active users": ("Active users", "sum"),
-    "Sessions": ("Sessions", "sum"),
     "User engagement duration": ("User engagement duration", "sum"),
     "Downloads": ("Downloads", "sum"),
 }
@@ -95,7 +94,6 @@ WEB_TRAFFIC_METRICS_DISPLAY = {
 WEB_TRAFFIC_METRICS_RAW = [
     "Page views",
     "Active users",
-    "Sessions",
     "User engagement duration",
     "Downloads",
 ]
