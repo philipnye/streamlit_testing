@@ -6,6 +6,7 @@ from st_aggrid import AgGrid, StAggridTheme
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
+from streamlit_testing.pages.dashboard.web_metrics.notes import NOTES
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer
 
 # SET CONSTANTS
@@ -20,6 +21,7 @@ TAB_CONFIG = {
             "external_link_column": "Link",
             "external_link_text": "View output ⮺",
             "background_color": "#e2f8ff",       # Blue lighter 90%
+            "notes": NOTES["downloads_note"],
         },
         {
             "display_name": "Publication page views",
@@ -201,3 +203,6 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**theme_params),
                         height=500,
                     )
+
+                    if "notes" in table_config:
+                        st.warning(table_config["notes"])

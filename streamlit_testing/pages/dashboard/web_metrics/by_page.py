@@ -7,6 +7,7 @@ from st_aggrid import AgGrid, StAggridTheme
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
+from streamlit_testing.pages.dashboard.web_metrics.notes import NOTES
 from streamlit_testing.pages.dashboard.web_metrics.utils import set_metrics
 
 # SET METRIC TYPE
@@ -109,3 +110,5 @@ AgGrid(
     theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
     height=elements.calculate_ag_grid_height(len(df_by_page)),
 )
+
+st.warning(NOTES["downloads_note"])

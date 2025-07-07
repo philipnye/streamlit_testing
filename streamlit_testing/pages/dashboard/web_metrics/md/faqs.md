@@ -13,3 +13,8 @@ The latter group consists of pages which haven't been accessed since the dashboa
 
 ## What does a publication type of 'Unclassified' mean?
 This group consists of pages which haven't been accessed since the dashboard was developed, and incorrect web addresses that someone has used. For pages which haven't been accessed since the dashboard was developed it is not possible to impute a publication type.
+
+## What does 'Downloads' measure?
+'Downloads' counts all instances where someone clicks a download link or a call-to-action button within the IfG website to download a file.
+
+It does not include instances where someone goes directly to an output by following a link that has been shared with them - it is not possible to measure these instances.
