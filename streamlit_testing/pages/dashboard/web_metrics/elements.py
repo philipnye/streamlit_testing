@@ -459,7 +459,10 @@ def format_date_cols(
         column_defs[metric]["cellRenderer"] = format_date
         column_defs[metric]["comparator"] = compare_dates
         column_defs[metric]["filter"] = "agDateColumnFilter"
-        column_defs[metric]["filterParams"] = {"comparator": compare_dates}
+        column_defs[metric]["filterParams"] = {
+            "comparator": compare_dates,
+            "includeTime": False,
+        }
 
     return column_defs
 
