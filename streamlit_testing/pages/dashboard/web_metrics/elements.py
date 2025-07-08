@@ -479,6 +479,7 @@ def format_date_cols(
         column_defs[metric]["filterParams"] = {
             "comparator": filter_dates,
             "includeTime": False,
+            "maxNumConditions": 1,
         }
 
     return column_defs
