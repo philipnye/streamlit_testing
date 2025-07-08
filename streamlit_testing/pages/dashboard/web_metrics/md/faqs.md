@@ -7,8 +7,8 @@ Content metadata - for example which team owns a page, or the last update date f
 ## What does a content type of 'Other' mean?
 This consists of standalone data visualisations, people pages, press releases and 'IfG in the news' pages.
 
-## What does a content type or publication type of 'Unclassified' mean?
-These consist of pages and outputs for which content metadata isn't available. This is generally either where a page or output hasn't been accessed recently, or where someone has entered an invalid web address.
+## What does 'Unclassified' mean (in the content type, publication type or team colums)?
+These are pages and outputs for which content metadata isn't available. This is generally where a page or output hasn't been accessed recently, the relevant field in the website CMS is empty (in the case of the 'team' column), or where someone has entered an invalid web address.
 
 For pages which haven't been accessed recently, in most cases a content type has been imputed but in some cases this is not possible. It is not possible to impute publication types.
 
