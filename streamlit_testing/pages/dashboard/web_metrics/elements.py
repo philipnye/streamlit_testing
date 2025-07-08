@@ -17,7 +17,7 @@ from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 from streamlit_testing.pages.dashboard.web_metrics.definitions import DEFINITIONS
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
-    compare_dates, format_date,
+    filter_dates, format_date, sort_dates
 )
 
 import ds_utils.database_operations as dbo
@@ -474,10 +474,10 @@ def format_date_cols(
         column_defs[metric]["cellClass"] = "ag-right-aligned-cell"
         column_defs[metric]["headerClass"] = "ag-right-aligned-header"
         column_defs[metric]["cellRenderer"] = format_date
-        column_defs[metric]["comparator"] = compare_dates
+        column_defs[metric]["comparator"] = sort_dates
         column_defs[metric]["filter"] = "agDateColumnFilter"
         column_defs[metric]["filterParams"] = {
-            "comparator": compare_dates,
+            "comparator": filter_dates,
             "includeTime": False,
         }
 

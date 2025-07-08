@@ -17,10 +17,12 @@ with open("streamlit_testing/js/format_percentage.js", "r") as f:
 with open("streamlit_testing/js/format_time.js", "r") as f:
     script = f.read()
     format_time = JsCode(script)
-
-with open("streamlit_testing/js/compare_dates.js", "r") as f:
+with open("streamlit_testing/js/sort_dates_comparator.js", "r") as f:
     script = f.read()
-    compare_dates = JsCode(script)
+    sort_dates = JsCode(script)
+with open("streamlit_testing/js/filter_dates_comparator.js", "r") as f:
+    script = f.read()
+    filter_dates = JsCode(script)
 
 
 def set_metrics(
