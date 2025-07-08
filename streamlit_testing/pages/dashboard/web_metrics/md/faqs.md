@@ -4,15 +4,13 @@ Yes. Web traffic numbers and download numbers can be revised upwards in the firs
 
 Content metadata - for example which team owns a page, or the last update date for an explainer - can also change where it is changed on the website or more accurate data becomes available to the dashboard.
 
-## What does a content type of 'Other/unclassified' mean?
-This group consists of pages where either:
-- Content doesn't fall into one of the other content type categories (this is true of things like standalone data visualisations, people pages, press releases and 'IfG in the news' pages); or
-- Content metadata isn't available for the page.
+## What does a content type of 'Other' mean?
+This consists of standalone data visualisations, people pages, press releases and 'IfG in the news' pages.
 
-The latter group consists of pages which haven't been accessed since the dashboard was developed, and incorrect web addresses that someone has used. For pages which haven't been accessed since the dashboard was developed, in most cases a content type has been imputed but in some cases this is not possible.
+## What does a content type or publication type of 'Unclassified' mean?
+These consist of pages and outputs for which content metadata isn't available. This is generally either where a page or output hasn't been accessed recently, or where someone has entered an invalid web address.
 
-## What does a publication type of 'Unclassified' mean?
-This group consists of pages which haven't been accessed since the dashboard was developed, and incorrect web addresses that someone has used. For pages which haven't been accessed since the dashboard was developed it is not possible to impute a publication type.
+For pages which haven't been accessed recently, in most cases a content type has been imputed but in some cases this is not possible. It is not possible to impute publication types.
 
 ## What does 'Downloads' measure?
 'Downloads' counts all instances where someone clicks a download link or a call-to-action button within the IfG website to download a file.
