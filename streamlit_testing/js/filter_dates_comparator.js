@@ -10,10 +10,12 @@
  * @returns {number}
  */
 function filter_dates(date1, date2) {
-    // Sort blanks to start
-    if (!date1 && !date2) return 0;
-    if (!date1) return -1;
-    if (!date2) return 1;
+    function isMissingDate(val) {
+        return val === null || val === undefined || val === '' || val === 'NaT';
+    }
+
+    // Treat missing dates as blanks
+    if (isMissingDate(date1) || isMissingDate(date2)) return false;
 
     const d1 = date1 instanceof Date ? date1 : new Date(date1);
     const d2 = date2 instanceof Date ? date2 : new Date(date2);
