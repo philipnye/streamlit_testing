@@ -45,7 +45,7 @@ breakdowns = st.pills(
 # Sort breakdowns for consistent ordering
 breakdowns.sort(key=lambda x: config.BREAKDOWNS.index(x))
 
-# LOAD DATA
+# LOAD PAGE DATA
 with open("streamlit_testing/sql/dashboard/web_metrics/summary.sql", "r") as file:
     script = file.read()
 

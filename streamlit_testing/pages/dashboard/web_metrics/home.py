@@ -67,10 +67,7 @@ TAB_CONFIG = {
 # CONNECT TO DATABASE
 connection = elements.connect_database()
 
-# DRAW PAGE HEADER
-st.title("Home")
-
-# DRAW DATE RANGE INPUTS
+# LOAD DATE RANGE DATA
 with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
     script_date_range = file.read()
 
@@ -78,10 +75,19 @@ df_date_range = elements.load_data(
     script_date_range,
     connection,
 )
+
+# DRAW PAGE HEADER
+st.title("Home")
+elements.draw_latest_data_badge(df_date_range["max_date"][0])
+st.markdown("\n\n")
+st.markdown("\n\n")
+
+# DRAW DATE RANGE INPUTS
 date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     min_date=df_date_range["min_date"][0],
     max_date=df_date_range["max_date"][0],
 )
+
 # # DRAW PAGE FILTER INPUT
 col1, col2 = st.columns([1, 5])
 
@@ -117,7 +123,7 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                 with columns[col_idx]:
                     st.subheader(table_config["display_name"])
 
-                    # LOAD DATA
+                    # LOAD PAGE DATA
                     with open(f"{table_config['sql_script']}", "r") as file:
                         script = file.read()
 

@@ -267,6 +267,43 @@ def draw_date_range_inputs(
     return date_range_option, start_date, end_date
 
 
+def draw_badge_with_date(
+    latest_date: str | date,
+    text: str,
+    color: str = "primary"
+) -> None:
+    """Draw badge with date"""
+
+    if isinstance(latest_date, date):
+        latest_date = latest_date.strftime("%#d %B %Y")
+
+    st.badge(text + latest_date, color=color)
+
+    return
+
+
+def draw_latest_data_badge(latest_date: str | date) -> None:
+    """Draw latest data badge"""
+
+    draw_badge_with_date(
+        latest_date=latest_date,
+        text="Includes data up to: ",
+    )
+
+    return
+
+
+def draw_last_updated_badge(latest_date: str | date) -> None:
+    """Draw last updated badge"""
+
+    draw_badge_with_date(
+        latest_date=latest_date,
+        text="Last updated: ",
+    )
+
+    return
+
+
 def draw_line_chart_section(
     df: pd.DataFrame,
     x: str,

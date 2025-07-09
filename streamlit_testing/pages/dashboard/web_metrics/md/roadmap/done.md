@@ -10,3 +10,5 @@ Exclude things that don't have a Google Analytics `eventName` of ‘file_downloa
 
 ### v0.2 - Wed 9 May
 ➡️ **UI: Improve allocation of historic content to teams**
+
+⏰ **UI: Add badges giving latest update dates**

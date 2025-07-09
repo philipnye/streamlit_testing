@@ -25,7 +25,16 @@ METRIC_TYPE = "web_traffic"
 # CONNECT TO DATABASE
 connection = elements.connect_database()
 
-# LOAD DATA
+# LOAD DATE RANGE DATA
+with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
+    script_date_range = file.read()
+
+df_date_range = elements.load_data(
+    script_date_range,
+    connection,
+)
+
+# LOAD PAGE DATA
 with open("streamlit_testing/sql/dashboard/web_metrics/page_detail.sql", "r") as file:
     script = file.read()
 
@@ -43,6 +52,9 @@ if df_content_metadata.empty:
 
 # DRAW PAGE HEADER
 st.title(df_content_metadata["Page title"].iloc[0])
+elements.draw_latest_data_badge(df_date_range["max_date"][0])
+st.markdown("\n\n")
+st.markdown("\n\n")
 st.subheader(df_content_metadata["Author"].iloc[0])
 st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["Link"].iloc[0])
 

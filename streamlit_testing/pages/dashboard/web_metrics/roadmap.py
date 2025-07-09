@@ -1,7 +1,12 @@
 import streamlit as st
 
+import streamlit_testing.pages.dashboard.web_metrics.elements as elements
+
 # DRAW PAGE HEADER
 st.title("Roadmap")
+elements.draw_last_updated_badge("2025-07-09")
+st.markdown("\n\n")
+st.markdown("\n\n")
 
 
 # CREATE FUNCTION
