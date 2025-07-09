@@ -13,4 +13,10 @@ Exclude things that don't have a Google Analytics `eventName` of ‘file_downloa
 
 ⏰ **UI: Add badges giving latest update dates**
 
-⏰ **UI: Set sidebar initial state to open except on small devices**
+📲 **UI: Set sidebar initial state to open except on small devices**
+
+📲 **DATA: Deduplicate outputs**\
+Remove '_1', '_v1' etc. from output filenames
+
+🗃️ **UI: Display output filenames in 'Home', 'By output' pages**\
+Allowing related files (e.g. main publication and briefing document) to be distinguished

@@ -1,6 +1,7 @@
 DEFINITIONS = {
     "Page title": "The title of the web page",
     "Output title": "The title of the downloadable output or publication",
+    "File name": "The name of the specific output or publication file",
     "Link": "URL or file path to access the content",
     "File extension": "The type of file (e.g. PDF, DOCX, XLSX)",
     "Content type": "The category of content (e.g. Publication, Comment, Explainer, Event)",

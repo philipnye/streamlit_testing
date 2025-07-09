@@ -2,7 +2,8 @@
 -- details of the page from which an output is most commonly downloaded
 select top 10
     pt.page_title [Output title],
-    d.file_name [Link],
+    d.file_name_clean [File name],
+    d.file_path_dedupe [Link],
     sum(d.event_count) Downloads
 from corporate.downloads_canonical d
     outer apply (
@@ -29,6 +30,7 @@ where
     )
 group by
     pt.page_title,
-    d.file_name
+    d.file_name_clean,
+    d.file_path_dedupe
 order by
     sum(d.event_count) desc;

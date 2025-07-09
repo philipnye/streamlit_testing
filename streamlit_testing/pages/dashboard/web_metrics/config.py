@@ -39,6 +39,7 @@ DOWNLOAD_METRICS_RAW = [
 ]
 METRICS_BY_OUTPUT = [
     "Output title",
+    "File name",
     "Link",
     "File extension",
     "Content type",

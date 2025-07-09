@@ -18,6 +18,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_downloads.sql",
             "metrics": {"Downloads": format_integer},
             "title_column": "Output title",
+            "file_name_column": "File name",
             "external_link_column": "Link",
             "external_link_text": "View output ⮺",
             "background_color": "#e2f8ff",       # Blue lighter 90%
@@ -161,6 +162,8 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
 
                     # Set explicit column widths
                     column_defs[table_config["title_column"]]["width"] = 300
+                    if "file_name_column" in table_config:
+                        column_defs[table_config["file_name_column"]]["width"] = 300
                     column_defs[table_config["external_link_column"]]["width"] = 200
 
                     # Set width for metric columns

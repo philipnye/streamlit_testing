@@ -85,7 +85,7 @@ column_defs, grid_options = elements.set_table_defaults(
         "Published date": "desc",
         "Updated date": "desc"
     },
-    pin_columns=["Output title"]
+    pin_columns=["Output title", "File name"]
 )
 
 column_defs = elements.create_external_link(
