@@ -268,36 +268,38 @@ def draw_date_range_inputs(
 
 
 def draw_badge_with_date(
-    latest_date: str | date,
+    display_date: str | date,
     text: str,
     color: str = "primary"
 ) -> None:
     """Draw badge with date"""
 
-    if isinstance(latest_date, date):
-        latest_date = latest_date.strftime("%#d %B %Y")
+    if isinstance(display_date, date):
+        display_date = '{dt.day} {dt:%B} {dt.year}'.format(dt=display_date)
+    elif isinstance(display_date, str):
+        display_date = '{dt.day} {dt:%B} {dt.year}'.format(dt=pd.to_datetime(display_date))
 
-    st.badge(text + latest_date, color=color)
+    st.badge(text + display_date, color=color)
 
     return
 
 
-def draw_latest_data_badge(latest_date: str | date) -> None:
+def draw_latest_data_badge(display_date: str | date) -> None:
     """Draw latest data badge"""
 
     draw_badge_with_date(
-        latest_date=latest_date,
+        display_date=display_date,
         text="Includes data up to: ",
     )
 
     return
 
 
-def draw_last_updated_badge(latest_date: str | date) -> None:
+def draw_last_updated_badge(display_date: str | date) -> None:
     """Draw last updated badge"""
 
     draw_badge_with_date(
-        latest_date=latest_date,
+        display_date=display_date,
         text="Last updated: ",
     )
 
