@@ -2,6 +2,7 @@ import streamlit as st
 
 st.set_page_config(
     layout="wide",
+    initial_sidebar_state="auto",
 )
 
 if not st.user.is_logged_in:
