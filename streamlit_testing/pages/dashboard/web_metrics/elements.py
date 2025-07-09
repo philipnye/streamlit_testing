@@ -132,7 +132,12 @@ def set_table_defaults(
     sort_order: str | dict[str, str] = "asc",
     pin_columns: str | List[str] | None = None
 ) -> tuple[dict, dict]:
-    """Configure default table options"""
+    """
+    Configure default table options
+
+    Notes:
+    - Care needs to be taken if more than one column is pinned, as on small screen AG Grid can unpin columns left-to-right, which can result in unexpected behaviour (https://github.com/ag-grid/ag-grid/issues/8335)
+    """
 
     grid_builder = GridOptionsBuilder.from_dataframe(df)
     grid_options = grid_builder.build()
