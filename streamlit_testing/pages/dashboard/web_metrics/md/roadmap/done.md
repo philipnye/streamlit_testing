@@ -12,3 +12,5 @@ Exclude things that don't have a Google Analytics `eventName` of ‘file_downloa
 ➡️ **UI: Improve allocation of historic content to teams**
 
 ⏰ **UI: Add badges giving latest update dates**
+
+⏰ **UI: Set sidebar initial state to open except on small devices**
