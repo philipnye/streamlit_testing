@@ -128,6 +128,7 @@ def group_df(
 def set_table_defaults(
     df: pd.DataFrame,
     metrics: dict,
+    sortable: bool = True,
     sort_columns: str | List[str] | None = None,
     sort_order: str | dict[str, str] = "asc",
     filter: bool = True,
@@ -150,6 +151,7 @@ def set_table_defaults(
         "filterParams": {
             "excelMode": "windows",
         },
+        "sortable": sortable,
     }
 
     column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
