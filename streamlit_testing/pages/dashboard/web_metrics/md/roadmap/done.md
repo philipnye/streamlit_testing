@@ -15,8 +15,11 @@ Exclude things that don't have a Google Analytics `eventName` of ‘file_downloa
 
 📲 **UI: Set sidebar initial state to open except on small devices**
 
-📲 **DATA: Deduplicate outputs**\
+©️ **DATA: Deduplicate outputs**\
 Remove '_1', '_v1' etc. from output filenames
 
 🗃️ **UI: Display output filenames in 'Home', 'By output' pages**\
 Allowing related files (e.g. main publication and briefing document) to be distinguished
+
+### v0.3 - Fri 11 May
+💻 **UI: Add extra rule to hide sidebar button on 'Page detail' page**

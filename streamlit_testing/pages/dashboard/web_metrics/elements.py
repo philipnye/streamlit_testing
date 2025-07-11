@@ -207,10 +207,13 @@ def disable_sidebar() -> None:
     st.markdown(
         """
             <style>
-                div[data-testid="stSidebarCollapsedControl"]{
+                div[data-testid="stSidebarCollapsedControl"] {
                     display: none;
                 }
-                section[data-testid="stSidebar"][aria-expanded="true"]{
+                section[data-testid="stSidebar"][aria-expanded="true"] {
+                    display: none;
+                }
+                button[data-testid="stExpandSidebarButton"] {
                     display: none;
                 }
             </style>
