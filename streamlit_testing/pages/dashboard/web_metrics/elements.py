@@ -23,7 +23,7 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import (
 import ds_utils.database_operations as dbo
 
 
-@st.cache_data()
+@st.cache_data(ttl="5h")
 def calculate_derived_metrics(
     df: pd.DataFrame,
     calculations: dict | None
@@ -190,7 +190,7 @@ def set_table_defaults(
     return column_defs, grid_options
 
 
-@st.cache_resource
+@st.cache_resource(ttl="5h")
 def connect_database() -> engine.base.Engine:
     """Connect to SQL database"""
 
@@ -537,7 +537,7 @@ def format_date_cols(
     return column_defs
 
 
-@st.cache_data(show_spinner="Loading data...")
+@st.cache_data(ttl="5h", show_spinner="Loading data...")
 def load_data(
     script: str,
     _connection: engine.base.Engine,
@@ -571,7 +571,7 @@ def raise_page_not_found_message() -> None:
     return
 
 
-@st.cache_data()
+@st.cache_data(ttl="5h")
 def calculate_ag_grid_height(
     num_rows: int,
     row_height: int = None,
