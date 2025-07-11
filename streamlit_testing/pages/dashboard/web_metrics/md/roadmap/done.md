@@ -28,3 +28,5 @@ Allowing related files (e.g. main publication and briefing document) to be disti
 
 📦 **UI: Enable exports from tables**\
 Right-clicking allows copying and export to Excel/CSV
+
+📃 **UI: Show Excel-style lists when filtering tables**
