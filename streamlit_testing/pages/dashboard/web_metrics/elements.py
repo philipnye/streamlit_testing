@@ -480,6 +480,16 @@ def draw_line_chart_section(
             yaxis_config["tickformat"] = config.YAXIS_TICKFORMAT.get(selected_metric)
 
         fig.update_layout(
+            title=dict(
+                text=config.WEB_TRAFFIC_METRICS_TITLE_PREFIX[selected_metric] + " " + selected_metric.lower(),
+                font=dict(
+                    color=COLOURS["dark_grey"],
+                    family="Open Sans, sans-serif",
+                    size=16,
+                ),
+                x=0.01,
+                y=0.9,
+            ),
             xaxis_title="",
             yaxis_title="",
             showlegend=False,

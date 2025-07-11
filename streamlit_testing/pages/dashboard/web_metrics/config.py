@@ -34,6 +34,9 @@ DOWNLOAD_METRIC_CALCULATIONS = None
 DOWNLOAD_METRICS_DISPLAY = {
     "Downloads": format_integer,
 }
+DOWNLOAD_METRICS_TITLE_PREFIX = {
+    "Downloads": "Total",
+}
 DOWNLOAD_METRICS_RAW = [
     "Downloads",
 ]
@@ -93,6 +96,14 @@ WEB_TRAFFIC_METRICS_DISPLAY = {
     "Average engagement time per active user": format_time,
     "Downloads": format_integer,
     "Download rate": format_percentage,
+}
+WEB_TRAFFIC_METRICS_TITLE_PREFIX = {
+    "Page views": "Total",
+    "Active users": "Total",
+    "Page views per active user": "Overall",
+    "Average engagement time per active user": "Overall",
+    "Downloads": "Total",
+    "Download rate": "Average",
 }
 WEB_TRAFFIC_METRICS_RAW = [
     "Page views",
