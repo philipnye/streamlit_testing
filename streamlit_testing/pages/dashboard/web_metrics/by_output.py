@@ -106,7 +106,7 @@ AgGrid(
     df_by_output,
     key="ag",
     license_key=os.environ["AG_GRID_LICENCE_KEY"],
-    enable_enterprise_modules=True,
+    enable_enterprise_modules="enterpriseOnly",
     update_on=[],
     gridOptions=grid_options,
     allow_unsafe_jscode=True,

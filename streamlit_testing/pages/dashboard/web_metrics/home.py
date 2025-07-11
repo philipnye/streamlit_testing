@@ -206,12 +206,11 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         df,
                         key=f"ag_{table_config['content_type'].lower()}_{table_config['sql_script'].replace('.sql', '')}_{tab_index}",
                         license_key=os.environ["AG_GRID_LICENCE_KEY"],
-                        enable_enterprise_modules=True,
+                        enable_enterprise_modules="enterpriseOnly",
                         update_on=[],
                         gridOptions=grid_options,
                         allow_unsafe_jscode=True,
                         theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**theme_params),
-                        custom_css={".ag-watermark": "display: none !important;"},
                         height=500,
                     )
 
