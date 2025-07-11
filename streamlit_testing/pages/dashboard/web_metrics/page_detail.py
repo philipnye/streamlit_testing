@@ -55,14 +55,36 @@ st.title(df_content_metadata["Page title"].iloc[0])
 elements.draw_latest_data_badge(df_date_range["max_date"][0])
 st.markdown("\n\n")
 st.markdown("\n\n")
-st.subheader(df_content_metadata["Author"].iloc[0])
-st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["Link"].iloc[0])
 
-st.dataframe(
+if df_content_metadata["Author"].iloc[0]:
+    st.subheader(df_content_metadata["Author"].iloc[0])
+else:
+    st.subheader("_No author_")
+st.markdown("https://www.instituteforgovernment.org.uk" + df_content_metadata["Link"].iloc[0])
+st.markdown("\n\n")
+
+content_metadata = ["Content type", "Publication type", "Published date", "Updated date", "Team", "Topic"]
+
+for date_col in ["Published date", "Updated date"]:
+    df_content_metadata[date_col] = pd.to_datetime(
+        df_content_metadata[date_col]
+    ).dt.strftime("%d %B %Y")
+
+df_content_metadata = df_content_metadata.fillna("")
+
+st.markdown(
     df_content_metadata[[
         "Content type", "Publication type", "Published date", "Updated date", "Team", "Topic"
-    ]].T,
+    ]].T.reset_index().style.set_table_styles([
+        {"selector": "tr", "props": [("border", "none")]},
+        {"selector": "td", "props": [("border", "none")]},
+        {"selector": "td:first-child", "props": [
+            ("font-weight", "bold"),
+            ("padding-left", "0"),
+        ]},
+    ]).hide(axis=0).hide(axis=1).to_html(), unsafe_allow_html=True
 )
+st.markdown("\n\n")
 
 # DRAW DATE RANGE INPUTS
 with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:

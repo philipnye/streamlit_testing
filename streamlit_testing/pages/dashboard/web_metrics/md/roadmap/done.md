@@ -23,3 +23,5 @@ Allowing related files (e.g. main publication and briefing document) to be disti
 
 ### v0.3 - Fri 11 May
 💻 **UI: Add extra rule to hide sidebar button on 'Page detail' page**
+
+💄 **UI: Improve presentation of 'Page detail' page**
