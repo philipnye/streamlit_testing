@@ -22,7 +22,7 @@ TAB_CONFIG = {
             "external_link_column": "Link",
             "external_link_text": "View output ⮺",
             "background_color": "#e2f8ff",       # Blue lighter 90%
-            "notes": NOTES["downloads_note"],
+            "notes": [NOTES["downloads_note"]],
         },
         {
             "display_name": "Publication page views",
@@ -61,6 +61,7 @@ TAB_CONFIG = {
             "title_column": "Page title",
             "external_link_column": "Link",
             "external_link_text": "View page ⮺",
+            "notes": [NOTES["event_page_views_note"]],
         }
     ]
 }
@@ -215,4 +216,12 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                     )
 
                     if "notes" in table_config:
-                        st.warning(table_config["notes"])
+                        for note in table_config["notes"]:
+                            if note["type"] == "warning":
+                                st.warning(note["text"])
+                            elif note["type"] == "info":
+                                st.info(note["text"])
+                            elif note["type"] == "error":
+                                st.error(note["text"])
+                            elif note["type"] == "success":
+                                st.success(note["text"])

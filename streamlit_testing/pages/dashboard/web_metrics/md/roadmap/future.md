@@ -16,3 +16,6 @@ Ability to compare reach of a page or output over different time periods (e.g. t
 ⚡ **UI: Real-time metrics page, showing usage in the past 30 minutes**
 
 📨 **UI: Automated prompt emails based on spikes in traffic**
+
+### Later phases
+**Could include work to bring event/podcast/mailing list metrics into the dashboard.**

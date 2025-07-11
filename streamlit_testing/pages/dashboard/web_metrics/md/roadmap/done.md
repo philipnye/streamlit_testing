@@ -30,3 +30,5 @@ Allowing related files (e.g. main publication and briefing document) to be disti
 Right-clicking allows copying and export to Excel/CSV
 
 📃 **UI: Show Excel-style lists when filtering tables**
+
+ℹ️ **UI: Add note on event data limitations and add future possibilities to Roadmap**
