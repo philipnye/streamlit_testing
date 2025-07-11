@@ -72,6 +72,23 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Disable watermark
+# NB: Done as a workaround until this issue is fixed: https://github.com/PablocFonseca/streamlit-aggrid/issues/313
+st.markdown(
+    """
+        <style>
+            div.ag-watermark {
+                display: none !important;
+                opacity: 0 !important;
+            }
+            div.ag-watermark::before {
+                display: none !important;
+                opacity: 0 !important;
+            }
+        </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # RUN PAGE
 pg.run()
