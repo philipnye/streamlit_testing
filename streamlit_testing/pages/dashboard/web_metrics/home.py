@@ -54,7 +54,7 @@ TAB_CONFIG = {
     ],
     "Events": [
         {
-            "display_name": "Events",
+            "display_name": "Event page views",
             "content_type": "Event",
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
