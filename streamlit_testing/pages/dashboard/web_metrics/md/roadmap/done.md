@@ -34,3 +34,7 @@ Right-clicking allows copying and export to Excel/CSV
 ℹ️ **UI: Add note on event data limitations and add future possibilities to Roadmap**
 
 ⁉️ **UI: Add details of how to provide feedback to FAQs**
+
+🏛️ **UI: Disable sorting, filtering, reordering columns and locking columns in 'Home' page tables**
+
+🪧 **UI: Clarify scope selection wording on 'Home' page**
