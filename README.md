@@ -70,6 +70,8 @@ The following environment variables are used by the app:
 - `ODBC_AUTHENTICATION`: Authentication type to be used in database connection
 - `AZURE_CLIENT_ID`: Username to be used in database connection
 - `AZURE_CLIENT_SECRET`: Password to be used in database connection
+- `DS_CONTACT_EMAIL_ADDRESS`: Email address to be used for contacting the data science team
+- `IFG_WEB_ISSUES_FILE_LINK`: Link to document where web issues are logged
 
 ## Licences
 An AG Grid licence is held in order to make use of all [`streamlit-aggrid` features](https://github.com/PablocFonseca/streamlit-aggrid). The license is perpetual - i.e. no need for renewal.
