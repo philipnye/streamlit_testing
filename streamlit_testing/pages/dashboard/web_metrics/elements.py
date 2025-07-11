@@ -130,6 +130,7 @@ def set_table_defaults(
     metrics: dict,
     sort_columns: str | List[str] | None = None,
     sort_order: str | dict[str, str] = "asc",
+    filter: bool = True,
     pin_columns: str | List[str] | None = None
 ) -> tuple[dict, dict]:
     """
@@ -145,7 +146,7 @@ def set_table_defaults(
     grid_options["pagination"] = True
     grid_options["paginationPageSize"] = 20
     grid_options["defaultColDef"] = {
-        "filter": True,
+        "filter": filter,
         "filterParams": {
             "excelMode": "windows",
         },
