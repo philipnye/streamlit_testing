@@ -32,3 +32,5 @@ Right-clicking allows copying and export to Excel/CSV
 📃 **UI: Show Excel-style lists when filtering tables**
 
 ℹ️ **UI: Add note on event data limitations and add future possibilities to Roadmap**
+
+⁉️ **UI: Add details of how to provide feedback to FAQs**

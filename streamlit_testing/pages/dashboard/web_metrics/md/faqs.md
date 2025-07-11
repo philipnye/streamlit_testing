@@ -1,3 +1,13 @@
+## I have some feedback. How should I share it?
+| Category    | Process |
+| -------- | ------- |
+| 🚨 **The dashboard is broken in a major way**<br>I.e. you get an on-screen error message or can’t access the dashboard | <a href="https://teams.microsoft.com/l/chat/0/0?users={{DS_CONTACT_EMAIL_ADDRESS}}">Drop Philip a message on Teams</a> |
+| ⚠️ **The dashboard is broken in a minor way**<br>I.e. something doesn’t work as you’d expect | <a href="mailto:{{DS_CONTACT_EMAIL_ADDRESS}}?subject=Analytics dashboard - issue">Send a short email to Philip with the subject line 'Analytics dashboard - issue'</a>. Include a line or two under each of the following headings:<br>&emsp;- The page(s) affected<br>&emsp;- What I was trying to do<br>&emsp;- What actually happened |
+| 💡 **I have a feature idea** | The <a href="/web_metrics_roadmap" target="_self">Roadmap page</a> includes some existing feature ideas.<br><br>For anything not on that list, <a href="mailto:{{DS_CONTACT_EMAIL_ADDRESS}}?subject=Analytics dashboard - feature idea">send a short email to Philip with the subject line 'Analytics dashboard - feature idea'</a> |
+| 🔢 **Data shown in the dashboard is wrong**<br>E.g. content is allocated to the wrong team or author details are missing/incorrect | Add details [to this document]({{IFG_WEB_ISSUES_FILE_LINK}}) |
+
+
+
 ## Can data in the dashboard change?
 
 Yes. Web traffic numbers and download numbers can be revised upwards in the first 48 hours as Google Analytics (the tool we use to track web metrics) takes 24&ndash;48 hours to fully process web traffic.
