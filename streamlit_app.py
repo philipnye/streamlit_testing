@@ -14,7 +14,7 @@ st.sidebar.button("Log out", type="tertiary", on_click=st.logout)
 
 pg = st.navigation(
     {
-        "Web traffic": [
+        "Analytics dashboard": [
             st.Page(
                 "streamlit_testing/pages/dashboard/web_metrics/home.py",
                 title="Home",
