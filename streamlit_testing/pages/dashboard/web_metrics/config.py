@@ -44,7 +44,7 @@ METRICS_BY_OUTPUT = [
     "Output title",
     "File name",
     "Link",
-    "File extension",
+    "File type",
     "Content type",
     "Publication type",
     "Published date",

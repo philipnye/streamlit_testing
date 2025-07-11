@@ -5,7 +5,7 @@ select
     pt.page_title [Output title],
     d.file_name_clean [File name],
     d.file_path_dedupe Link,
-    d.file_extension [File extension],
+    d.file_extension [File type],
     bm.content_type [Content type],
     bm.publication_type [Publication type],
     bm.published_date [Published date],

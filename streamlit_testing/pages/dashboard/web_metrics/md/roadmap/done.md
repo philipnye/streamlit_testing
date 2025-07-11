@@ -44,3 +44,5 @@ Right-clicking allows copying and export to Excel/CSV
 🔤 **UI: Improve sidebar naming ("Web traffic" to "Analytics dashboard")**
 
 📊 **UI: Add chart titles**
+
+🅰️ **UI: Rename 'File extension' column to 'File type'**
