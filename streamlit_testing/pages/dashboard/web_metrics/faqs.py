@@ -4,7 +4,7 @@ import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 
 # DRAW PAGE HEADER
 st.title("Frequently asked questions")
-elements.draw_last_updated_badge("2025-07-09")
+elements.draw_last_updated_badge("2025-07-10")
 st.markdown("\n\n")
 st.markdown("\n\n")
 
