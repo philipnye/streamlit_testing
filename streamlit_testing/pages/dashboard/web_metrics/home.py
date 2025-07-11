@@ -211,6 +211,7 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         gridOptions=grid_options,
                         allow_unsafe_jscode=True,
                         theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**theme_params),
+                        custom_css={".ag-watermark": "display: none !important;"},
                         height=500,
                     )
 
