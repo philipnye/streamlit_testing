@@ -95,10 +95,10 @@ col1, col2 = st.columns([1, 5])
 
 with col1:
     page_filter = st.selectbox(
-        label="Choose pages of interest",
-        options=["All pages", "New/updated pages"],
+        label="Choose scope",
+        options=["All content", "New/updated content"],
         index=0,
-        help="Select whether to include all pages or only those that were published or updated during the selected date range.",
+        help="Select whether to include all content or only that published or updated during the selected date range.",
         key="page_filter",
     )
 
@@ -130,13 +130,13 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         script = file.read()
 
                     # Determine parameters based on page filter
-                    if page_filter == "All pages":
+                    if page_filter == "All content":
                         df = elements.load_data(
                             script,
                             connection,
                             (start_date, end_date, table_config["content_type"], config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE, config.SQL_EARLIEST_DATE, config.SQL_LATEST_DATE)
                         )
-                    elif page_filter == "New/updated pages":
+                    elif page_filter == "New/updated content":
                         df = elements.load_data(
                             script,
                             connection,
