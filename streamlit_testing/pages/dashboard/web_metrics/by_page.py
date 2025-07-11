@@ -117,4 +117,4 @@ AgGrid(
     height=elements.calculate_ag_grid_height(len(df_by_page)),
 )
 
-st.warning(NOTES["downloads_note"])
+st.warning(NOTES["downloads_note"]["text"])
