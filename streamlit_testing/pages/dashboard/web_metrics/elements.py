@@ -132,6 +132,7 @@ def set_table_defaults(
     sort_columns: str | List[str] | None = None,
     sort_order: str | dict[str, str] = "asc",
     filter: bool = True,
+    lockPinned: bool = False,
     pin_columns: str | List[str] | None = None
 ) -> tuple[dict, dict]:
     """
@@ -152,6 +153,7 @@ def set_table_defaults(
             "excelMode": "windows",
         },
         "sortable": sortable,
+        "lockPinned": lockPinned,
     }
 
     column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
