@@ -147,8 +147,11 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                     column_defs, grid_options = elements.set_table_defaults(
                         df=df,
                         metrics=table_config["metrics"],
+                        sortable=False,
                         sort_columns="index",
                         sort_order="asc",
+                        filter=False,
+                        lockPinned=True,
                     )
 
                     column_defs = elements.create_external_link(
@@ -197,6 +200,9 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         "cellClass": "text-center"
                     }
                     grid_options["columnDefs"].insert(0, index_column)
+
+                    # Prevent column reordering
+                    grid_options["suppressMovableColumns"] = True
 
                     # Create theme with background color if specified
                     theme_params = AG_GRID_THEME_DEFAULTS.copy()
