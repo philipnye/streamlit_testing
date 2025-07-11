@@ -38,3 +38,5 @@ Right-clicking allows copying and export to Excel/CSV
 🏛️ **UI: Disable sorting, filtering, reordering columns and locking columns in 'Home' page tables**
 
 🪧 **UI: Clarify scope selection wording on 'Home' page**
+
+✒️ **UI: Rename 'Confirmed' to 'Final' in chart tooltips**

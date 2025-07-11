@@ -388,24 +388,24 @@ def draw_line_chart_section(
         else:
             y_axis_max = 1
 
-        # Split data into confirmed and provisional
+        # Split data into final and provisional
         df_chart_sorted = df_chart.sort_values(x)
         provisional_cutoff_date = df_chart_sorted[x].max() - pd.Timedelta(days=1)
 
-        df_confirmed = df_chart_sorted[df_chart_sorted[x] <= provisional_cutoff_date]
+        df_final = df_chart_sorted[df_chart_sorted[x] <= provisional_cutoff_date]
         df_provisional = df_chart_sorted[df_chart_sorted[x] >= provisional_cutoff_date]
 
         # Create figure with go.Figure for more control
         fig = go.Figure()
 
-        # Add confirmed data line
-        if not df_confirmed.empty:
+        # Add final data line
+        if not df_final.empty:
             fig.add_trace(go.Scatter(
-                x=df_confirmed[x],
-                y=df_confirmed[selected_metric],
+                x=df_final[x],
+                y=df_final[selected_metric],
                 mode="lines",
                 line=dict(color=COLOURS["pink"], width=2),
-                name="Confirmed",
+                name="Final",
                 showlegend=True
             ))
 
