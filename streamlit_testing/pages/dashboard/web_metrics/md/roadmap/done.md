@@ -25,3 +25,6 @@ Allowing related files (e.g. main publication and briefing document) to be disti
 💻 **UI: Add extra rule to hide sidebar button on 'Page detail' page**
 
 💄 **UI: Improve presentation of 'Page detail' page**
+
+📦 **UI: Enable exports from tables**\
+Right-clicking allows copying and export to Excel/CSV

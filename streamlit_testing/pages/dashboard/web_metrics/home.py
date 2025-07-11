@@ -206,6 +206,7 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         df,
                         key=f"ag_{table_config['content_type'].lower()}_{table_config['sql_script'].replace('.sql', '')}_{tab_index}",
                         license_key=os.environ["AG_GRID_LICENCE_KEY"],
+                        enable_enterprise_modules=True,
                         update_on=[],
                         gridOptions=grid_options,
                         allow_unsafe_jscode=True,

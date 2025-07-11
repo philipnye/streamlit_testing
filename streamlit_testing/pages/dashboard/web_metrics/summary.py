@@ -112,6 +112,7 @@ AgGrid(
     df_grouped,
     key="ag",
     license_key=os.environ["AG_GRID_LICENCE_KEY"],
+    enable_enterprise_modules=True,
     update_on=[],
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
