@@ -12,7 +12,7 @@ select
     a.author Author,
     p.topic Topic,
     d.event_count Downloads
-from corporate.downloads_canonical d
+from corporate.downloads_aggregated d
     left join corporate.content_basic_metadata_canonical bm on
         d.url_most_common = bm.url
     left join corporate.content_page_titles_canonical pt on
