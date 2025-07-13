@@ -46,3 +46,6 @@ Right-clicking allows copying and export to Excel/CSV
 📊 **UI: Add chart titles**
 
 🅰️ **UI: Rename 'File extension' column to 'File type'**
+
+🔢 **DATA: Improve identification of output titles in 'Home', 'By output' pages**\
+Outputs are now given the name of the page from which most downloads have occurred
