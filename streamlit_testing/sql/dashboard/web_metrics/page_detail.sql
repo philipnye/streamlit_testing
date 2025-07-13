@@ -56,6 +56,4 @@ from corporate.page_views_canonical pv
         pv.date = d.date
 where
     pv.url = ? and
-    pv.date between ? and ?
-order by
-    pv.date;
+    pv.date between ? and ?;

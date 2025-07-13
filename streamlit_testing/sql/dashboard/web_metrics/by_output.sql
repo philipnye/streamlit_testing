@@ -52,6 +52,4 @@ from corporate.downloads_canonical d
     ) a
 where
     pt.page_title is not null and
-    d.date between ? and ?
-order by
-    d.event_count;
+    d.date between ? and ?;
