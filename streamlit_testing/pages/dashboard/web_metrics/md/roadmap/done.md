@@ -49,3 +49,5 @@ Right-clicking allows copying and export to Excel/CSV
 
 🔢 **DATA: Improve identification of output titles in 'Home', 'By output' pages**\
 Outputs are now given the name of the page from which most downloads have occurred
+
+🐛 **DATA: Fix bug that meant links to output files were broken**
