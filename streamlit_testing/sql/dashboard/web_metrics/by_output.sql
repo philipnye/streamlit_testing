@@ -14,7 +14,7 @@ select
     d.event_count Downloads
 from corporate.downloads_canonical d
     left join corporate.content_basic_metadata_canonical bm on
-        d.url = d.url
+        d.url = bm.url
     left join corporate.content_page_titles_canonical pt on
         d.url = pt.url
     outer apply (
