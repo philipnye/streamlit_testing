@@ -1,5 +1,5 @@
 ### v0.1 - Tu 8 May
-🗓️ **UI: Fix filtering on ‘Published date’, ‘Updated date’ columns in ‘By page’, ‘By output’ pages**
+🗓️ **UI: Fix filtering on ‘Published date’, ‘Updated date’ columns in ‘Pages’, ‘Publications’ pages**
 
 ♟️ **UI: Split ‘Other’ and ‘Unclassified’ out as separate content types**
 
@@ -16,9 +16,9 @@ Exclude things that don't have a Google Analytics `eventName` of ‘file_downloa
 📲 **UI: Set sidebar initial state to open except on small devices**
 
 ©️ **DATA: Deduplicate outputs**\
-Remove '_1', '_v1' etc. from output filenames
+Remove '_1', '_v1' etc. from publication filenames
 
-🗃️ **UI: Display output filenames in 'Home', 'By output' pages**\
+🗃️ **UI: Display publication filenames in 'Home', 'Publications' pages**\
 Allowing related files (e.g. main publication and briefing document) to be distinguished
 
 ### v0.3 - Fri 11 May
@@ -47,7 +47,9 @@ Right-clicking allows copying and export to Excel/CSV
 
 🅰️ **UI: Rename 'File extension' column to 'File type'**
 
-🔢 **DATA: Improve identification of output titles in 'Home', 'By output' pages**\
+🔢 **DATA: Improve identification of publication titles in 'Home', 'Publications' pages**\
 Outputs are now given the name of the page from which most downloads have occurred
 
-🐛 **DATA: Fix bug that meant certain links to output files were broken**
+🐛 **DATA: Fix bug that meant certain links to publication files were broken**
+
+✏️ **UI: Change wording from 'outputs' to 'publications' throughout dashboard**

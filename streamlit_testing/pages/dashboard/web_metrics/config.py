@@ -40,7 +40,7 @@ DOWNLOAD_METRICS_TITLE_PREFIX = {
 DOWNLOAD_METRICS_RAW = [
     "Downloads",
 ]
-METRICS_BY_OUTPUT = [
+METRICS_PUBLICATIONS = [
     "Output title",
     "File name",
     "Link",
@@ -53,7 +53,7 @@ METRICS_BY_OUTPUT = [
     "Author",
     "Topic",
 ]
-METRICS_BY_PAGE = [
+METRICS_PAGES = [
     "Page title",
     "Link",
     "Content type",

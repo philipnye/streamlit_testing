@@ -1,5 +1,5 @@
 select top 10
-    pt.page_title [Output title],
+    pt.page_title [Publication title],
     d.file_name_clean [File name],
     d.file_path_latest [Link],
     sum(d.event_count) Downloads

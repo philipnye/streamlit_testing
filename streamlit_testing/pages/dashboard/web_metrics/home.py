@@ -17,10 +17,10 @@ TAB_CONFIG = {
             "content_type": "Publication",
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_downloads.sql",
             "metrics": {"Downloads": format_integer},
-            "title_column": "Output title",
+            "title_column": "Publication title",
             "file_name_column": "File name",
             "external_link_column": "Link",
-            "external_link_text": "View output ⮺",
+            "external_link_text": "View publication ⮺",
             "background_color": "#e2f8ff",       # Blue lighter 90%
             "notes": [NOTES["downloads_note"]],
         },

@@ -8,7 +8,7 @@
 
 ### v1.3
 📊 **UI: Better comparator functionality**\
-Ability to compare reach of a page or output over different time periods (e.g. this month vs last month)
+Ability to compare reach of a page or publication over different time periods (e.g. this month vs last month)
 
 📨 **UI: Automated weekly/fortnightly prompt emails to check dashboard**
 
