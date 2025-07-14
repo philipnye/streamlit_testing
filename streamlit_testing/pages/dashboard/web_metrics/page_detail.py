@@ -73,9 +73,7 @@ for date_col in ["Published date", "Updated date"]:
 df_content_metadata = df_content_metadata.fillna("")
 
 st.markdown(
-    df_content_metadata[[
-        "Content type", "Publication type", "Published date", "Updated date", "Team", "Topic"
-    ]].T.reset_index().style.set_table_styles([
+    df_content_metadata[content_metadata].T.reset_index().style.set_table_styles([
         {"selector": "tr", "props": [("border", "none")]},
         {"selector": "td", "props": [("border", "none")]},
         {"selector": "td:first-child", "props": [
