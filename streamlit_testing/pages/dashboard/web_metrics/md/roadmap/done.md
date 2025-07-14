@@ -1,4 +1,4 @@
-### v0.1 - Tu 8 May
+### v0.1 - Tu 8 July
 🗓️ **UI: Fix filtering on ‘Published date’, ‘Updated date’ columns in ‘Pages’, ‘Publications’ pages**
 
 ♟️ **UI: Split ‘Other’ and ‘Unclassified’ out as separate content types**
@@ -8,7 +8,7 @@
 📂 **DATA: Restrict what counts as a download**\
 Exclude things that don't have a Google Analytics `eventName` of ‘file_download’ or that don't follow an IfG web address format
 
-### v0.2 - Wed 9 May
+### v0.2 - Wed 9 July
 ➡️ **UI: Improve allocation of historic content to teams**
 
 ⏰ **UI: Add badges giving latest update dates**
@@ -21,7 +21,7 @@ Remove '_1', '_v1' etc. from publication filenames
 🗃️ **UI: Display publication filenames in 'Home', 'Publications' pages**\
 Allowing related files (e.g. main publication and briefing document) to be distinguished
 
-### v0.3 - Fri 11 May
+### v0.3 - Fri 11 July
 💻 **UI: Add extra rule to hide sidebar button on 'Page detail' page**
 
 💄 **UI: Improve presentation of 'Page detail' page**
