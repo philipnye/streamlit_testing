@@ -412,7 +412,7 @@ def draw_line_chart_section(
         df_chart_sorted = df_chart.sort_values(x)
         provisional_cutoff_date = pd.to_datetime(end_date) - pd.Timedelta(days=1)
 
-        df_final = df_chart_sorted[df_chart_sorted[x] < provisional_cutoff_date]
+        df_final = df_chart_sorted[df_chart_sorted[x] <= provisional_cutoff_date]
         df_provisional = df_chart_sorted[df_chart_sorted[x] >= provisional_cutoff_date]
 
         # Create figure with go.Figure for more control
