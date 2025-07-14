@@ -53,3 +53,6 @@ Outputs are now given the name of the page from which most downloads have occurr
 🐛 **DATA: Fix bug that meant certain links to publication files were broken**
 
 ✏️ **UI: Change wording from 'outputs' to 'publications' throughout dashboard**
+
+### v0.4 - Mon 14 July
+🐜 **DATA: Fix bug that meant some pages showed with a missing page title**
