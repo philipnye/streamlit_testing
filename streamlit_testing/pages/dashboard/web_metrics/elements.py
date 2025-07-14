@@ -323,6 +323,7 @@ def draw_line_chart_section(
     df: pd.DataFrame,
     x: str,
     start_date: date,
+    end_date: date,
     metrics: list[str],
     default_metric: str,
 ) -> str:
@@ -332,7 +333,7 @@ def draw_line_chart_section(
     Notes:
     - fixedrange=True is required to disable zooming
     - y-axis range is extended slightly beyond the highest value to force plotly to draw a gridline - it won't draw a gridline at the edge of the chart
-    - Most recent two days shown as dotted line to indicate provisional data
+    - Final 48 hours are marked as being provisional
     """
 
     with st.container(
@@ -370,6 +371,25 @@ def draw_line_chart_section(
 
                 df_chart = pd.concat([missing_df, df_chart], ignore_index=True).sort_values(x)
 
+        # Handle case where end_date is later than last date in data
+        if end_date is not None:
+            df_chart[x] = pd.to_datetime(df_chart[x])
+            data_last_date = df_chart[x].max().date()
+            if end_date > data_last_date:
+                missing_dates = pd.date_range(
+                    start=data_last_date + pd.Timedelta(days=1),
+                    end=end_date,
+                    freq='D'
+                )
+
+                missing_data = {x: missing_dates}
+                for metric in metrics:
+                    missing_data[metric] = pd.NA
+
+                missing_df = pd.DataFrame(missing_data)
+
+                df_chart = pd.concat([df_chart, missing_df], ignore_index=True).sort_values(x)
+
         # Calculate sensible y-axis max
         y_data = df_chart[selected_metric].dropna()
         if not y_data.empty:
@@ -390,9 +410,9 @@ def draw_line_chart_section(
 
         # Split data into final and provisional
         df_chart_sorted = df_chart.sort_values(x)
-        provisional_cutoff_date = df_chart_sorted[x].max() - pd.Timedelta(days=1)
+        provisional_cutoff_date = pd.to_datetime(end_date) - pd.Timedelta(days=1)
 
-        df_final = df_chart_sorted[df_chart_sorted[x] <= provisional_cutoff_date]
+        df_final = df_chart_sorted[df_chart_sorted[x] < provisional_cutoff_date]
         df_provisional = df_chart_sorted[df_chart_sorted[x] >= provisional_cutoff_date]
 
         # Create figure with go.Figure for more control

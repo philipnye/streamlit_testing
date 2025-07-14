@@ -71,6 +71,7 @@ selected_metric = elements.draw_line_chart_section(
     df=df_by_day,
     x="Date",
     start_date=start_date,
+    end_date=end_date,
     metrics=list(METRICS_DISPLAY.keys()),
     default_metric=DEFAULT_METRIC,
 )

@@ -56,3 +56,6 @@ Outputs are now given the name of the page from which most downloads have occurr
 
 ### v0.4 - Mon 14 July
 🐜 **DATA: Fix bug that meant some pages showed with a missing page title**
+
+📉 **UI: Fix bugs in 'Page detail' page line charts**\
+Ensures axis ranges are always fixed and only data for the last 48 hours is marked as provisional

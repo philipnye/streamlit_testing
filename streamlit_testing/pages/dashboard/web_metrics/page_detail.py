@@ -125,6 +125,7 @@ with tab1:
         df=df_metrics,
         x="Date",
         start_date=start_date,
+        end_date=end_date,
         metrics=list(METRICS_DISPLAY.keys()),
         default_metric=DEFAULT_METRIC,
     )
