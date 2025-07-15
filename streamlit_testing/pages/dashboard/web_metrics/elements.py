@@ -408,12 +408,23 @@ def draw_line_chart_section(
         else:
             y_axis_max = 1
 
-        # Split data into final and provisional
+        # Split data into final and provisional, with different styling
+        # NB: In Plotly GO, styling applies to the line segment that follows a point
+        # This would therefore mean Final styling would be applied to the line segment
+        # between the last final point and the first provisional point. In order to
+        # get around this, a third segment - labelled "Final", but applying provisional
+        # styling - is added
+        # NB: Data segments need to contain two or more points in order for a line to be
+        # drawn
         df_chart_sorted = df_chart.sort_values(x)
-        provisional_cutoff_date = pd.to_datetime(end_date) - pd.Timedelta(days=1)
+        end_date_minus_1_day = pd.to_datetime(end_date) - pd.Timedelta(days=1)
+        end_date_minus_2_days = pd.to_datetime(end_date) - pd.Timedelta(days=2)
 
-        df_final = df_chart_sorted[df_chart_sorted[x] <= provisional_cutoff_date]
-        df_provisional = df_chart_sorted[df_chart_sorted[x] >= provisional_cutoff_date]
+        df_final = df_chart_sorted[df_chart_sorted[x] <= end_date_minus_2_days]
+        df_finalprovisional = df_chart_sorted[
+            df_chart_sorted[x].isin([end_date_minus_2_days, end_date_minus_1_day])
+        ]
+        df_provisional = df_chart_sorted[df_chart_sorted[x] >= end_date_minus_1_day]
 
         # Create figure with go.Figure for more control
         fig = go.Figure()
@@ -425,6 +436,17 @@ def draw_line_chart_section(
                 y=df_final[selected_metric],
                 mode="lines",
                 line=dict(color=COLOURS["pink"], width=2),
+                name="Final",
+                showlegend=True
+            ))
+
+        # Add final/provision data line
+        if not df_finalprovisional.empty:
+            fig.add_trace(go.Scatter(
+                x=df_finalprovisional[x],
+                y=df_finalprovisional[selected_metric],
+                mode="lines",
+                line=dict(color=COLOURS["pink"], width=2, dash="dot"),
                 name="Final",
                 showlegend=True
             ))
