@@ -442,7 +442,7 @@ def draw_line_chart_section(
                 showlegend=True
             ))
 
-        # Add final/provision data line
+        # Add final/provisional data line
         if not df_finalprovisional.empty:
             fig.add_trace(go.Scatter(
                 x=df_finalprovisional[x],
