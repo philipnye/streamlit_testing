@@ -60,7 +60,9 @@ Outputs are now given the name of the page from which most downloads have occurr
 📉 **UI: Fix bugs in 'Page detail' page line charts**\
 Ensures axis ranges are always fixed and only data for the last 48 hours is marked as provisional
 
-### v0.5 - Mon 15 July
+### v0.5 - Tu 15 July
 💁 **UI: Add help button explaining minimum date in date range selectors**
 
 ⚠️ **UI: Implement range highlights and annotations on line charts**
+
+🖊️ **UI: Change chart fonts to Aller/Aller Light**

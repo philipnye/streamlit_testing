@@ -470,7 +470,7 @@ def draw_line_chart_section(
             zerolinecolor=COLOURS["dark_grey"],
             tickfont=dict(
                 color=COLOURS["dark_grey"],
-                family="Open Sans, sans-serif",
+                family="Aller Light, sans-serif",
                 size=14,
             ),
             gridcolor=COLOURS["grey_lighter_80pct"],
@@ -593,7 +593,7 @@ def draw_line_chart_section(
                         font=dict(
                             color=COLOURS["dark_grey"],
                             size=14,
-                            family="Open Sans, sans-serif"
+                            family="Aller Light, sans-serif"
                         ),
                         xanchor=xanchor,
                         yanchor="top",
@@ -606,7 +606,7 @@ def draw_line_chart_section(
                 text=config.WEB_TRAFFIC_METRICS_TITLE_PREFIX[selected_metric] + " " + selected_metric.lower(),
                 font=dict(
                     color=COLOURS["dark_grey"],
-                    family="Open Sans, sans-serif",
+                    family="Aller, sans-serif",
                     size=16,
                 ),
                 x=0.01,
@@ -619,7 +619,7 @@ def draw_line_chart_section(
                 zeroline=False,
                 tickfont=dict(
                     color=COLOURS["dark_grey"],
-                    family="Open Sans, sans-serif",
+                    family="Aller Light, sans-serif",
                     size=14,
                 ),
                 gridcolor=COLOURS["grey_lighter_80pct"],
