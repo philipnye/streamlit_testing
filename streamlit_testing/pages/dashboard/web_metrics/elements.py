@@ -237,20 +237,39 @@ def disable_sidebar() -> None:
     return
 
 
+def save_session_state_value(key):
+    st.session_state[key] = st.session_state["_"+key]
+
+
+def load_session_state_value(key):
+    st.session_state["_"+key] = st.session_state[key]
+
+
 def draw_date_range_inputs(
-    min_date: str,
-    max_date: str,
+    min_date: date,
+    max_date: date,
 ) -> tuple[str, date, date]:
     """Draw date range option inputs"""
+
+    # Initialise session state keys if they don't exist
+    if "date_range_option" not in st.session_state:
+        st.session_state["date_range_option"] = config.DEFAULT_DATE_RANGE
+    if "start_date" not in st.session_state:
+        st.session_state["start_date"] = min_date
+    if "end_date" not in st.session_state:
+        st.session_state["end_date"] = max_date
 
     col1, col2 = st.columns([1, 5])
 
     with col1:
+        load_session_state_value("date_range_option")
         date_range_option = st.selectbox(
             label="Choose date range",
             options=config.DATE_RANGES.keys(),
             index=list(config.DATE_RANGES.keys()).index(config.DEFAULT_DATE_RANGE),
-            key="date_range_option",
+            key="_date_range_option",
+            on_change=save_session_state_value,
+            args=["date_range_option"],
         )
 
     if config.DATE_RANGES[date_range_option]:
@@ -264,6 +283,7 @@ def draw_date_range_inputs(
     elif date_range_option == "Custom":
         col1, col2, col3 = st.columns([1, 1, 4])
         with col1:
+            load_session_state_value("start_date")
             start_date = st.date_input(
                 label="Start date",
                 value=min_date,
@@ -271,16 +291,21 @@ def draw_date_range_inputs(
                 max_value=max_date,
                 format="DD/MM/YYYY",
                 help=f"{min_date.strftime('%d %B %Y')} is the earliest date for which data is available",
-                key="start_date",
+                key="_start_date",
+                on_change=save_session_state_value,
+                args=["start_date"],
             )
         with col2:
+            load_session_state_value("end_date")
             end_date = st.date_input(
                 label="End date",
                 value=max_date,
                 min_value=min_date,
                 max_value=max_date,
                 format="DD/MM/YYYY",
-                key="end_date",
+                key="_end_date",
+                on_change=save_session_state_value,
+                args=["end_date"],
             )
 
     start_date = pd.to_datetime(start_date).date()
