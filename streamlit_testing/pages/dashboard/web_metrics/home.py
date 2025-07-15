@@ -154,6 +154,12 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         lockPinned=True,
                     )
 
+                    if table_config["title_column"] == "Page title":
+                        column_defs = elements.create_internal_link(
+                            column_defs,
+                            table_config["title_column"],
+                        )
+
                     column_defs = elements.create_external_link(
                         column_defs,
                         table_config["external_link_column"],
