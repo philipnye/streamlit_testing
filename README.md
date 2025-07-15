@@ -45,6 +45,7 @@ Hosted on Streamlit Community Cloud at [https://instituteforgovernment.streamlit
 |   │                ├── future.md
 |   │             ├── <page name>.md
 |   │          ├── <page name>.py
+|   │          ├── chart_annotations.py        <<< Chart annotations used across multiple pages
 |   │          ├── config.py        <<< Variables used across multiple pages
 |   │          ├── definitions.py     <<< Definitions to be rendered in the UI
 |   │          ├── elements.py     <<< Page elements used across multiple pages

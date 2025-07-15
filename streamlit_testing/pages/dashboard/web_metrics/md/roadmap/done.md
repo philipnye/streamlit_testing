@@ -62,3 +62,5 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 
 ### v0.5 - Mon 15 July
 💁 **UI: Add help button explaining minimum date in date range selectors**
+
+⚠️ **UI: Implement range highlights and annotations on line charts**

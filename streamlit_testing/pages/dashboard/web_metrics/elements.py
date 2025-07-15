@@ -15,6 +15,7 @@ from streamlit_testing.config.ag_grid_theme import (
 )
 from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
+from streamlit_testing.pages.dashboard.web_metrics.chart_annotations import CHART_ANNOTATIONS
 from streamlit_testing.pages.dashboard.web_metrics.definitions import DEFINITIONS
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
     filter_dates, format_date, sort_dates
@@ -522,6 +523,84 @@ def draw_line_chart_section(
             yaxis_config["range"] = [0, y_axis_max * 1.01]
             yaxis_config["tickformat"] = config.YAXIS_TICKFORMAT.get(selected_metric)
 
+        # Add chart annotations for ranges within the chart date range
+        range_highlights = []
+        annotations = []
+
+        for annotation in CHART_ANNOTATIONS:
+            annotation_start = pd.to_datetime(annotation["start_date"]).date()
+            annotation_end = pd.to_datetime(annotation["end_date"]).date()
+
+            # Check if annotation range overlaps with chart date range
+            if annotation_start <= end_date and annotation_end >= start_date:
+
+                # Clip annotation range to chart range
+                clipped_start = max(annotation_start, start_date)
+                clipped_end = min(annotation_end, end_date)
+
+                # Add range highlight as a shape
+                range_highlights.append(
+                    dict(
+                        type="rect",
+                        xref="x",
+                        yref="y",
+                        x0=clipped_start,
+                        y0=0,
+                        x1=clipped_end,
+                        y1=y_axis_max * 1.01,
+                        fillcolor=COLOURS["grey_darker_25pct"],
+                        opacity=0.3,
+                        line=dict(width=0),
+                        layer="below"
+                    )
+                )
+
+                # Add text annotation
+                # Position based on annotation position setting
+                if annotation.get("position") == "end":
+                    x_pos = clipped_end + pd.Timedelta(days=2)
+                    xanchor = "left"
+                else:
+                    x_pos = clipped_start
+                    xanchor = "right"
+
+                # Add line breaks to description for better readability
+                description = annotation["text"]
+                if len(description) > 40:
+                    words = description.split()
+                    lines = []
+                    current_line = ""
+
+                    for word in words:
+                        if len(current_line + " " + word) > 40 and current_line:
+                            lines.append(current_line)
+                            current_line = word
+                        else:
+                            current_line = current_line + " " + word if current_line else word
+
+                    # Add the last line
+                    if current_line:
+                        lines.append(current_line)
+
+                    description = "<br>".join(lines)
+
+                annotations.append(
+                    dict(
+                        x=x_pos,
+                        y=y_axis_max * 0.9,
+                        text=description,
+                        showarrow=False,
+                        font=dict(
+                            color=COLOURS["dark_grey"],
+                            size=14,
+                            family="Open Sans, sans-serif"
+                        ),
+                        xanchor=xanchor,
+                        yanchor="top",
+                        align="left"
+                    )
+                )
+
         fig.update_layout(
             title=dict(
                 text=config.WEB_TRAFFIC_METRICS_TITLE_PREFIX[selected_metric] + " " + selected_metric.lower(),
@@ -549,6 +628,8 @@ def draw_line_chart_section(
             ),
             yaxis=yaxis_config,
             plot_bgcolor="white",
+            shapes=range_highlights,
+            annotations=annotations,
         )
 
         st.plotly_chart(
