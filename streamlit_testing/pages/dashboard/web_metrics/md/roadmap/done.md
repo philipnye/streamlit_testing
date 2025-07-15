@@ -66,3 +66,5 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 ⚠️ **UI: Implement range highlights and annotations on line charts**
 
 🖊️ **UI: Change chart fonts to Aller/Aller Light**
+
+🖇️ **UI: Turn 'Page title' columns in 'Home' page into links**
