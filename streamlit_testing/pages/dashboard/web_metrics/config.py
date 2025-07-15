@@ -41,7 +41,7 @@ DOWNLOAD_METRICS_RAW = [
     "Downloads",
 ]
 METRICS_PUBLICATIONS = [
-    "Output title",
+    "Publication title",
     "File name",
     "Link",
     "File type",

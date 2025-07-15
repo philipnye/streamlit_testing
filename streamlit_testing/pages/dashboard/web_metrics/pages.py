@@ -92,6 +92,7 @@ column_defs, grid_options = elements.set_table_defaults(
 column_defs = elements.create_internal_link(
     column_defs,
     "Page title",
+    page_type="page",
 )
 column_defs = elements.create_external_link(
     column_defs,

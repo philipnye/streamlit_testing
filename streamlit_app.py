@@ -41,6 +41,11 @@ pg = st.navigation(
                 url_path="/web_metrics_publications",
             ),
             st.Page(
+                "streamlit_testing/pages/dashboard/web_metrics/publication_detail.py",
+                title="Publication detail",
+                url_path="/web_metrics_publication_detail",
+            ),
+            st.Page(
                 "streamlit_testing/pages/dashboard/web_metrics/roadmap.py",
                 title="Roadmap",
                 url_path="/web_metrics_roadmap",
@@ -59,12 +64,17 @@ pg = st.navigation(
 st.markdown(
     """
         <style>
+            a[href$="web_metrics_summary"] {
+                display: none;
+            }
+        </style>
+        <style>
             a[href$="web_metrics_page_detail"] {
                 display: none;
             }
         </style>
         <style>
-            a[href$="web_metrics_summary"] {
+            a[href$="web_metrics_publication_detail"] {
                 display: none;
             }
         </style>

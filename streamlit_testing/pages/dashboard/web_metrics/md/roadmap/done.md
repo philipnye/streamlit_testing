@@ -68,3 +68,7 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 🖊️ **UI: Change chart fonts to Aller/Aller Light**
 
 🖇️ **UI: Turn 'Page title' columns in 'Home' page into links**
+
+📰 **UI: Add 'Publication detail' page**
+
+📛 **UI: Rename 'Output title' column 'Publication title' in 'Publications' page**

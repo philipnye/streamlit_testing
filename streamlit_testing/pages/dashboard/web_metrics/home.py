@@ -19,6 +19,7 @@ TAB_CONFIG = {
             "metrics": {"Downloads": format_integer},
             "title_column": "Publication title",
             "file_name_column": "File name",
+            "internal_link_type": "publication",
             "external_link_column": "Link",
             "external_link_text": "View publication ⮺",
             "background_color": "#e2f8ff",       # Blue lighter 90%
@@ -30,6 +31,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
+            "internal_link_type": "page",
             "external_link_column": "Link",
             "external_link_text": "View page ⮺",
         },
@@ -39,6 +41,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
+            "internal_link_type": "page",
             "external_link_column": "Link",
             "external_link_text": "View page ⮺",
         },
@@ -48,6 +51,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
+            "internal_link_type": "page",
             "external_link_column": "Link",
             "external_link_text": "View page ⮺",
         }
@@ -59,6 +63,7 @@ TAB_CONFIG = {
             "sql_script": "streamlit_testing/sql/dashboard/web_metrics/home_page_views.sql",
             "metrics": {"Page views": format_integer},
             "title_column": "Page title",
+            "internal_link_type": "page",
             "external_link_column": "Link",
             "external_link_text": "View page ⮺",
             "notes": [NOTES["event_page_views_note"]],
@@ -154,11 +159,11 @@ for tab_index, (tab_name, tables) in enumerate(TAB_CONFIG.items()):
                         lockPinned=True,
                     )
 
-                    if table_config["title_column"] == "Page title":
-                        column_defs = elements.create_internal_link(
-                            column_defs,
-                            table_config["title_column"],
-                        )
+                    column_defs = elements.create_internal_link(
+                        column_defs,
+                        table_config["title_column"],
+                        page_type=table_config["internal_link_type"],
+                    )
 
                     column_defs = elements.create_external_link(
                         column_defs,

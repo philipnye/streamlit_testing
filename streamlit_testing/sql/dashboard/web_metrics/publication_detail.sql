@@ -1,5 +1,5 @@
-select
-    d.date Date,
+-- Content metadata
+select distinct
     pt.page_title [Publication title],
     d.file_name_clean [File name],
     d.file_path_latest Link,
@@ -10,8 +10,7 @@ select
     bm.updated_date [Updated date],
     t.team Team,
     a.author Author,
-    p.topic Topic,
-    d.event_count Downloads
+    p.topic Topic
 from corporate.downloads_aggregated d
     left join corporate.content_basic_metadata_canonical bm on
         d.url_most_common = bm.url
@@ -46,4 +45,18 @@ from corporate.downloads_aggregated d
     ) a
 where
     pt.page_title is not null and
+    d.file_path_latest = ?;
+
+
+-- Metrics
+select
+    d.date Date,
+    d.event_count Downloads
+from corporate.downloads_aggregated d
+    left join corporate.content_basic_metadata_canonical bm on
+        d.url_most_common = bm.url
+    left join corporate.content_page_titles_canonical pt on
+        d.url_most_common = pt.url
+where
+    d.file_path_latest = ? and
     d.date between ? and ?;

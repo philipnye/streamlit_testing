@@ -86,15 +86,19 @@ column_defs, grid_options = elements.set_table_defaults(
         "Published date": "desc",
         "Updated date": "desc"
     },
-    pin_columns=["Output title"]
+    pin_columns=["Publication title"]
 )
 
+column_defs = elements.create_internal_link(
+    column_defs,
+    "Publication title",
+    page_type="publication",
+)
 column_defs = elements.create_external_link(
     column_defs,
     "Link",
     "View publication ⮺"
 )
-
 column_defs = elements.format_date_cols(
     column_defs,
     ["Published date", "Updated date"]

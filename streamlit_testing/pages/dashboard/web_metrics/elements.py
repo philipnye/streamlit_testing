@@ -79,8 +79,15 @@ def create_external_link(
 def create_internal_link(
     column_defs: dict,
     column: str,
+    page_type: str,
 ) -> dict:
     """Create internal link column"""
+
+    # Determine URL path based on page type
+    if page_type == "page":
+        url_path = "/web_metrics_page_detail"
+    elif page_type == "publication":
+        url_path = "/web_metrics_publication_detail"
 
     column_defs[column]["cellRenderer"] = JsCode(f"""
         class UrlCellRenderer {{
@@ -88,7 +95,7 @@ def create_internal_link(
                 this.eGui = document.createElement("a");
                 this.eGui.innerText = params.value;
                 this.eGui.setAttribute(
-                    "href", "/web_metrics_page_detail?url=" + params.data.Link
+                    "href", "{url_path}?url=" + params.data.Link
                 );
                 this.eGui.setAttribute("style", "text-decoration:none; color:{COLOURS['pink']};");
                 this.eGui.setAttribute("target", "_blank");
