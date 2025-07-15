@@ -262,6 +262,7 @@ def draw_date_range_inputs(
                 min_value=min_date,
                 max_value=max_date,
                 format="DD/MM/YYYY",
+                help=f"{min_date.strftime('%d %B %Y')} is the earliest date for which data is available",
                 key="start_date",
             )
         with col2:
