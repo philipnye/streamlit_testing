@@ -76,4 +76,8 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 📅 **UI: Retain selected date range when changing pages**
 
 ### v0.6 - Wed 16 July
-📝 **Clarify 'Page detail', 'Publication detail' page titles**
+📝 **UI: Clarify 'Page detail', 'Publication detail' page titles**
+
+🪲 **UI: Fix bug: zeroes not shown in line charts**
+
+🚦 **UI: Add info box where line chart has n/a values**

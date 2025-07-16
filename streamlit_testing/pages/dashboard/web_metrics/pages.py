@@ -52,6 +52,7 @@ df = elements.load_data(
 
 # EDIT DATA
 df_by_day = df[["Date"] + METRICS_RAW].groupby("Date").sum().reset_index()
+df_by_day = elements.fill_missing_dates(df_by_day, start_date, end_date, "Date", METRICS_RAW)
 df_by_day = elements.calculate_derived_metrics(df_by_day, METRIC_CALCULATIONS)
 
 df_by_page = elements.group_df(

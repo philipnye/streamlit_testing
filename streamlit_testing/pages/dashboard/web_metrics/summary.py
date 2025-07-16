@@ -73,6 +73,7 @@ else:
         **METRIC_AGGREGATIONS
     ).reset_index()
 
+df_grouped_by_day = elements.fill_missing_dates(df_grouped_by_day, start_date, end_date, "Date", METRICS_RAW)
 df_grouped_by_day = elements.calculate_derived_metrics(df_grouped_by_day, METRIC_CALCULATIONS)
 df_grouped = elements.calculate_derived_metrics(df_grouped, METRIC_CALCULATIONS)
 

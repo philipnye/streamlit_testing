@@ -17,6 +17,7 @@ from streamlit_testing.config.colours import COLOURS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
 from streamlit_testing.pages.dashboard.web_metrics.chart_annotations import CHART_ANNOTATIONS
 from streamlit_testing.pages.dashboard.web_metrics.definitions import DEFINITIONS
+from streamlit_testing.pages.dashboard.web_metrics.notes import NOTES
 from streamlit_testing.pages.dashboard.web_metrics.utils import (
     filter_dates, format_date, sort_dates
 )
@@ -33,9 +34,9 @@ def calculate_derived_metrics(
 
     def _divide(x, y):
         if pd.isna(x) or pd.isna(y):
-            return 0
+            return pd.NA
         else:
-            return x / y if y != 0 else 0
+            return x / y if y != 0 else pd.NA
 
     if not calculations:
         return df
@@ -387,42 +388,6 @@ def draw_line_chart_section(
 
         # Handle case where start_date is earlier than first date in data
         df_chart = df.copy()
-        if start_date is not None:
-            df_chart[x] = pd.to_datetime(df_chart[x])
-            data_first_date = df_chart[x].min().date()
-            if start_date < data_first_date:
-                missing_dates = pd.date_range(
-                    start=start_date,
-                    end=data_first_date - pd.Timedelta(days=1),
-                    freq='D'
-                )
-
-                missing_data = {x: missing_dates}
-                for metric in metrics:
-                    missing_data[metric] = pd.NA
-
-                missing_df = pd.DataFrame(missing_data)
-
-                df_chart = pd.concat([missing_df, df_chart], ignore_index=True).sort_values(x)
-
-        # Handle case where end_date is later than last date in data
-        if end_date is not None:
-            df_chart[x] = pd.to_datetime(df_chart[x])
-            data_last_date = df_chart[x].max().date()
-            if end_date > data_last_date:
-                missing_dates = pd.date_range(
-                    start=data_last_date + pd.Timedelta(days=1),
-                    end=end_date,
-                    freq='D'
-                )
-
-                missing_data = {x: missing_dates}
-                for metric in metrics:
-                    missing_data[metric] = pd.NA
-
-                missing_df = pd.DataFrame(missing_data)
-
-                df_chart = pd.concat([df_chart, missing_df], ignore_index=True).sort_values(x)
 
         # Calculate sensible y-axis max
         y_data = df_chart[selected_metric].dropna()
@@ -463,6 +428,40 @@ def draw_line_chart_section(
         # Create figure with go.Figure for more control
         fig = go.Figure()
 
+        # Function to identify isolated points (not connected to other points)
+        def get_isolated_points(df_segment):
+            """Identify points that are isolated (surrounded by NA values)"""
+            if df_segment.empty or len(df_segment) < 3:
+                return pd.DataFrame()
+
+            df_sorted = df_segment.sort_values(x).reset_index(drop=True)
+            isolated_points = []
+
+            for i in range(len(df_sorted)):
+                current_value = df_sorted.iloc[i][selected_metric]
+
+                # Skip if current value is NA
+                if pd.isna(current_value):
+                    continue
+
+                # Check previous value
+                prev_na = True
+                if i > 0:
+                    prev_value = df_sorted.iloc[i-1][selected_metric]
+                    prev_na = pd.isna(prev_value)
+
+                # Check next value
+                next_na = True
+                if i < len(df_sorted) - 1:
+                    next_value = df_sorted.iloc[i+1][selected_metric]
+                    next_na = pd.isna(next_value)
+
+                # If both previous and next are NA, this is an isolated point
+                if prev_na and next_na:
+                    isolated_points.append(df_sorted.iloc[i])
+
+            return pd.DataFrame(isolated_points) if isolated_points else pd.DataFrame()
+
         # Add final data line
         if not df_final.empty:
             fig.add_trace(go.Scatter(
@@ -495,6 +494,27 @@ def draw_line_chart_section(
                 name="Provisional",
                 showlegend=True
             ))
+
+        # Add isolated points for all segments
+        for df_segment, color, name in [
+            (df_final, COLOURS["pink"], "Final"),
+            (df_finalprovisional, COLOURS["pink"], "Final"),
+            (df_provisional, COLOURS["pink"], "Provisional")
+        ]:
+            isolated_points = get_isolated_points(df_segment)
+            if not isolated_points.empty:
+                fig.add_trace(go.Scatter(
+                    x=isolated_points[x],
+                    y=isolated_points[selected_metric],
+                    mode="markers",
+                    marker=dict(
+                        color=color,
+                        size=6,
+                        symbol="circle"
+                    ),
+                    name=name,
+                    showlegend=False  # Don't show in legend to avoid clutter
+                ))
 
         # Handle special formatting for time-based metrics
         yaxis_config = dict(
@@ -635,7 +655,7 @@ def draw_line_chart_section(
 
         fig.update_layout(
             title=dict(
-                text=config.WEB_TRAFFIC_METRICS_TITLE_PREFIX[selected_metric] + " " + selected_metric.lower(),
+                text=config.METRICS_TITLE_PREFIX[selected_metric] + " " + selected_metric.lower(),
                 font=dict(
                     color=COLOURS["dark_grey"],
                     family="Aller, sans-serif",
@@ -677,6 +697,10 @@ def draw_line_chart_section(
                 "editSelection": False,
             }
         )
+
+        # Check if the selected metric contains any NA values and show warning
+        if df_chart[selected_metric].isna().any():
+            st.warning(NOTES["chart_blanks_note"]["text"])
 
     return selected_metric
 
@@ -754,3 +778,45 @@ def calculate_ag_grid_height(
 
     calculated_height = num_rows * row_height + header_height
     return min(max(calculated_height, min_height), max_height)
+
+
+def fill_missing_dates(
+    df: pd.DataFrame,
+    start_date: date,
+    end_date: date,
+    date_column: str,
+    fill_columns: list[str],
+) -> pd.DataFrame:
+    """
+    Fill missing dates between start_date and end_date with zeros for specified columns
+
+    Args:
+        df: DataFrame with date column and metrics to fill
+        start_date: Start date for the range
+        end_date: End date for the range
+        date_column: Name of the date column (default "Date")
+        fill_columns: List of columns to fill with zeros (if None, fills all numeric columns)
+
+    Returns:
+        DataFrame with missing dates filled with zeros
+    """
+    if df.empty:
+        return df
+
+    # Convert date column to datetime if it's not already
+    df = df.copy()
+    df[date_column] = pd.to_datetime(df[date_column])
+
+    # Create complete date range
+    date_range = pd.date_range(start=start_date, end=end_date, freq="D")
+    complete_dates_df = pd.DataFrame({date_column: date_range})
+
+    # Merge with original data
+    result_df = complete_dates_df.merge(df, on=date_column, how="left")
+
+    # Fill missing values with zeros for specified columns
+    for col in fill_columns:
+        if col in result_df.columns:
+            result_df[col] = result_df[col].fillna(0)
+
+    return result_df

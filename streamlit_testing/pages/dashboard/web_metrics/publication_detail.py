@@ -112,6 +112,7 @@ with tab1:
     )
 
     # EDIT DATA
+    df_metrics = elements.fill_missing_dates(df_metrics, start_date, end_date, "Date", METRICS_RAW)
     df_metrics = elements.calculate_derived_metrics(df_metrics, METRIC_CALCULATIONS)
 
     df_metrics = df_metrics[
