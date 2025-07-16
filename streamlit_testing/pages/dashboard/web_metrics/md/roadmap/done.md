@@ -74,3 +74,6 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 📛 **UI: Rename 'Output title' column 'Publication title' in 'Publications' page**
 
 📅 **UI: Retain selected date range when changing pages**
+
+### v0.6 - Wed 16 July
+📝 **Clarify 'Page detail', 'Publication detail' page titles**

@@ -51,7 +51,7 @@ if df_content_metadata.empty:
     st.stop()
 
 # DRAW PAGE HEADER
-st.title(df_content_metadata["Publication title"].iloc[0])
+st.title("Publication: _" + df_content_metadata["Publication title"].iloc[0] + "_")
 elements.draw_latest_data_badge(df_date_range["max_date"][0])
 st.markdown("\n\n")
 st.markdown("\n\n")
