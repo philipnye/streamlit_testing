@@ -85,13 +85,6 @@ st.markdown(
 st.markdown("\n\n")
 
 # DRAW DATE RANGE INPUTS
-with open("streamlit_testing/sql/dashboard/web_metrics/date_range.sql", "r") as file:
-    script_date_range = file.read()
-
-df_date_range = elements.load_data(
-    script_date_range,
-    connection,
-)
 date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     min_date=df_date_range["min_date"][0],
     max_date=df_date_range["max_date"][0],
