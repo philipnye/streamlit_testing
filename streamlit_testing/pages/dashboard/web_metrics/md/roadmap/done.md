@@ -88,3 +88,5 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 🪟 **UI: Set sidebar to always start expanded**
 
 🎤 **UI: Clarify chart titles and add note on filtering**
+
+✖️ **UI: Merge 'Publication downloads' and 'Publication page views' tables on 'Home page**
