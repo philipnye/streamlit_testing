@@ -664,7 +664,7 @@ def draw_line_chart_section(
 
         fig.update_layout(
             title=dict(
-                text=selected_metric + f", all {content_type}",
+                text=selected_metric + (f", all {content_type}" if show_all_content_warning else ""),
                 font=dict(
                     color=COLOURS["dark_grey"],
                     family="Aller, sans-serif",
