@@ -56,6 +56,54 @@ where
     da.file_path_latest = ?;
 
 
+-- Pages downloadable from
+select
+    pt.page_title [Page title],
+    dc1.url [Link],
+    bm.content_type [Content type],
+    sum(pv.page_views) [Page views],
+    sum(dc2.event_count) [Downloads]
+from
+(
+    select distinct
+        da.url_most_common,
+        da.file_path_latest,
+        da.file_name_clean,
+        da.file_extension
+    from corporate.downloads_aggregated da
+) da
+    outer apply (
+        select distinct
+            dc1.url
+        from corporate.downloads_canonical dc1
+        where
+            dc1.date between ? and ? and
+            da.file_path_latest = dc1.file_path_latest
+    ) dc1
+    left join corporate.page_views_canonical pv on
+        dc1.url = pv.url and
+        pv.date between ? and ?
+    left join corporate.downloads_canonical dc2 on
+        pv.url = dc2.url and
+        pv.date = dc2.date and
+        da.file_path_latest = dc2.file_path_latest
+    left join corporate.content_basic_metadata_canonical bm on
+        dc1.url = bm.url
+    left join corporate.content_page_titles_canonical pt on
+        dc1.url = pt.url
+where
+    da.file_path_latest = ?
+group by
+    pt.page_title,
+    dc1.url,
+    bm.content_type,
+    bm.publication_type,
+    bm.published_date,
+    bm.updated_date
+order by
+    sum(dc2.event_count) desc;
+
+
 -- Metrics
 select
     pv.date Date,

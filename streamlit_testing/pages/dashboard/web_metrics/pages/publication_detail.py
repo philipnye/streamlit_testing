@@ -6,7 +6,7 @@ from st_aggrid import AgGrid, StAggridTheme
 
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
-from streamlit_testing.pages.dashboard.web_metrics.utils import set_metrics
+from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer, set_metrics
 
 # HANDLE DIRECT ACCESS
 if "url" not in st.query_params:
@@ -34,7 +34,7 @@ df_date_range = elements.load_data(
     connection,
 )
 
-# LOAD PUBLICATION DATA
+# LOAD DATA
 with open("streamlit_testing/sql/dashboard/web_metrics/publication_detail.sql", "r") as file:
     script = file.read()
 
@@ -91,12 +91,73 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
 )
 
 # DRAW TABS
-tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
+tab1, tab2 = st.tabs(["Pages downloadable from", "Metrics"])
 
 with tab1:
 
     # LOAD DATA
     script_metrics = script.split(";")[1]
+
+    df_downloadable_pages = elements.load_data(
+        script_metrics,
+        connection,
+        (start_date, end_date, start_date, end_date, st.query_params["url"])
+    )
+
+    # Format dates
+    for date_col in ["Published date", "Updated date"]:
+        if date_col in df_downloadable_pages.columns:
+            df_downloadable_pages[date_col] = pd.to_datetime(
+                df_downloadable_pages[date_col], errors="coerce"
+            )
+
+    # Set up table configuration
+    column_defs, grid_options = elements.set_table_defaults(
+        df=df_downloadable_pages,
+        metrics={
+            "Page views": format_integer,
+            "Downloads": format_integer
+        },
+        sort_columns="Downloads",
+        sort_order="desc",
+        pin_columns=["Page title"]
+    )
+
+    # Create external links for page URLs
+    column_defs = elements.create_external_link(
+        column_defs,
+        "Link",
+        "View page ⮺"
+    )
+
+    # Format date columns if they exist
+    if "Published date" in df_downloadable_pages.columns:
+        column_defs = elements.format_date_cols(
+            column_defs,
+            ["Published date", "Updated date"]
+        )
+
+    # Set formatters for numeric columns
+    column_defs["Page views"]["valueFormatter"] = format_integer
+    column_defs["Downloads"]["valueFormatter"] = format_integer
+
+    # Display the table
+    AgGrid(
+        df_downloadable_pages,
+        key="downloadable_pages_ag",
+        license_key=os.environ["AG_GRID_LICENCE_KEY"],
+        enable_enterprise_modules="enterpriseOnly",
+        update_on=[],
+        gridOptions=grid_options,
+        allow_unsafe_jscode=True,
+        theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
+        height=elements.calculate_ag_grid_height(len(df_downloadable_pages)),
+    )
+
+with tab2:
+
+    # LOAD DATA
+    script_metrics = script.split(";")[2]
 
     df_metrics = elements.load_data(
         script_metrics,
@@ -155,8 +216,3 @@ with tab1:
         theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
         height=elements.calculate_ag_grid_height(len(df_metrics)),
     )
-
-with tab2:
-    st.markdown("Not yet developed")
-with tab3:
-    st.markdown("Not yet developed")

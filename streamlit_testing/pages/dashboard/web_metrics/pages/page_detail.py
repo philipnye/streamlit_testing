@@ -97,72 +97,62 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     max_date=df_date_range["max_date"][0],
 )
 
-# DRAW TABS
-tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
+# LOAD DATA
+script_metrics = script.split(";")[1]
 
-with tab1:
+df_metrics = elements.load_data(
+    script_metrics,
+    connection,
+    (st.query_params["url"], start_date, end_date)
+)
 
-    # LOAD DATA
-    script_metrics = script.split(";")[1]
+# EDIT DATA
+df_metrics = elements.fill_missing_dates(df_metrics, start_date, end_date, "Date", METRICS_RAW)
+df_metrics = elements.calculate_derived_metrics(df_metrics, METRIC_CALCULATIONS)
 
-    df_metrics = elements.load_data(
-        script_metrics,
-        connection,
-        (st.query_params["url"], start_date, end_date)
-    )
+df_metrics = df_metrics[
+    ["Date"] + list(METRICS_DISPLAY.keys())
+]
 
-    # EDIT DATA
-    df_metrics = elements.fill_missing_dates(df_metrics, start_date, end_date, "Date", METRICS_RAW)
-    df_metrics = elements.calculate_derived_metrics(df_metrics, METRIC_CALCULATIONS)
+# DRAW LINE CHART SECTION
+selected_metric = elements.draw_line_chart_section(
+    df=df_metrics,
+    x="Date",
+    start_date=start_date,
+    end_date=end_date,
+    metrics=list(METRICS_DISPLAY.keys()),
+    default_metric=DEFAULT_METRIC,
+    show_all_content_warning=False,
+)
 
-    df_metrics = df_metrics[
-        ["Date"] + list(METRICS_DISPLAY.keys())
-    ]
+df_metrics["Date"] = pd.to_datetime(
+    df_metrics["Date"]
+).dt.strftime("%Y-%m-%d")
 
-    # DRAW LINE CHART SECTION
-    selected_metric = elements.draw_line_chart_section(
-        df=df_metrics,
-        x="Date",
-        start_date=start_date,
-        end_date=end_date,
-        metrics=list(METRICS_DISPLAY.keys()),
-        default_metric=DEFAULT_METRIC,
-        show_all_content_warning=False,
-    )
+# DRAW TABLE
+column_defs, grid_options = elements.set_table_defaults(
+    df=df_metrics,
+    metrics=METRICS_DISPLAY,
+    sort_columns="Date",
+    sort_order="asc",
+)
 
-    df_metrics["Date"] = pd.to_datetime(
-        df_metrics["Date"]
-    ).dt.strftime("%Y-%m-%d")
+column_defs = elements.format_date_cols(
+    column_defs,
+    ["Date"]
+)
 
-    # DRAW TABLE
-    column_defs, grid_options = elements.set_table_defaults(
-        df=df_metrics,
-        metrics=METRICS_DISPLAY,
-        sort_columns="Date",
-        sort_order="asc",
-    )
+for metric, formatter in METRICS_DISPLAY.items():
+    column_defs[metric]["valueFormatter"] = formatter
 
-    column_defs = elements.format_date_cols(
-        column_defs,
-        ["Date"]
-    )
-
-    for metric, formatter in METRICS_DISPLAY.items():
-        column_defs[metric]["valueFormatter"] = formatter
-
-    AgGrid(
-        df_metrics,
-        key="ag",
-        license_key=os.environ["AG_GRID_LICENCE_KEY"],
-        enable_enterprise_modules="enterpriseOnly",
-        update_on=[],
-        gridOptions=grid_options,
-        allow_unsafe_jscode=True,
-        theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
-        height=elements.calculate_ag_grid_height(len(df_metrics)),
-    )
-
-with tab2:
-    st.markdown("Not yet developed")
-with tab3:
-    st.markdown("Not yet developed")
+AgGrid(
+    df_metrics,
+    key="ag",
+    license_key=os.environ["AG_GRID_LICENCE_KEY"],
+    enable_enterprise_modules="enterpriseOnly",
+    update_on=[],
+    gridOptions=grid_options,
+    allow_unsafe_jscode=True,
+    theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
+    height=elements.calculate_ag_grid_height(len(df_metrics)),
+)
