@@ -38,7 +38,7 @@ df_date_range = elements.load_data(
 with open("streamlit_testing/sql/dashboard/web_metrics/publication_detail.sql", "r") as file:
     script = file.read()
 
-script_content_metadata = script.split(';')[0]
+script_content_metadata = script.split(";")[0]
 
 df_content_metadata = elements.load_data(
     script_content_metadata,
@@ -96,7 +96,7 @@ tab1, tab2, tab3 = st.tabs(["Metrics", "Traffic sources", "Search terms"])
 with tab1:
 
     # LOAD DATA
-    script_metrics = script.split(';')[1]
+    script_metrics = script.split(";")[1]
 
     df_metrics = elements.load_data(
         script_metrics,

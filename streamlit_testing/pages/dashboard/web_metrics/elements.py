@@ -320,9 +320,9 @@ def draw_badge_with_date(
     """Draw badge with date"""
 
     if isinstance(display_date, date):
-        display_date = '{dt.day} {dt:%B} {dt.year}'.format(dt=display_date)
+        display_date = "{dt.day} {dt:%B} {dt.year}".format(dt=display_date)
     elif isinstance(display_date, str):
-        display_date = '{dt.day} {dt:%B} {dt.year}'.format(dt=pd.to_datetime(display_date))
+        display_date = "{dt.day} {dt:%B} {dt.year}".format(dt=pd.to_datetime(display_date))
 
     st.badge(text + display_date, color=color)
 
