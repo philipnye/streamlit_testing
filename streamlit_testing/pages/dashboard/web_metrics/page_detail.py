@@ -127,6 +127,7 @@ with tab1:
         end_date=end_date,
         metrics=list(METRICS_DISPLAY.keys()),
         default_metric=DEFAULT_METRIC,
+        show_all_content_warning=False,
     )
 
     df_metrics["Date"] = pd.to_datetime(

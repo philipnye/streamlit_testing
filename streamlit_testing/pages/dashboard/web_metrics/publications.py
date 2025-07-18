@@ -75,6 +75,7 @@ selected_metric = elements.draw_line_chart_section(
     end_date=end_date,
     metrics=list(METRICS_DISPLAY.keys()),
     default_metric=DEFAULT_METRIC,
+    content_type="publications",
 )
 
 # DRAW TABLE

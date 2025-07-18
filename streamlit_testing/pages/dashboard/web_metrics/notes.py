@@ -1,4 +1,8 @@
 NOTES = {
+    "line_chart_all_content_note": {
+        "type": "warning",
+        "text": "NB: Figures cover all {content_type} and aren't responsive to filters applied in the data table below. This feature may be added in a later version - see the Roadmap for further details."
+    },
     "downloads_note": {
         "type": "warning",
         "text": "NB: Downloads does not include instances where someone directly accesses a file via a URL. See the FAQs for further details."

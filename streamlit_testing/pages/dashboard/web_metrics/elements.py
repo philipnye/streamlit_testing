@@ -358,6 +358,8 @@ def draw_line_chart_section(
     end_date: date,
     metrics: list[str],
     default_metric: str,
+    content_type: str = "pages",
+    show_all_content_warning: bool = True,
 ) -> str:
     """
     Draw line chart section
@@ -652,7 +654,7 @@ def draw_line_chart_section(
 
         fig.update_layout(
             title=dict(
-                text=config.METRICS_TITLE_PREFIX[selected_metric] + " " + selected_metric.lower(),
+                text=selected_metric + f", all {content_type}",
                 font=dict(
                     color=COLOURS["dark_grey"],
                     family="Aller, sans-serif",
@@ -694,6 +696,10 @@ def draw_line_chart_section(
                 "editSelection": False,
             }
         )
+
+        # Add general line chart caveat
+        if show_all_content_warning:
+            st.warning(NOTES["line_chart_all_content_note"]["text"].format(content_type=content_type))
 
         # Check if the selected metric contains any NA values and show warning
         if df_chart[selected_metric].isna().any():

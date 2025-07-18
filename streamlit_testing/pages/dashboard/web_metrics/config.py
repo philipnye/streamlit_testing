@@ -64,16 +64,6 @@ METRICS_PAGES = [
     "Author",
     "Topic",
 ]
-METRICS_TITLE_PREFIX = {
-    "Page views": "Total",
-    "Page views (pages downloadable from)": "Total",
-    "Active users": "Total",
-    "Page views per active user": "Overall",
-    "Average engagement time per active user": "Overall",
-    "Downloads": "Total",
-    "Download rate": "Average",
-    "Download rate (pages downloadable from)": "Average",
-}
 SQL_EARLIEST_DATE = "1900-01-01"
 SQL_LATEST_DATE = "9999-12-31"
 WEB_TRAFFIC_METRIC_AGGREGATIONS = {
