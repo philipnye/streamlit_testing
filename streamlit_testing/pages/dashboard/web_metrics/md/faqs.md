@@ -8,13 +8,13 @@ Content metadata - for example which team owns a page, or the last update date f
 
 #### How accurate is the data?
 Web metrics data presented in the dashboard is reasonably accurate, though there are two mains factors that mean things are less than 100% accurate:
-- **Downloads data excludes direct access to files** 'Downloads' counts all instances where someone clicks a download link or a call-to-action button within the IfG website to download a file. It does not include instances where someone goes directly to an publication by following a link that has been shared with them - it is not possible to measure these instances.
+- **Downloads data excludes direct access to files** 'Downloads' counts all instances where someone clicks a download link or a call-to-action button within the IfG website to download a file. It doesn't include instances where someone goes directly to an publication by following a link that has been shared with them - it is not possible to measure these instances.
 - **Cookie consent and privacy settings** Where website visitors reject analytics cookies, Google Analytics estimates the usage of users who reject cookies based on the behaviour of similar users who accept them.
 
 There are also two specific period for which accurate data isn't available - see below.
 
 #### Why is accurate data not available for some periods?
-We don't have accurate data for two periods, as shown in the charts in the dashboard. For a period in late 2023, a problem recording web traffic statistics means we do not have accurate data. For a second period in late 2024/early 2025, a change in how Google processed web traffic means we do not have accurate data.
+We don't have accurate data for two periods, as shown in the charts in the dashboard. For a period in late 2023, a problem recording web traffic statistics means we don't have accurate data. For a second period in late 2024/early 2025, a change in how Google processed web traffic means we don't have accurate data.
 
 #### Is internal traffic included in web activity?
 Internal traffic is mostly excluded. Traffic from office IP addresses is identified as being internal traffic though in some cases traffic may not be caught by these rules, and traffic from staff that is not from an IfG IP addresses (e.g. when accessing the site from home or on a mobile not connected to the office WiFi network) is included in the figures presented in the dashboard.

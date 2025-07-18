@@ -5,7 +5,7 @@ NOTES = {
     },
     "downloads_note": {
         "type": "warning",
-        "text": "NB: Downloads does not include instances where someone directly accesses a file via a URL. See the FAQs for further details."
+        "text": "NB: Downloads doesn't include instances where someone directly accesses a file via a URL. See the FAQs for further details."
     },
     "event_page_views_note": {
         "type": "warning",
