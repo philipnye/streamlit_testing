@@ -81,3 +81,6 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 🪲 **UI: Fix bug: zeroes not shown in line charts**
 
 🚦 **UI: Add info box where line chart has n/a values**
+
+### v0.7 - Fri 18 July
+❓ **UI: Added more questions to 'FAQs' page**

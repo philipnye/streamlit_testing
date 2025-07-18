@@ -6,13 +6,14 @@
 | 💡 **I have a feature idea** | The <a href="/web_metrics_roadmap" target="_self">Roadmap page</a> includes some existing feature ideas.<br><br>For anything not on that list, <a href="mailto:{{DS_CONTACT_EMAIL_ADDRESS}}?subject=Analytics dashboard - feature idea">send a short email to Philip with the subject line 'Analytics dashboard - feature idea'</a> |
 | 🔢 **Data shown in the dashboard is wrong**<br>E.g. content is allocated to the wrong team or author details are missing/incorrect | Add details [to this document]({{IFG_WEB_ISSUES_FILE_LINK}}) |
 
-
-
 ## Can data in the dashboard change?
 
 Yes. Web traffic numbers and download numbers can be revised upwards in the first 48 hours as Google Analytics (the tool we use to track web metrics) takes 24&ndash;48 hours to fully process web traffic.
 
 Content metadata - for example which team owns a page, or the last update date for an explainer - can also change where it is changed on the website or more accurate data becomes available to the dashboard.
+
+## Is internal traffic included in figures presented in the dashboard?
+Internal traffic is mostly excluded. Traffic from office IP addresses is identified as being internal traffic though in some cases traffic may not be caught by these rules, and traffic from staff that is not from an IfG IP addresses (e.g. when accessing the site from home or on a mobile not connected to the office WiFi network) is included in the figures presented in the dashboard.
 
 ## What does a content type of 'Other' mean?
 This consists of standalone data visualisations, people pages, press releases and 'IfG in the news' pages.
