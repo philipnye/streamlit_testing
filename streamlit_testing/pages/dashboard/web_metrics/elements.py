@@ -267,7 +267,6 @@ def draw_date_range_inputs(
         date_range_option = st.selectbox(
             label="Choose date range",
             options=config.DATE_RANGES.keys(),
-            index=list(config.DATE_RANGES.keys()).index(config.DEFAULT_DATE_RANGE),
             key="_date_range_option",
             on_change=save_session_state_value,
             args=["date_range_option"],
@@ -287,7 +286,6 @@ def draw_date_range_inputs(
             load_session_state_value("start_date")
             start_date = st.date_input(
                 label="Start date",
-                value=min_date,
                 min_value=min_date,
                 max_value=max_date,
                 format="DD/MM/YYYY",
@@ -300,7 +298,6 @@ def draw_date_range_inputs(
             load_session_state_value("end_date")
             end_date = st.date_input(
                 label="End date",
-                value=max_date,
                 min_value=min_date,
                 max_value=max_date,
                 format="DD/MM/YYYY",
