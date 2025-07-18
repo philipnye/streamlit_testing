@@ -49,11 +49,11 @@ select
     pv.page_views [Page views],
     pv.active_users [Active users],
     pv.user_engagement_duration [User engagement duration],
-    d.event_count Downloads
+    dc.event_count Downloads
 from corporate.page_views_canonical pv
-    left join corporate.downloads_canonical d on
-        pv.url = d.url and
-        pv.date = d.date
+    left join corporate.downloads_canonical dc on
+        pv.url = dc.url and
+        pv.date = dc.date
 where
     pv.url = ? and
     pv.date between ? and ?;

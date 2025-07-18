@@ -7,6 +7,10 @@ NOTES = {
         "type": "warning",
         "text": "NB: Downloads doesn't include instances where someone directly accesses a file via a URL. See the FAQs for further details."
     },
+    "download_rate_note": {
+        "type": "warning",
+        "text": "*Only includes publications with 25+ downloads in the selected time period."
+    },
     "event_page_views_note": {
         "type": "warning",
         "text": "NB: The dashboard currently only includes web traffic metrics. Event metrics (e.g. in-person attendance, live-streams) may be added in future - see the Roadmap for further details."

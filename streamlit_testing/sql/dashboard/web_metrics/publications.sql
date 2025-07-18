@@ -1,9 +1,9 @@
 select
-    d.date Date,
+    pv.date Date,
     pt.page_title [Publication title],
-    d.file_name_clean [File name],
-    d.file_path_latest Link,
-    d.file_extension [File type],
+    da.file_name_clean [File name],
+    da.file_path_latest Link,
+    da.file_extension [File type],
     bm.content_type [Content type],
     bm.publication_type [Publication type],
     bm.published_date [Published date],
@@ -11,18 +11,27 @@ select
     t.team Team,
     a.author Author,
     p.topic Topic,
-    d.event_count Downloads
-from corporate.downloads_aggregated d
+    sum(pv.page_views) [Page views (pages downloadable from)],
+    sum(dc2.event_count) Downloads
+from
+(
+    select distinct
+        da.url_most_common,
+        da.file_path_latest,
+        da.file_name_clean,
+        da.file_extension
+    from corporate.downloads_aggregated da
+) da
     left join corporate.content_basic_metadata_canonical bm on
-        d.url_most_common = bm.url
+        da.url_most_common = bm.url
     left join corporate.content_page_titles_canonical pt on
-        d.url_most_common = pt.url
+        da.url_most_common = pt.url
     outer apply (
         select
             string_agg(t.team, ', ') team
         from corporate.content_teams_canonical t
         where
-            d.url_most_common = t.url
+            da.url_most_common = t.url
         group by
             t.url
     ) t
@@ -31,7 +40,7 @@ from corporate.downloads_aggregated d
             string_agg(p.topic, ', ') topic
         from corporate.content_topics_canonical p
         where
-            d.url_most_common = p.url
+            da.url_most_common = p.url
         group by
             p.url
     ) p
@@ -40,10 +49,38 @@ from corporate.downloads_aggregated d
             string_agg(a.author, ', ') author
         from corporate.content_authors_canonical a
         where
-            d.url_most_common = a.url
+            da.url_most_common = a.url
         group by
             a.url
     ) a
+    outer apply (
+        select distinct
+            dc1.url
+        from corporate.downloads_canonical dc1
+        where
+            dc1.date between ? and ? and
+            da.file_path_latest = dc1.file_path_latest
+    ) dc1
+    left join corporate.page_views_canonical pv on
+        dc1.url = pv.url
+    left join corporate.downloads_canonical dc2 on
+        pv.url = dc2.url and
+        pv.date = dc2.date and
+        da.file_path_latest = dc2.file_path_latest
 where
     pt.page_title is not null and
-    d.date between ? and ?;
+    pv.date between ? and ?
+group by
+    pv.date,
+    pt.page_title,
+    da.file_name_clean,
+    da.file_path_latest,
+    da.file_extension,
+    bm.content_type,
+    bm.publication_type,
+    bm.publication_type,
+    bm.published_date,
+    bm.updated_date,
+    t.team,
+    a.author,
+    p.topic;

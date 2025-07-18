@@ -101,7 +101,7 @@ with tab1:
     df_metrics = elements.load_data(
         script_metrics,
         connection,
-        (st.query_params["url"], start_date, end_date)
+        (start_date, end_date, st.query_params["url"], start_date, end_date)
     )
 
     # EDIT DATA

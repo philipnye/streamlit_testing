@@ -28,16 +28,23 @@ DEFAULT_DATE_RANGE = "Last 30 days"
 DEFAULT_DOWNLOAD_METRIC = "Downloads"
 DEFAULT_WEB_TRAFFIC_METRIC = "Page views"
 DOWNLOAD_METRIC_AGGREGATIONS = {
+    "Page views (pages downloadable from)": ("Page views (pages downloadable from)", "sum"),
     "Downloads": ("Downloads", "sum"),
 }
-DOWNLOAD_METRIC_CALCULATIONS = None
-DOWNLOAD_METRICS_DISPLAY = {
-    "Downloads": format_integer,
+DOWNLOAD_METRIC_CALCULATIONS = {
+    "Download rate (pages downloadable from)": (
+        "Downloads",
+        "Page views (pages downloadable from)",
+        "divide"
+    ),
 }
-DOWNLOAD_METRICS_TITLE_PREFIX = {
-    "Downloads": "Total",
+DOWNLOAD_METRICS_DISPLAY = {
+    "Page views (pages downloadable from)": format_integer,
+    "Downloads": format_integer,
+    "Download rate (pages downloadable from)": format_percentage,
 }
 DOWNLOAD_METRICS_RAW = [
+    "Page views (pages downloadable from)",
     "Downloads",
 ]
 METRICS_PUBLICATIONS = [
@@ -105,9 +112,11 @@ WEB_TRAFFIC_METRICS_RAW = [
 ]
 YAXIS_TICKFORMAT = {
     "Page views": ",d",
+    "Page views (pages downloadable from)": ",d",
     "Active users": ",d",
     "Page views per active user": ".1f",
     "Average engagement time per active user": "hh:mm:ss",
     "Downloads": ",d",
     "Download rate": ".0%",
+    "Download rate (pages downloadable from)": ".0%",
 }

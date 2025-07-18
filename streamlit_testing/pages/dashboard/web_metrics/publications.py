@@ -47,7 +47,7 @@ with open("streamlit_testing/sql/dashboard/web_metrics/publications.sql", "r") a
 df = elements.load_data(
     script,
     connection,
-    (start_date, end_date)
+    (start_date, end_date, start_date, end_date)
 )
 
 # EDIT DATA

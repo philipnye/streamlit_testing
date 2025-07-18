@@ -26,16 +26,6 @@ pg = st.navigation(
                 url_path="/web_metrics_summary",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/pages.py",
-                title="Pages",
-                url_path="/web_metrics_pages",
-            ),
-            st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/page_detail.py",
-                title="Page detail",
-                url_path="/web_metrics_page_detail",
-            ),
-            st.Page(
                 "streamlit_testing/pages/dashboard/web_metrics/publications.py",
                 title="Publications",
                 url_path="/web_metrics_publications",
@@ -44,6 +34,16 @@ pg = st.navigation(
                 "streamlit_testing/pages/dashboard/web_metrics/publication_detail.py",
                 title="Publication detail",
                 url_path="/web_metrics_publication_detail",
+            ),
+            st.Page(
+                "streamlit_testing/pages/dashboard/web_metrics/pages.py",
+                title="Pages",
+                url_path="/web_metrics_pages",
+            ),
+            st.Page(
+                "streamlit_testing/pages/dashboard/web_metrics/page_detail.py",
+                title="Page detail",
+                url_path="/web_metrics_page_detail",
             ),
             st.Page(
                 "streamlit_testing/pages/dashboard/web_metrics/roadmap.py",
