@@ -1,5 +1,5 @@
 #### How often is data in the dashboard updated?
-Data in the dashboard is updated automatically three times a day. This happens roughly a. before work hours, b. late morning and c. mid-afternoon, although the exact time varies a little each day. Data for the last 48 hours is provisional, and is refined with each update.
+Data in the dashboard is updated automatically three times a day. This happens roughly a. before work hours, b. around lunchtime and c. late afternoon, although the exact time varies a little each day. Data for the last 48 hours is provisional, and is refined with each update.
 
 #### Can data in the dashboard change?
 Yes. Web traffic numbers and download numbers can be revised upwards in the first 48 hours as Google Analytics (the tool we use to track web metrics) takes 24&ndash;48 hours to fully process web traffic.
