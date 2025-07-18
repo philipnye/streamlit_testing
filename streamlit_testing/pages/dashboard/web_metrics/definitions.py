@@ -15,7 +15,7 @@ DEFINITIONS = {
     "Page views": "Every time a page is loaded or reloaded in a browser",
     "Active users": "The number of unique users who have interacted with the site",
     "Page views per active user": "The average number of pages viewed by each active user",
-    "Average engagement time per active user": "The average time spent on the site by each active user",
+    "Average engagement time per active user": "The (mean) average time spent on the site by each active user",
     "Downloads": "The number of times a file has been downloaded",
     "Download rate": "The percentage of page views that resulted in a download",
 }
