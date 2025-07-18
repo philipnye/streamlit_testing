@@ -83,4 +83,6 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 🚦 **UI: Add info box where line chart has n/a values**
 
 ### v0.7 - Fri 18 July
-❓ **UI: Added more questions to 'FAQs' page**
+❓ **UI: Add more questions to 'FAQs' page**
+
+🪟 **UI: Set sidebar to always start expanded**
