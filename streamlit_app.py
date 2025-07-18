@@ -16,42 +16,42 @@ pg = st.navigation(
     {
         "Analytics dashboard": [
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/home.py",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/home.py",
                 title="Home",
                 url_path="/web_metrics_home",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/summary.py",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/summary.py",
                 title="Summary",
                 url_path="/web_metrics_summary",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/publications.py",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/publications.py",
                 title="Publications",
                 url_path="/web_metrics_publications",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/publication_detail.py",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/publication_detail.py",
                 title="Publication detail",
                 url_path="/web_metrics_publication_detail",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/pages.py",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/pages.py",
                 title="Pages",
                 url_path="/web_metrics_pages",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/page_detail.py",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/page_detail.py",
                 title="Page detail",
                 url_path="/web_metrics_page_detail",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/roadmap.py",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/roadmap.py",
                 title="Roadmap",
                 url_path="/web_metrics_roadmap",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/faqs.py",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/faqs.py",
                 title="FAQs",
                 url_path="/web_metrics_faqs",
             ),
