@@ -469,7 +469,8 @@ def draw_line_chart_section(
                 mode="lines",
                 line=dict(color=COLOURS["pink"], width=2),
                 name="Final",
-                showlegend=True
+                showlegend=True,
+                hovertemplate="%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
             ))
 
         # Add final/provisional data line
@@ -480,7 +481,8 @@ def draw_line_chart_section(
                 mode="lines",
                 line=dict(color=COLOURS["pink"], width=2, dash="dot"),
                 name="Final",
-                showlegend=True
+                showlegend=True,
+                hovertemplate="%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
             ))
 
         # Add provisional data line
@@ -491,7 +493,8 @@ def draw_line_chart_section(
                 mode="lines",
                 line=dict(color=COLOURS["pink"], width=2, dash="dot"),
                 name="Provisional",
-                showlegend=True
+                showlegend=True,
+                hovertemplate="%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(provisional)</span><extra></extra>"
             ))
 
         # Add isolated points for all segments
@@ -502,6 +505,12 @@ def draw_line_chart_section(
         ]:
             isolated_points = get_isolated_points(df_segment)
             if not isolated_points.empty:
+                # Set tooltip based on data type
+                if name == "Final":
+                    hovertemplate = "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
+                else:
+                    hovertemplate = "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(provisional)</span><extra></extra>"
+
                 fig.add_trace(go.Scatter(
                     x=isolated_points[x],
                     y=isolated_points[selected_metric],
@@ -512,7 +521,8 @@ def draw_line_chart_section(
                         symbol="circle"
                     ),
                     name=name,
-                    showlegend=False  # Don't show in legend to avoid clutter
+                    showlegend=False,  # Don't show in legend to avoid clutter
+                    hovertemplate=hovertemplate
                 ))
 
         # Handle special formatting for time-based metrics
@@ -666,6 +676,15 @@ def draw_line_chart_section(
             xaxis_title="",
             yaxis_title="",
             showlegend=False,
+            hoverlabel=dict(
+                bgcolor="white",
+                bordercolor=COLOURS["grey"],
+                font=dict(
+                    family="Aller Light, sans-serif",
+                    size=14,
+                    color=COLOURS["dark_grey"]
+                )
+            ),
             xaxis=dict(
                 zeroline=False,
                 tickfont=dict(
