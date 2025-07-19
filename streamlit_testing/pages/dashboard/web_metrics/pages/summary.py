@@ -97,7 +97,7 @@ selected_metric = elements.draw_line_chart_section(
 )
 
 # DRAW TABLE
-column_defs, grid_options = elements.set_table_defaults(
+column_defs, grid_options, df_for_grid = elements.set_table_defaults(
     df=df_grouped,
     metrics=METRICS_DISPLAY,
     sort_columns=breakdowns if breakdowns else None,
@@ -111,7 +111,7 @@ for metric, formatter in METRICS_DISPLAY.items():
     column_defs[metric]["valueFormatter"] = formatter
 
 AgGrid(
-    df_grouped,
+    df_for_grid,
     key="ag",
     license_key=os.environ["AG_GRID_LICENCE_KEY"],
     enable_enterprise_modules="enterpriseOnly",
@@ -119,5 +119,5 @@ AgGrid(
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
     theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
-    height=elements.calculate_ag_grid_height(len(df_grouped)),
+    height=elements.calculate_ag_grid_height(len(df_for_grid)),
 )

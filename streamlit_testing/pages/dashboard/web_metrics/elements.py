@@ -61,13 +61,19 @@ def create_external_link(
     column_defs[column]["cellRenderer"] = JsCode(f"""
         class UrlCellRenderer {{
             init(params) {{
-                this.eGui = document.createElement("a");
-                this.eGui.innerText = "{link_text}";
-                this.eGui.setAttribute(
-                    "href", "https://www.instituteforgovernment.org.uk" + params.value
-                );
-                this.eGui.setAttribute("style", "text-decoration: none; color:{COLOURS['pink']};");
-                this.eGui.setAttribute("target", "_blank");
+                // Check if the cell value is empty or null
+                if (!params.value || params.value === '') {{
+                    this.eGui = document.createElement("span");
+                    this.eGui.innerText = "";
+                }} else {{
+                    this.eGui = document.createElement("a");
+                    this.eGui.innerText = "{link_text}";
+                    this.eGui.setAttribute(
+                        "href", "https://www.instituteforgovernment.org.uk" + params.value
+                    );
+                    this.eGui.setAttribute("style", "text-decoration: none; color:{COLOURS['pink']};");
+                    this.eGui.setAttribute("target", "_blank");
+                }}
             }}
             getGui() {{
                 return this.eGui;
@@ -93,13 +99,19 @@ def create_internal_link(
     column_defs[column]["cellRenderer"] = JsCode(f"""
         class UrlCellRenderer {{
             init(params) {{
-                this.eGui = document.createElement("a");
-                this.eGui.innerText = params.value;
-                this.eGui.setAttribute(
-                    "href", "{url_path}?url=" + params.data.Link
-                );
-                this.eGui.setAttribute("style", "text-decoration:none; color:{COLOURS['pink']};");
-                this.eGui.setAttribute("target", "_blank");
+                // Check if the cell value is empty or null, or if it's a totals row
+                if (!params.value || params.value === '' || params.value === 'Total') {{
+                    this.eGui = document.createElement("span");
+                    this.eGui.innerText = params.value || "";
+                }} else {{
+                    this.eGui = document.createElement("a");
+                    this.eGui.innerText = params.value;
+                    this.eGui.setAttribute(
+                        "href", "{url_path}?url=" + params.data.Link
+                    );
+                    this.eGui.setAttribute("style", "text-decoration:none; color:{COLOURS['pink']};");
+                    this.eGui.setAttribute("target", "_blank");
+                }}
             }}
             getGui() {{
                 return this.eGui;
@@ -142,8 +154,10 @@ def set_table_defaults(
     sort_order: str | dict[str, str] = "asc",
     filter: bool = True,
     lockPinned: bool = False,
-    pin_columns: str | List[str] | None = None
-) -> tuple[dict, dict]:
+    pin_columns: str | List[str] | None = None,
+    enable_aggregation: bool = True,
+    aggregation_funcs: dict[str, str] | None = None
+) -> tuple[dict, dict, pd.DataFrame]:
     """
     Configure default table options
 
@@ -164,6 +178,56 @@ def set_table_defaults(
         "sortable": sortable,
         "lockPinned": lockPinned,
     }
+
+    # Enable aggregation if requested - using pinned bottom row approach
+    df_for_grid = df.copy()  # Initialize with original dataframe
+
+    if enable_aggregation:
+        grid_options["suppressAggFuncInHeader"] = True
+
+        # Check if the last row contains "Total" and extract it for pinning
+        pinned_bottom_data = None
+
+        if not df.empty:
+            last_row = df.iloc[-1]
+            if any(str(val) == "Total" for val in last_row.values):
+
+                # Extract the totals row for pinning to bottom
+                pinned_bottom_data = [last_row.to_dict()]
+
+                # Remove totals row from main data and rebuild grid options
+                df_for_grid = df.iloc[:-1]
+                grid_builder = GridOptionsBuilder.from_dataframe(df_for_grid)
+                grid_options = grid_builder.build()
+
+                # Re-add the pagination and column settings
+                grid_options["pagination"] = True
+                grid_options["paginationPageSize"] = 20
+                grid_options["defaultColDef"] = {
+                    "filter": filter,
+                    "filterParams": {
+                        "excelMode": "windows",
+                    },
+                    "sortable": sortable,
+                    "lockPinned": lockPinned,
+                }
+
+                # Add pinned bottom row for totals
+                grid_options["pinnedBottomRowData"] = pinned_bottom_data
+
+                # Style the pinned bottom row
+                grid_options["getRowStyle"] = JsCode("""
+                    function(params) {
+                        if (params.node.rowPinned === 'bottom') {
+                            return {
+                                'background-color': '#f5f5f5',
+                                'font-weight': 'bold',
+                                'border-top': '2px solid #ccc'
+                            };
+                        }
+                        return null;
+                    }
+                """)
 
     column_defs = {column_def["field"]: column_def for column_def in grid_options["columnDefs"]}
 
@@ -193,10 +257,14 @@ def set_table_defaults(
         column_defs[metric]["valueFormatter"] = formatter
         column_defs[metric]["sortingOrder"] = ["desc", "asc", None]
 
+        # Add aggregation function if specified
+        if enable_aggregation and aggregation_funcs and metric in aggregation_funcs:
+            column_defs[metric]["aggFunc"] = aggregation_funcs[metric]
+
     # Add tooltips to column headers
     column_defs = add_column_header_tooltips(column_defs)
 
-    return column_defs, grid_options
+    return column_defs, grid_options, df_for_grid
 
 
 @st.cache_resource(ttl="5h")
@@ -840,5 +908,89 @@ def fill_missing_dates(
     for col in fill_columns:
         if col in result_df.columns:
             result_df[col] = result_df[col].fillna(0)
+
+    return result_df
+
+
+def add_totals_row(
+    df: pd.DataFrame,
+    metrics: dict,
+    non_numeric_columns: list[str] | None = None,
+    averages_columns: list[str] | None = None,
+    totals_label: str = "Total"
+) -> pd.DataFrame:
+    """
+    Add a totals/averages row to the dataframe with visual distinction.
+    Averages are calculated as weighted averages using appropriate weight columns.
+
+    Returns:
+        DataFrame with totals row appended
+    """
+    if df.empty:
+        return df
+
+    df_copy = df.copy()
+
+    # Define weight mappings for weighted averages
+    weight_mappings = {
+        "Page views per active user": "Active users",
+        "Average engagement time per active user": "Active users",
+        "Download rate": "Page views",
+        "Download rate (pages downloadable from)": "Page views"
+    }
+
+    # Create totals row
+    totals_row = {}
+
+    # Set non-numeric columns to empty or specific values
+    if non_numeric_columns is None:
+        non_numeric_columns = []
+
+    # Find the first text column to put the totals label
+    first_text_col = None
+    for col in df_copy.columns:
+        if col in non_numeric_columns or col not in metrics:
+            first_text_col = col
+            break
+
+    for col in df_copy.columns:
+        if col in non_numeric_columns or col not in metrics:
+            if col == first_text_col:
+                totals_row[col] = totals_label
+            else:
+                totals_row[col] = ""
+        elif col in metrics:
+            # This is a metric column
+            try:
+                if averages_columns and col in averages_columns:
+
+                    # Calculate weighted average if weight column exists
+                    weight_col = weight_mappings.get(col)
+                    if weight_col and weight_col in df_copy.columns:
+
+                        # Weighted average = sum(value * weight) / sum(weight)
+                        numerator = (df_copy[col] * df_copy[weight_col]).sum(skipna=True)
+                        denominator = df_copy[weight_col].sum(skipna=True)
+                        if denominator > 0:
+                            weighted_avg = numerator / denominator
+                            totals_row[col] = weighted_avg if not pd.isna(weighted_avg) else 0
+                        else:
+                            totals_row[col] = 0
+                    else:
+
+                        # Fall back to simple average if weight column not found
+                        avg_val = df_copy[col].mean(skipna=True)
+                        totals_row[col] = avg_val if not pd.isna(avg_val) else 0
+                else:
+                    sum_val = df_copy[col].sum(skipna=True)
+                    totals_row[col] = sum_val if not pd.isna(sum_val) else 0
+            except Exception:
+                totals_row[col] = 0
+        else:
+            totals_row[col] = ""
+
+    # Convert to DataFrame and append
+    totals_df = pd.DataFrame([totals_row])
+    result_df = pd.concat([df_copy, totals_df], ignore_index=True)
 
     return result_df

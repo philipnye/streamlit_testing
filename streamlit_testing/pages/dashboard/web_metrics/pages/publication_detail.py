@@ -6,7 +6,7 @@ from st_aggrid import AgGrid, StAggridTheme
 
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
-from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer, set_metrics
+from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer, format_percentage, set_metrics
 
 # HANDLE DIRECT ACCESS
 if "url" not in st.query_params:
@@ -104,23 +104,56 @@ with tab1:
         (start_date, end_date, start_date, end_date, st.query_params["url"])
     )
 
-    # Format dates
+    # Ensure Downloads column exists and handle null values
+    if "Downloads" not in df_downloadable_pages.columns:
+        df_downloadable_pages["Downloads"] = 0
+    else:
+        df_downloadable_pages["Downloads"] = df_downloadable_pages["Downloads"].fillna(0)
+
+    # Calculate download rate (Downloads / Page views)
+    df_downloadable_pages["Download rate"] = df_downloadable_pages.apply(
+        lambda row: row["Downloads"] / row["Page views"] if row["Page views"] > 0 else 0,
+        axis=1
+    )
+
+    # Add totals row for downloadable pages first
+    df_downloadable_pages = elements.add_totals_row(
+        df_downloadable_pages,
+        {"Page views": format_integer, "Downloads": format_integer, "Download rate": format_percentage},
+        non_numeric_columns=["Page title", "Link", "Content type", "Published date", "Updated date"],
+        averages_columns=["Download rate"]
+    )
+
+    # Format dates after adding totals row (to avoid NaT values in totals row)
     for date_col in ["Published date", "Updated date"]:
         if date_col in df_downloadable_pages.columns:
-            df_downloadable_pages[date_col] = pd.to_datetime(
-                df_downloadable_pages[date_col], errors="coerce"
+            # Convert all non-empty values to datetime, leave empty strings as empty strings
+            df_downloadable_pages[date_col] = df_downloadable_pages[date_col].apply(
+                lambda x: pd.to_datetime(x, errors="coerce") if x != "" else ""
             )
 
+    # Ensure proper column order with Downloads and Download rate included
+    base_columns = ["Page title", "Link", "Content type", "Page views", "Downloads", "Download rate"]
+    optional_columns = ["Published date", "Updated date"]
+
+    # Include only columns that exist in the dataframe
+    selected_columns = [col for col in base_columns if col in df_downloadable_pages.columns]
+    selected_columns.extend([col for col in optional_columns if col in df_downloadable_pages.columns])
+
+    df_downloadable_pages = df_downloadable_pages[selected_columns]
+
     # Set up table configuration
-    column_defs, grid_options = elements.set_table_defaults(
+    column_defs, grid_options, df_for_grid1 = elements.set_table_defaults(
         df=df_downloadable_pages,
         metrics={
             "Page views": format_integer,
-            "Downloads": format_integer
+            "Downloads": format_integer,
+            "Download rate": format_percentage
         },
         sort_columns="Downloads",
         sort_order="desc",
-        pin_columns=["Page title"]
+        pin_columns=["Page title"],
+        enable_aggregation=True
     )
 
     # Create external links for page URLs
@@ -140,10 +173,11 @@ with tab1:
     # Set formatters for numeric columns
     column_defs["Page views"]["valueFormatter"] = format_integer
     column_defs["Downloads"]["valueFormatter"] = format_integer
+    column_defs["Download rate"]["valueFormatter"] = format_percentage
 
     # Display the table
     AgGrid(
-        df_downloadable_pages,
+        df_for_grid1,
         key="downloadable_pages_ag",
         license_key=os.environ["AG_GRID_LICENCE_KEY"],
         enable_enterprise_modules="enterpriseOnly",
@@ -151,7 +185,7 @@ with tab1:
         gridOptions=grid_options,
         allow_unsafe_jscode=True,
         theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
-        height=elements.calculate_ag_grid_height(len(df_downloadable_pages)),
+        height=elements.calculate_ag_grid_height(len(df_for_grid1)),
     )
 
 with tab2:
@@ -189,12 +223,21 @@ with tab2:
         df_metrics["Date"]
     ).dt.strftime("%Y-%m-%d")
 
+    # Add totals row for metrics
+    df_metrics = elements.add_totals_row(
+        df_metrics,
+        METRICS_DISPLAY,
+        non_numeric_columns=["Date"],
+        averages_columns=["Download rate (pages downloadable from)"]
+    )
+
     # DRAW TABLE
-    column_defs, grid_options = elements.set_table_defaults(
+    column_defs, grid_options, df_for_grid2 = elements.set_table_defaults(
         df=df_metrics,
         metrics=METRICS_DISPLAY,
         sort_columns="Date",
         sort_order="asc",
+        enable_aggregation=True
     )
 
     column_defs = elements.format_date_cols(
@@ -206,7 +249,7 @@ with tab2:
         column_defs[metric]["valueFormatter"] = formatter
 
     AgGrid(
-        df_metrics,
+        df_for_grid2,
         key="ag",
         license_key=os.environ["AG_GRID_LICENCE_KEY"],
         enable_enterprise_modules="enterpriseOnly",
@@ -214,5 +257,5 @@ with tab2:
         gridOptions=grid_options,
         allow_unsafe_jscode=True,
         theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
-        height=elements.calculate_ag_grid_height(len(df_metrics)),
+        height=elements.calculate_ag_grid_height(len(df_for_grid2)),
     )

@@ -89,4 +89,12 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 
 🎤 **UI: Clarify chart titles and add note on filtering**
 
-✖️ **UI: Merge 'Publication downloads' and 'Publication page views' tables on 'Home page**
+✖️ **UI: Merge 'Publication downloads' and 'Publication page views' tables on 'Home' page**
+
+🔄️ **UI: Reorder pages in sidebar**
+
+📄 **UI: Add details of all pages a publication is downloadable from to 'Publication details' page**
+
+🧹 **UI: Remove unused 'Publication details' and 'Page details' tabs ('Traffic sources', 'Search term')**
+
+🟰 **UI: Add totals/averages row to tables**

@@ -158,7 +158,7 @@ def create_table(table_config, tab_index, page_filter, start_date, end_date, con
                 df = df.sort_values(sort_column, ascending=False).head(10)
 
     # DRAW TABLE
-    column_defs, grid_options = elements.set_table_defaults(
+    column_defs, grid_options, df_for_grid = elements.set_table_defaults(
         df=df,
         metrics=table_config["metrics"],
         sortable=False,
@@ -239,7 +239,7 @@ def create_table(table_config, tab_index, page_filter, start_date, end_date, con
 
     # Create the AgGrid table
     AgGrid(
-        df,
+        df_for_grid,
         key=f"ag_{table_config['content_type'].lower()}_{table_config['sql_script'].replace('.sql', '')}_{tab_index}",
         license_key=os.environ["AG_GRID_LICENCE_KEY"],
         enable_enterprise_modules="enterpriseOnly",
