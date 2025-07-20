@@ -91,7 +91,7 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
 )
 
 # DRAW TABS
-tab1, tab2 = st.tabs(["Pages downloadable from", "Metrics"])
+tab1, tab2 = st.tabs(["Metrics", "Pages downloadable from"])
 
 with tab1:
 
