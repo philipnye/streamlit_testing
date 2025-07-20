@@ -1,4 +1,18 @@
 ### v1.1
+🟰 **UI: Add totals/averages row to tables**
+
+💹 **UI: Make line charts responsive to filtering in data table**\
+Show data for filtered pages/publications rather than all pages/publications
+
+### v1.2
+📈 **UI: Multiple lines on line charts**\
+Show trends for individual pages/outputs rather than just totals
+
+### v1.3
+🔗 **UI: Reflect options selected in dashboard widgets in web address**\
+Allow links to specific views to be bookmarked and shared
+
+### v1.1
 💻 **UI: Ability to view summary web traffic metrics rather than by page**\
 See metric totals for a content type/team/author etc. - or any combination of those things
 
