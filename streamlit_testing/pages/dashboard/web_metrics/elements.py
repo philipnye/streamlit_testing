@@ -544,7 +544,7 @@ def draw_line_chart_section(
             tickfont=dict(
                 color=COLOURS["dark_grey"],
                 family="Aller Light, sans-serif",
-                size=14,
+                size=12,
             ),
             gridcolor=COLOURS["grey_lighter_80pct"],
             fixedrange=True,
@@ -665,7 +665,7 @@ def draw_line_chart_section(
                         showarrow=False,
                         font=dict(
                             color=COLOURS["dark_grey"],
-                            size=14,
+                            size=12,
                             family="Aller Light, sans-serif"
                         ),
                         xanchor=xanchor,
@@ -693,7 +693,7 @@ def draw_line_chart_section(
                 bordercolor=COLOURS["grey"],
                 font=dict(
                     family="Aller Light, sans-serif",
-                    size=14,
+                    size=12,
                     color=COLOURS["dark_grey"]
                 )
             ),
@@ -702,7 +702,7 @@ def draw_line_chart_section(
                 tickfont=dict(
                     color=COLOURS["dark_grey"],
                     family="Aller Light, sans-serif",
-                    size=14,
+                    size=12,
                 ),
                 gridcolor=COLOURS["grey_lighter_80pct"],
                 fixedrange=True,

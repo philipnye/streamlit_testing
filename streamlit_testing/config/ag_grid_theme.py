@@ -10,7 +10,7 @@ AG_GRID_MAX_HEIGHT = 800
 # AG Grid theme default parameters
 AG_GRID_THEME_BASE = "quartz"
 AG_GRID_THEME_DEFAULTS = {
-    "fontSize": 14,
+    "fontSize": 12,
     "fontFamily": "Open Sans, sans-serif",
     "headerFontFamily": "Open Sans, sans-serif",
     "headerFontWeight": "normal",
