@@ -1,3 +1,4 @@
+-- NB: Uses an aggregation on dc as there can be multiple files downloadable from a single URL. Using a left join without an aggregation results in page views being duplicated
 select
     pv.date Date,
     pt.page_title [Page title],
@@ -14,9 +15,6 @@ select
     pv.user_engagement_duration [User engagement duration],
     dc.event_count Downloads
 from corporate.page_views_canonical pv
-    left join corporate.downloads_canonical dc on
-        pv.url = dc.url and
-        pv.date = dc.date
     left join corporate.content_basic_metadata_canonical bm on
         bm.url = pv.url
     left join corporate.content_page_titles_canonical pt on
@@ -48,6 +46,17 @@ from corporate.page_views_canonical pv
         group by
             a.url
     ) a
+    outer apply (
+        select
+            dc.date,
+            sum(dc.event_count) event_count
+        from corporate.downloads_canonical dc
+        where
+            pv.url = dc.url and
+            pv.date = dc.date
+        group by
+            dc.date
+    ) dc
 where
     pt.page_title is not null and
     pv.date between ? and ?;

@@ -44,6 +44,7 @@ where
 
 
 -- Metrics
+-- NB: Uses an aggregation on dc as there can be multiple files downloadable from a single URL. Using a left join without an aggregation results in page views being duplicated
 select
     pv.date Date,
     pv.page_views [Page views],
@@ -51,9 +52,19 @@ select
     pv.user_engagement_duration [User engagement duration],
     dc.event_count Downloads
 from corporate.page_views_canonical pv
-    left join corporate.downloads_canonical dc on
-        pv.url = dc.url and
-        pv.date = dc.date
+    outer apply (
+        select
+            dc.url,
+            dc.date,
+            sum(dc.event_count) event_count
+        from corporate.downloads_canonical dc
+        where
+            pv.url = dc.url and
+            pv.date = dc.date
+        group by
+            dc.url,
+            dc.date
+    ) dc
 where
     pv.url = ? and
     pv.date between ? and ?;
