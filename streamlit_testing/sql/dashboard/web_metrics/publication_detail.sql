@@ -56,6 +56,43 @@ where
     da.file_path_latest = ?;
 
 
+-- Metrics
+select
+    pv.date Date,
+    sum(pv.page_views) [Page views (pages downloadable from)],
+    sum(dc2.event_count) Downloads
+from
+(
+    select distinct
+        da.url_most_common,
+        da.file_path_latest,
+        da.file_name_clean,
+        da.file_extension
+    from corporate.downloads_aggregated da
+) da
+    outer apply (
+        select distinct
+            dc1.url
+        from corporate.downloads_canonical dc1
+        where
+            dc1.date between ? and ? and
+            da.file_path_latest = dc1.file_path_latest
+    ) dc1
+    left join corporate.page_views_canonical pv on
+        dc1.url = pv.url
+    left join corporate.downloads_canonical dc2 on
+        pv.url = dc2.url and
+        pv.date = dc2.date and
+        da.file_path_latest = dc2.file_path_latest
+where
+    da.file_path_latest = ? and
+    pv.date between ? and ?
+group by
+    pv.date
+order by
+    pv.date;
+
+
 -- Pages downloadable from
 select
     pt.page_title [Page title],
@@ -102,40 +139,3 @@ group by
     bm.updated_date
 order by
     sum(dc2.event_count) desc;
-
-
--- Metrics
-select
-    pv.date Date,
-    sum(pv.page_views) [Page views (pages downloadable from)],
-    sum(dc2.event_count) Downloads
-from
-(
-    select distinct
-        da.url_most_common,
-        da.file_path_latest,
-        da.file_name_clean,
-        da.file_extension
-    from corporate.downloads_aggregated da
-) da
-    outer apply (
-        select distinct
-            dc1.url
-        from corporate.downloads_canonical dc1
-        where
-            dc1.date between ? and ? and
-            da.file_path_latest = dc1.file_path_latest
-    ) dc1
-    left join corporate.page_views_canonical pv on
-        dc1.url = pv.url
-    left join corporate.downloads_canonical dc2 on
-        pv.url = dc2.url and
-        pv.date = dc2.date and
-        da.file_path_latest = dc2.file_path_latest
-where
-    da.file_path_latest = ? and
-    pv.date between ? and ?
-group by
-    pv.date
-order by
-    pv.date;

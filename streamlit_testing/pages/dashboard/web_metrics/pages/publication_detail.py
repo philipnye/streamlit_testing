@@ -90,13 +90,76 @@ date_range_option, start_date, end_date = elements.draw_date_range_inputs(
     max_date=df_date_range["max_date"][0],
 )
 
+# LOAD DATA
+script_metrics = script.split(";")[1]
+
+df_metrics = elements.load_data(
+    script_metrics,
+    connection,
+    (start_date, end_date, st.query_params["url"], start_date, end_date)
+)
+
+# EDIT DATA
+df_metrics = elements.fill_missing_dates(df_metrics, start_date, end_date, "Date", METRICS_RAW)
+df_metrics = elements.calculate_derived_metrics(df_metrics, METRIC_CALCULATIONS)
+
+df_metrics = df_metrics[
+    ["Date"] + list(METRICS_DISPLAY.keys())
+]
+
+# DRAW LINE CHART SECTION
+selected_metric = elements.draw_line_chart_section(
+    df=df_metrics,
+    x="Date",
+    start_date=start_date,
+    end_date=end_date,
+    metrics=list(METRICS_DISPLAY.keys()),
+    default_metric=DEFAULT_METRIC,
+    content_type="publications",
+    show_all_content_warning=False,
+)
+
+df_metrics["Date"] = pd.to_datetime(
+    df_metrics["Date"]
+).dt.strftime("%Y-%m-%d")
+
 # DRAW TABS
-tab1, tab2 = st.tabs(["Metrics", "Pages downloadable from"])
+tab1, tab2 = st.tabs(["By date", "By page downloadable from"])
 
 with tab1:
 
+    # DRAW TABLE
+    column_defs, grid_options = elements.set_table_defaults(
+        df=df_metrics,
+        metrics=METRICS_DISPLAY,
+        sort_columns="Date",
+        sort_order="asc",
+    )
+
+    column_defs = elements.format_date_cols(
+        column_defs,
+        ["Date"]
+    )
+
+    for metric, formatter in METRICS_DISPLAY.items():
+        column_defs[metric]["valueFormatter"] = formatter
+
+    AgGrid(
+        df_metrics,
+        key="ag",
+        license_key=os.environ["AG_GRID_LICENCE_KEY"],
+        enable_enterprise_modules="enterpriseOnly",
+        update_on=[],
+        gridOptions=grid_options,
+        allow_unsafe_jscode=True,
+        theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
+        height=elements.calculate_ag_grid_height(len(df_metrics)),
+    )
+
+with tab2:
+
     # LOAD DATA
-    script_metrics = script.split(";")[1]
+    script_metrics = script.split(";")[2]
 
     df_downloadable_pages = elements.load_data(
         script_metrics,
@@ -153,6 +216,10 @@ with tab1:
         "View page ⮺"
     )
 
+    # Enable auto-sizing on second+ tabs
+    # NB: This is to get around an issue with streamlit-aggrid, with autosizing not working for tabs bar the first (https://github.com/PablocFonseca/streamlit-aggrid/issues/249)
+    grid_options["autoSizeStrategy"] = "SizeColumnsToFitProvidedWidthStrategy"
+
     # Format date columns if they exist
     if "Published date" in df_downloadable_pages.columns:
         column_defs = elements.format_date_cols(
@@ -176,67 +243,4 @@ with tab1:
         allow_unsafe_jscode=True,
         theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
         height=elements.calculate_ag_grid_height(len(df_downloadable_pages)),
-    )
-
-with tab2:
-
-    # LOAD DATA
-    script_metrics = script.split(";")[2]
-
-    df_metrics = elements.load_data(
-        script_metrics,
-        connection,
-        (start_date, end_date, st.query_params["url"], start_date, end_date)
-    )
-
-    # EDIT DATA
-    df_metrics = elements.fill_missing_dates(df_metrics, start_date, end_date, "Date", METRICS_RAW)
-    df_metrics = elements.calculate_derived_metrics(df_metrics, METRIC_CALCULATIONS)
-
-    df_metrics = df_metrics[
-        ["Date"] + list(METRICS_DISPLAY.keys())
-    ]
-
-    # DRAW LINE CHART SECTION
-    selected_metric = elements.draw_line_chart_section(
-        df=df_metrics,
-        x="Date",
-        start_date=start_date,
-        end_date=end_date,
-        metrics=list(METRICS_DISPLAY.keys()),
-        default_metric=DEFAULT_METRIC,
-        content_type="publications",
-        show_all_content_warning=False,
-    )
-
-    df_metrics["Date"] = pd.to_datetime(
-        df_metrics["Date"]
-    ).dt.strftime("%Y-%m-%d")
-
-    # DRAW TABLE
-    column_defs, grid_options = elements.set_table_defaults(
-        df=df_metrics,
-        metrics=METRICS_DISPLAY,
-        sort_columns="Date",
-        sort_order="asc",
-    )
-
-    column_defs = elements.format_date_cols(
-        column_defs,
-        ["Date"]
-    )
-
-    for metric, formatter in METRICS_DISPLAY.items():
-        column_defs[metric]["valueFormatter"] = formatter
-
-    AgGrid(
-        df_metrics,
-        key="ag",
-        license_key=os.environ["AG_GRID_LICENCE_KEY"],
-        enable_enterprise_modules="enterpriseOnly",
-        update_on=[],
-        gridOptions=grid_options,
-        allow_unsafe_jscode=True,
-        theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
-        height=elements.calculate_ag_grid_height(len(df_metrics)),
     )
