@@ -53,6 +53,4 @@ group by
     pt.page_title,
     da.file_name_clean,
     da.url_most_common,
-    da.file_path_latest
-order by
-    sum(dc2.event_count) desc;
+    da.file_path_latest;

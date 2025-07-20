@@ -88,8 +88,6 @@ where
     da.file_path_latest = ? and
     pv.date between ? and ?
 group by
-    pv.date
-order by
     pv.date;
 
 
@@ -136,6 +134,4 @@ group by
     bm.content_type,
     bm.publication_type,
     bm.published_date,
-    bm.updated_date
-order by
-    sum(dc2.event_count) desc;
+    bm.updated_date;
