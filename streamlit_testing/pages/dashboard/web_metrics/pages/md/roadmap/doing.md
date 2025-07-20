@@ -1,5 +1,7 @@
 ### v1.0 - launch
-📈 **UI: Make line charts responsive to filtering in data table**\
+🟰 **UI: Add totals/averages row to tables**
+
+💹 **UI: Make line charts responsive to filtering in data table**\
 Show data for filtered pages/publications rather than all pages/publications
 
 📈 **UI: Multiple lines on line charts**\

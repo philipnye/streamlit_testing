@@ -129,21 +129,12 @@ df_metrics["Date"] = pd.to_datetime(
     df_metrics["Date"]
 ).dt.strftime("%Y-%m-%d")
 
-# Add totals row
-df_metrics = elements.add_totals_row(
-    df_metrics,
-    METRICS_DISPLAY,
-    non_numeric_columns=["Date"],
-    averages_columns=["Page views per active user", "Average engagement time per active user", "Download rate"]
-)
-
 # DRAW TABLE
-column_defs, grid_options, df_for_grid = elements.set_table_defaults(
+column_defs, grid_options = elements.set_table_defaults(
     df=df_metrics,
     metrics=METRICS_DISPLAY,
     sort_columns="Date",
     sort_order="asc",
-    enable_aggregation=True
 )
 
 column_defs = elements.format_date_cols(
@@ -155,7 +146,7 @@ for metric, formatter in METRICS_DISPLAY.items():
     column_defs[metric]["valueFormatter"] = formatter
 
 AgGrid(
-    df_for_grid,
+    df_metrics,
     key="ag",
     license_key=os.environ["AG_GRID_LICENCE_KEY"],
     enable_enterprise_modules="enterpriseOnly",
@@ -163,5 +154,5 @@ AgGrid(
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
     theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
-    height=elements.calculate_ag_grid_height(len(df_for_grid)),
+    height=elements.calculate_ag_grid_height(len(df_metrics)),
 )

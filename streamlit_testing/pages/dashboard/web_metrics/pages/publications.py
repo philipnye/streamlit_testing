@@ -64,15 +64,7 @@ df_by_publication = elements.calculate_derived_metrics(df_by_publication, METRIC
 
 df_by_publication = df_by_publication[config.METRICS_PUBLICATIONS + list(METRICS_DISPLAY.keys())]
 
-# Add totals row
-df_by_publication = elements.add_totals_row(
-    df_by_publication,
-    METRICS_DISPLAY,
-    non_numeric_columns=["Publication title", "File name", "Link", "File type", "Content type", "Publication type", "Published date", "Updated date", "Team", "Author", "Topic"],
-    averages_columns=["Download rate (pages downloadable from)"]
-)
-
-# Convert dates after adding totals row (to avoid datetime issues in totals row)
+# Convert dates
 for date_col in ["Published date", "Updated date"]:
     df_by_publication[date_col] = df_by_publication[date_col].apply(
         lambda x: pd.to_datetime(x, errors="coerce") if x != "" else ""
@@ -90,7 +82,7 @@ selected_metric = elements.draw_line_chart_section(
 )
 
 # DRAW TABLE
-column_defs, grid_options, df_for_grid = elements.set_table_defaults(
+column_defs, grid_options = elements.set_table_defaults(
     df=df_by_publication,
     metrics=METRICS_DISPLAY,
     sort_columns=DEFAULT_METRIC,
@@ -100,7 +92,6 @@ column_defs, grid_options, df_for_grid = elements.set_table_defaults(
         "Updated date": "desc"
     },
     pin_columns=["Publication title"],
-    enable_aggregation=True
 )
 
 column_defs = elements.create_internal_link(
@@ -122,7 +113,7 @@ for metric, formatter in METRICS_DISPLAY.items():
     column_defs[metric]["valueFormatter"] = formatter
 
 AgGrid(
-    df_for_grid,
+    df_by_publication,
     key="ag",
     license_key=os.environ["AG_GRID_LICENCE_KEY"],
     enable_enterprise_modules="enterpriseOnly",
@@ -130,7 +121,7 @@ AgGrid(
     gridOptions=grid_options,
     allow_unsafe_jscode=True,
     theme=StAggridTheme(base=AG_GRID_THEME_BASE).withParams(**AG_GRID_THEME_DEFAULTS),
-    height=elements.calculate_ag_grid_height(len(df_for_grid)),
+    height=elements.calculate_ag_grid_height(len(df_by_publication)),
 )
 
 st.warning(NOTES["downloads_note"]["text"])
