@@ -98,3 +98,5 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 🧹 **UI: Remove unused 'Publication details' and 'Page details' tabs ('Traffic sources', 'Search term')**
 
 🐞 **DATA: Fix bug: Strip out duplicate page views for pages with 2+ downloadable files**
+
+🅰️ **UI: Drop font size**
