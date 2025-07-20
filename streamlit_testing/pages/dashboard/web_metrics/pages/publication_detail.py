@@ -210,6 +210,11 @@ with tab2:
     )
 
     # Create external links for page URLs
+    column_defs = elements.create_internal_link(
+        column_defs,
+        "Page title",
+        page_type="page",
+    )
     column_defs = elements.create_external_link(
         column_defs,
         "Link",
