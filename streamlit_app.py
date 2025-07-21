@@ -51,9 +51,9 @@ pg = st.navigation(
                 url_path="/web_metrics_roadmap",
             ),
             st.Page(
-                "streamlit_testing/pages/dashboard/web_metrics/pages/faqs.py",
-                title="FAQs",
-                url_path="/web_metrics_faqs",
+                "streamlit_testing/pages/dashboard/web_metrics/pages/help.py",
+                title="Help",
+                url_path="/web_metrics_help",
             ),
         ],
     },
