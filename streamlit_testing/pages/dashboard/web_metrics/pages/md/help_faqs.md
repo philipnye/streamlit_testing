@@ -8,7 +8,7 @@ Content metadata - for example which team owns a page, or the last update date f
 
 #### How accurate is the data?
 Web metrics data presented in the dashboard is reasonably accurate, though there are two mains factors that mean things are less than 100% accurate:
-- **Downloads data excludes direct access to files** 'Downloads' counts all instances where someone clicks a download link or a call-to-action button within the IfG website to download a file. It doesn't include instances where someone goes directly to an publication by following a link that has been shared with them - it is not possible to measure these instances.
+- **Downloads data excludes direct access to files** 'Downloads' counts all instances where someone clicks a link within the IfG website to download a file (generally a pink 'Read the report (PDF)'/'Download PDF' button at the top of a page or a button in a call-to-action section). It doesn't include instances where someone goes directly to an publication by following a link that has been shared with them - it is not possible to measure these instances.
 - **Cookie consent and privacy settings** Where website visitors reject analytics cookies, Google Analytics estimates the usage of users who reject cookies based on the behaviour of similar users who accept them.
 
 There are also two specific period for which accurate data isn't available - see below.

@@ -102,3 +102,6 @@ Ensures axis ranges are always fixed and only data for the last 48 hours is mark
 🅰️ **UI: Drop font size**
 
 💁 **UI: Add definitions to 'Help' page**
+
+### v0.8 - Mon 21 July
+❔ **UI: Update FAQs description of downloads**
