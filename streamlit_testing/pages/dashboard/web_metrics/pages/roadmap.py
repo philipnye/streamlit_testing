@@ -4,7 +4,7 @@ import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 
 # DRAW PAGE HEADER
 st.title("Roadmap")
-elements.draw_last_updated_badge("2025-07-21")
+elements.draw_last_updated_badge("2025-08-15")
 st.markdown("\n\n")
 st.markdown("\n\n")
 
@@ -44,7 +44,7 @@ with col2:
     display_markdown_containers(doing, delimiter="###", border=True)
 
 with col3:
-    st.header("Future (tbc)")
+    st.header("Future (indicative)")
 
     with open("streamlit_testing/pages/dashboard/web_metrics/pages/md/roadmap/future.md", "r", encoding="utf-8") as file:
         future = file.read()

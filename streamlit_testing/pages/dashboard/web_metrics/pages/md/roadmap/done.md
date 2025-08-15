@@ -1,27 +1,65 @@
-### v0.1 - Tu 8 July
-🗓️ **UI: Fix filtering on ‘Published date’, ‘Updated date’ columns in ‘Pages’, ‘Publications’ pages**
+### v1.0.1 - Fri 15 August
+🐛 **DATA: Fix bug: Certain comment pieces and explainers weren't eligible for inclusion in the Home page**\
+Fix makes those deleted or changed to a new URL eligible for inclusion
 
-♟️ **UI: Split ‘Other’ and ‘Unclassified’ out as separate content types**
+📆 **UI: Restructure Roadmap**
 
-📖 **UI: Change ‘Publication type’ n/a values to blanks**
+### v1.0.0 - Mon 21 July
+🚀 **Launch**
 
-📂 **DATA: Restrict what counts as a download**\
-Exclude things that don't have a Google Analytics `eventName` of ‘file_download’ or that don't follow an IfG web address format
+### v0.8.0 - Mon 21 July
+❔ **UI: Update FAQs description of downloads**
 
-### v0.2 - Wed 9 July
-➡️ **UI: Improve allocation of historic content to teams**
+### v0.7.0 - Fri 18 July
+❓ **UI: Add more questions to 'Help' page**
 
-⏰ **UI: Add badges giving latest update dates**
+🪟 **UI: Set sidebar to always start expanded**
 
-📲 **UI: Set sidebar initial state to open except on small devices**
+🎤 **UI: Clarify chart titles and add note on filtering**
 
-©️ **DATA: Deduplicate outputs**\
-Remove '_1', '_v1' etc. from publication filenames
+✖️ **UI: Merge 'Publication downloads' and 'Publication page views' tables on 'Home' page**
 
-🗃️ **UI: Display publication filenames in 'Home', 'Publications' pages**\
-Allowing related files (e.g. main publication and briefing document) to be distinguished
+🔄️ **UI: Reorder pages in sidebar**
 
-### v0.3 - Fri 11 July
+📄 **UI: Add details of all pages a publication is downloadable from to 'Publication details' page**
+
+🧹 **UI: Remove unused 'Publication details' and 'Page details' tabs ('Traffic sources', 'Search term')**
+
+🐞 **DATA: Fix bug: Strip out duplicate page views for pages with 2+ downloadable files**
+
+🅰️ **UI: Drop font size**
+
+💁 **UI: Add definitions to 'Help' page**
+
+### v0.6.0 - Wed 16 July
+📝 **UI: Clarify 'Page detail', 'Publication detail' page titles**
+
+🪲 **UI: Fix bug: zeroes not shown in line charts**
+
+🚦 **UI: Add info box where line chart has n/a values**
+
+### v0.5.0 - Tu 15 July
+💁 **UI: Add help button explaining minimum date in date range selectors**
+
+⚠️ **UI: Implement range highlights and annotations on line charts**
+
+🖊️ **UI: Change chart fonts to Aller/Aller Light**
+
+🖇️ **UI: Turn 'Page title' columns in 'Home' page into links**
+
+📰 **UI: Add 'Publication detail' page**
+
+📛 **UI: Rename 'Output title' column 'Publication title' in 'Publications' page**
+
+📅 **UI: Retain selected date range when changing pages**
+
+### v0.4.0 - Mon 14 July
+🐜 **DATA: Fix bug that meant some pages showed with a missing page title**
+
+📉 **UI: Fix bugs in 'Page detail' page line charts**\
+Ensures axis ranges are always fixed and only data for the last 48 hours is marked as provisional
+
+### v0.3.0 - Fri 11 July
 💻 **UI: Add extra rule to hide sidebar button on 'Page detail' page**
 
 💄 **UI: Improve presentation of 'Page detail' page**
@@ -54,54 +92,25 @@ Outputs are now given the name of the page from which most downloads have occurr
 
 ✏️ **UI: Change wording from 'outputs' to 'publications' throughout dashboard**
 
-### v0.4 - Mon 14 July
-🐜 **DATA: Fix bug that meant some pages showed with a missing page title**
+### v0.2.0 - Wed 9 July
+➡️ **UI: Improve allocation of historic content to teams**
 
-📉 **UI: Fix bugs in 'Page detail' page line charts**\
-Ensures axis ranges are always fixed and only data for the last 48 hours is marked as provisional
+⏰ **UI: Add badges giving latest update dates**
 
-### v0.5 - Tu 15 July
-💁 **UI: Add help button explaining minimum date in date range selectors**
+📲 **UI: Set sidebar initial state to open except on small devices**
 
-⚠️ **UI: Implement range highlights and annotations on line charts**
+©️ **DATA: Deduplicate outputs**\
+Remove '_1', '_v1' etc. from publication filenames
 
-🖊️ **UI: Change chart fonts to Aller/Aller Light**
+🗃️ **UI: Display publication filenames in 'Home', 'Publications' pages**\
+Allowing related files (e.g. main publication and briefing document) to be distinguished
 
-🖇️ **UI: Turn 'Page title' columns in 'Home' page into links**
+### v0.1.0 - Tu 8 July
+🗓️ **UI: Fix filtering on ‘Published date’, ‘Updated date’ columns in ‘Pages’, ‘Publications’ pages**
 
-📰 **UI: Add 'Publication detail' page**
+♟️ **UI: Split ‘Other’ and ‘Unclassified’ out as separate content types**
 
-📛 **UI: Rename 'Output title' column 'Publication title' in 'Publications' page**
+📖 **UI: Change ‘Publication type’ n/a values to blanks**
 
-📅 **UI: Retain selected date range when changing pages**
-
-### v0.6 - Wed 16 July
-📝 **UI: Clarify 'Page detail', 'Publication detail' page titles**
-
-🪲 **UI: Fix bug: zeroes not shown in line charts**
-
-🚦 **UI: Add info box where line chart has n/a values**
-
-### v0.7 - Fri 18 July
-❓ **UI: Add more questions to 'Help' page**
-
-🪟 **UI: Set sidebar to always start expanded**
-
-🎤 **UI: Clarify chart titles and add note on filtering**
-
-✖️ **UI: Merge 'Publication downloads' and 'Publication page views' tables on 'Home' page**
-
-🔄️ **UI: Reorder pages in sidebar**
-
-📄 **UI: Add details of all pages a publication is downloadable from to 'Publication details' page**
-
-🧹 **UI: Remove unused 'Publication details' and 'Page details' tabs ('Traffic sources', 'Search term')**
-
-🐞 **DATA: Fix bug: Strip out duplicate page views for pages with 2+ downloadable files**
-
-🅰️ **UI: Drop font size**
-
-💁 **UI: Add definitions to 'Help' page**
-
-### v0.8 - Mon 21 July
-❔ **UI: Update FAQs description of downloads**
+📂 **DATA: Restrict what counts as a download**\
+Exclude things that don't have a Google Analytics `eventName` of ‘file_download’ or that don't follow an IfG web address format

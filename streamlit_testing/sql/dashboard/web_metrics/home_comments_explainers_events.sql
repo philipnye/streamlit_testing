@@ -12,12 +12,12 @@ where
     bm.content_type = ? and
     (
         (
-            bm.published_date >= ? and
-            bm.published_date <= ?
+            isnull(bm.published_date, '1900-01-01') >= ? and
+            isnull(bm.published_date, '9999-12-31') <= ?
         ) or
         (
-            bm.updated_date >= ? and
-            bm.updated_date <= ?
+            isnull(bm.updated_date, '1900-01-01') >= ? and
+            isnull(bm.updated_date, '9999-12-31') <= ?
         )
     )
 group by
