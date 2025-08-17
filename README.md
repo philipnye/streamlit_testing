@@ -78,5 +78,19 @@ The following environment variables are used by the app:
 - `DS_CONTACT_EMAIL_ADDRESS`: Email address to be used for contacting the data science team
 - `IFG_WEB_ISSUES_FILE_LINK`: Link to document where web issues are logged
 
+## Command line arguments
+Command line arguments can be passed to the Streamlit app using the following syntax:
+
+```bash
+streamlit run streamlit_app.py -- --redact-data
+```
+
+NB: Note the use of `--` before the addition of these command line arguments. This is required [to differentiate them from Streamlit command-line arguments](https://discuss.streamlit.io/t/command-line-arguments/386/5?u=philipnye).
+
+### Available arguments
+| Argument | Description | Default |
+|----------|-------------|---------|
+| `--redact-data` | Enable redact data mode. This replaces table values, chart axis labels and chart tooltip values with a `xxxxx` string | `false` |
+
 ## Licences
 An AG Grid licence is held in order to make use of all [`streamlit-aggrid` features](https://github.com/PablocFonseca/streamlit-aggrid). The license is perpetual - i.e. no need for renewal.

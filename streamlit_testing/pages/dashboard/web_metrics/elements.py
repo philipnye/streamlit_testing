@@ -25,6 +25,22 @@ from streamlit_testing.pages.dashboard.web_metrics.utils import (
 import ds_utils.database_operations as dbo
 
 
+def draw_redact_data_warning():
+    """Draw a flashing warning when in redact data mode"""
+    st.html("""
+        <style>
+        @keyframes slow-flash {
+            0%, 50% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+        .flashing-warning {
+            animation: slow-flash 6s infinite;
+        }
+        </style>
+        <h1 class='flashing-warning' style='color: #d0006f; font-size: 24px; font-family: Aller, sans-serif; font-weight: 700; text-align: right;'>[Data values obscured]</h1>
+    """)
+
+
 @st.cache_data(ttl="5h")
 def calculate_derived_metrics(
     df: pd.DataFrame,
@@ -201,8 +217,7 @@ def set_table_defaults(
             if column in column_defs:
                 column_defs[column]["pinned"] = "left"
 
-    for metric, formatter in metrics.items():
-        column_defs[metric]["valueFormatter"] = formatter
+    for metric in metrics:
         column_defs[metric]["sortingOrder"] = ["desc", "asc", None]
 
     # Add tooltips to column headers
@@ -372,6 +387,7 @@ def draw_line_chart_section(
     default_metric: str,
     content_type: str = "pages",
     show_all_content_warning: bool = True,
+    redact_data: bool = False,
 ) -> str:
     """
     Draw line chart section
@@ -475,6 +491,7 @@ def draw_line_chart_section(
 
         # Add final data line
         if not df_final.empty:
+            hovertemplate = "%{x|%a %e %b}: xxxxx <span style='color:#d0006f'>(final)</span><extra></extra>" if redact_data else "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
             fig.add_trace(go.Scatter(
                 x=df_final[x],
                 y=df_final[selected_metric],
@@ -482,11 +499,12 @@ def draw_line_chart_section(
                 line=dict(color=COLOURS["pink"], width=2),
                 name="Final",
                 showlegend=True,
-                hovertemplate="%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
+                hovertemplate=hovertemplate
             ))
 
         # Add final/provisional data line
         if not df_finalprovisional.empty:
+            hovertemplate = "%{x|%a %e %b}: xxxxx <span style='color:#d0006f'>(final)</span><extra></extra>" if redact_data else "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
             fig.add_trace(go.Scatter(
                 x=df_finalprovisional[x],
                 y=df_finalprovisional[selected_metric],
@@ -494,11 +512,12 @@ def draw_line_chart_section(
                 line=dict(color=COLOURS["pink"], width=2, dash="dot"),
                 name="Final",
                 showlegend=True,
-                hovertemplate="%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
+                hovertemplate=hovertemplate
             ))
 
         # Add provisional data line
         if not df_provisional.empty:
+            hovertemplate = "%{x|%a %e %b}: xxxxx <span style='color:#d0006f'>(provisional)</span><extra></extra>" if redact_data else "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(provisional)</span><extra></extra>"
             fig.add_trace(go.Scatter(
                 x=df_provisional[x],
                 y=df_provisional[selected_metric],
@@ -506,7 +525,7 @@ def draw_line_chart_section(
                 line=dict(color=COLOURS["pink"], width=2, dash="dot"),
                 name="Provisional",
                 showlegend=True,
-                hovertemplate="%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(provisional)</span><extra></extra>"
+                hovertemplate=hovertemplate
             ))
 
         # Add isolated points for all segments
@@ -517,11 +536,17 @@ def draw_line_chart_section(
         ]:
             isolated_points = get_isolated_points(df_segment)
             if not isolated_points.empty:
-                # Set tooltip based on data type
-                if name == "Final":
-                    hovertemplate = "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
+                # Set tooltip based on data type and redact data mode
+                if redact_data:
+                    if name == "Final":
+                        hovertemplate = "%{x|%a %e %b}: xxxxx <span style='color:#d0006f'>(final)</span><extra></extra>"
+                    else:
+                        hovertemplate = "%{x|%a %e %b}: xxxxx <span style='color:#d0006f'>(provisional)</span><extra></extra>"
                 else:
-                    hovertemplate = "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(provisional)</span><extra></extra>"
+                    if name == "Final":
+                        hovertemplate = "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(final)</span><extra></extra>"
+                    else:
+                        hovertemplate = "%{x|%a %e %b}: %{y} <span style='color:#d0006f'>(provisional)</span><extra></extra>"
 
                 fig.add_trace(go.Scatter(
                     x=isolated_points[x],
@@ -533,7 +558,7 @@ def draw_line_chart_section(
                         symbol="circle"
                     ),
                     name=name,
-                    showlegend=False,  # Don't show in legend to avoid clutter
+                    showlegend=False,
                     hovertemplate=hovertemplate
                 ))
 
@@ -595,6 +620,17 @@ def draw_line_chart_section(
         else:
             yaxis_config["range"] = [0, y_axis_max * 1.01]
             yaxis_config["tickformat"] = config.YAXIS_TICKFORMAT.get(selected_metric)
+
+        # Override tick labels with 'xxxxx' if using redact data
+        if redact_data:
+            if "tickvals" in yaxis_config:
+                tick_vals = yaxis_config["tickvals"]
+            else:
+                tick_vals = list(range(0, int(y_axis_max * 1.01) + 1, max(1, int(y_axis_max / 5))))
+                yaxis_config["tickvals"] = tick_vals
+
+            # Replace all tick labels with 'xxxxx'
+            yaxis_config["ticktext"] = ["xxxxx"] * len(tick_vals)
 
         # Add chart annotations for ranges within the chart date range
         range_highlights = []

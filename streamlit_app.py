@@ -1,4 +1,24 @@
+import argparse
+
 import streamlit as st
+import streamlit_testing.pages.dashboard.web_metrics.config as config
+
+
+def parse_redact_data_config():
+    """Parse redact data configuration from command line arguments"""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--redact-data", action="store_true", help="Enable redact data mode")
+
+    args, _ = parser.parse_known_args()
+
+    return args.redact_data
+
+
+# Parse and set redact data configuration
+REDACT_DATA = parse_redact_data_config()
+
+# Update config module with parsed values
+config.REDACT_DATA = REDACT_DATA
 
 st.set_page_config(
     layout="wide",

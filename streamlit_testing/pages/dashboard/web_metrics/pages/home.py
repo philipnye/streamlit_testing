@@ -1,7 +1,7 @@
 import os
 
 import streamlit as st
-from st_aggrid import AgGrid, StAggridTheme
+from st_aggrid import AgGrid, JsCode, StAggridTheme
 
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
@@ -85,6 +85,8 @@ df_date_range = elements.load_data(
 )
 
 # DRAW PAGE HEADER
+if config.REDACT_DATA:
+    elements.draw_redact_data_warning()
 st.title("Home")
 elements.draw_latest_data_badge(df_date_range["max_date"][0])
 st.markdown("\n\n")
@@ -132,13 +134,13 @@ def create_table(table_config, tab_index, page_filter, start_date, end_date, con
         df = elements.load_data(
             script,
             connection,
-            (start_date, end_date, start_date, end_date, table_config["content_type"], published_start_date, published_end_date, published_start_date, published_end_date)
+            (start_date, end_date, start_date, end_date, table_config["content_type"], published_start_date, published_end_date, published_start_date, published_end_date),
         )
     else:
         df = elements.load_data(
             script,
             connection,
-            (start_date, end_date, table_config["content_type"], published_start_date, published_end_date, published_start_date, published_end_date)
+            (start_date, end_date, table_config["content_type"], published_start_date, published_end_date, published_start_date, published_end_date),
         )
 
     # EDIT DATA
@@ -181,8 +183,12 @@ def create_table(table_config, tab_index, page_filter, start_date, end_date, con
     )
 
     # Apply formatting to metric columns
-    for metric_column in table_config["metrics"]:
-        column_defs[metric_column]["valueFormatter"] = format_integer
+    if config.REDACT_DATA:
+        for metric in table_config["metrics"]:
+            column_defs[metric]["valueFormatter"] = JsCode("function(params) {return 'xxxxx';}")
+    else:
+        for metric, formatter in table_config["metrics"].items():
+            column_defs[metric]["valueFormatter"] = formatter
 
     # Set explicit column widths
     column_defs[table_config["title_column"]]["width"] = 300
@@ -191,8 +197,8 @@ def create_table(table_config, tab_index, page_filter, start_date, end_date, con
     column_defs[table_config["external_link_column"]]["width"] = 200
 
     # Set width for metric columns
-    for metric_column in table_config["metrics"]:
-        column_defs[metric_column]["width"] = 100
+    for metric in table_config["metrics"]:
+        column_defs[metric]["width"] = 100
 
     # Disable pagination
     grid_options["pagination"] = True
@@ -230,12 +236,6 @@ def create_table(table_config, tab_index, page_filter, start_date, end_date, con
     theme_params = AG_GRID_THEME_DEFAULTS.copy()
     if "background_color" in table_config:
         theme_params["backgroundColor"] = table_config["background_color"]
-
-    if table_config["content_type"] == "Publication":
-        METRICS_DISPLAY = config.DOWNLOAD_METRICS_DISPLAY
-
-        for metric, formatter in METRICS_DISPLAY.items():
-            column_defs[metric]["valueFormatter"] = formatter
 
     # Create the AgGrid table
     AgGrid(

@@ -1,7 +1,7 @@
 import os
 
 import streamlit as st
-from st_aggrid import AgGrid, StAggridTheme
+from st_aggrid import AgGrid, JsCode, StAggridTheme
 
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
@@ -18,6 +18,8 @@ METRIC_TYPE = "web_traffic"
 connection = elements.connect_database()
 
 # DRAW PAGE HEADER
+if config.REDACT_DATA:
+    elements.draw_redact_data_warning()
 st.title("Summary")
 
 # DRAW DATE RANGE INPUTS
@@ -52,7 +54,7 @@ with open("streamlit_testing/sql/dashboard/web_metrics/summary.sql", "r") as fil
 df = elements.load_data(
     script,
     connection,
-    (start_date, end_date)
+    (start_date, end_date),
 )
 
 # EDIT DATA
@@ -94,6 +96,7 @@ selected_metric = elements.draw_line_chart_section(
     end_date=end_date,
     metrics=list(METRICS_DISPLAY.keys()),
     default_metric=DEFAULT_METRIC,
+    redact_data=config.REDACT_DATA,
 )
 
 # DRAW TABLE
@@ -105,10 +108,14 @@ column_defs, grid_options = elements.set_table_defaults(
     pin_columns=breakdowns if breakdowns else None
 )
 
-column_defs["Pages"]["valueFormatter"] = format_integer
-
-for metric, formatter in METRICS_DISPLAY.items():
-    column_defs[metric]["valueFormatter"] = formatter
+# Apply formatting to metric columns
+if config.REDACT_DATA:
+    for metric in METRICS_DISPLAY:
+        column_defs[metric]["valueFormatter"] = JsCode("function(params) {return 'xxxxx';}")
+else:
+    column_defs["Pages"]["valueFormatter"] = format_integer
+    for metric, formatter in METRICS_DISPLAY.items():
+        column_defs[metric]["valueFormatter"] = formatter
 
 AgGrid(
     df,

@@ -2,9 +2,10 @@ import os
 
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, StAggridTheme
+from st_aggrid import AgGrid, JsCode, StAggridTheme
 
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
+import streamlit_testing.pages.dashboard.web_metrics.config as config
 import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 from streamlit_testing.pages.dashboard.web_metrics.utils import format_integer, format_percentage, set_metrics
 
@@ -43,7 +44,7 @@ script_content_metadata = script.split(";")[0]
 df_content_metadata = elements.load_data(
     script_content_metadata,
     connection,
-    (st.query_params["url"], )
+    (st.query_params["url"],),
 )
 
 if df_content_metadata.empty:
@@ -51,6 +52,8 @@ if df_content_metadata.empty:
     st.stop()
 
 # DRAW PAGE HEADER
+if config.REDACT_DATA:
+    elements.draw_redact_data_warning()
 st.title("Publication: _" + df_content_metadata["Publication title"].iloc[0] + "_")
 elements.draw_latest_data_badge(df_date_range["max_date"][0])
 st.markdown("\n\n")
@@ -96,7 +99,7 @@ script_metrics = script.split(";")[1]
 df_metrics = elements.load_data(
     script_metrics,
     connection,
-    (start_date, end_date, st.query_params["url"], start_date, end_date)
+    (start_date, end_date, st.query_params["url"], start_date, end_date),
 )
 
 # EDIT DATA
@@ -117,6 +120,7 @@ selected_metric = elements.draw_line_chart_section(
     default_metric=DEFAULT_METRIC,
     content_type="publications",
     show_all_content_warning=False,
+    redact_data=config.REDACT_DATA,
 )
 
 df_metrics["Date"] = pd.to_datetime(
@@ -141,8 +145,13 @@ with tab1:
         ["Date"]
     )
 
-    for metric, formatter in METRICS_DISPLAY.items():
-        column_defs[metric]["valueFormatter"] = formatter
+    # Apply formatting to metric columns
+    if config.REDACT_DATA:
+        for metric in METRICS_DISPLAY:
+            column_defs[metric]["valueFormatter"] = JsCode("function(params) {return 'xxxxx';}")
+    else:
+        for metric, formatter in METRICS_DISPLAY.items():
+            column_defs[metric]["valueFormatter"] = formatter
 
     AgGrid(
         df_metrics,
@@ -164,7 +173,7 @@ with tab2:
     df_downloadable_pages = elements.load_data(
         script_metrics,
         connection,
-        (start_date, end_date, start_date, end_date, st.query_params["url"])
+        (start_date, end_date, start_date, end_date, st.query_params["url"]),
     )
 
     # Ensure Downloads column exists and handle null values
@@ -232,10 +241,15 @@ with tab2:
             ["Published date", "Updated date"]
         )
 
-    # Set formatters for numeric columns
-    column_defs["Page views"]["valueFormatter"] = format_integer
-    column_defs["Downloads"]["valueFormatter"] = format_integer
-    column_defs["Download rate"]["valueFormatter"] = format_percentage
+    # Apply formatting to metric columns
+    if config.REDACT_DATA:
+        column_defs["Page views"]["valueFormatter"] = JsCode("function(params) {return 'xxxxx';}")
+        column_defs["Downloads"]["valueFormatter"] = JsCode("function(params) {return 'xxxxx';}")
+        column_defs["Download rate"]["valueFormatter"] = JsCode("function(params) {return 'xxxxx';}")
+    else:
+        column_defs["Page views"]["valueFormatter"] = format_integer
+        column_defs["Downloads"]["valueFormatter"] = format_integer
+        column_defs["Download rate"]["valueFormatter"] = format_percentage
 
     # Display the table
     AgGrid(

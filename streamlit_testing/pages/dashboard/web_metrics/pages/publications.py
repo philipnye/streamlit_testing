@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, StAggridTheme
+from st_aggrid import AgGrid, JsCode, StAggridTheme
 
 from streamlit_testing.config.ag_grid_theme import AG_GRID_THEME_BASE, AG_GRID_THEME_DEFAULTS
 import streamlit_testing.pages.dashboard.web_metrics.config as config
@@ -29,6 +29,8 @@ df_date_range = elements.load_data(
 )
 
 # DRAW PAGE HEADER
+if config.REDACT_DATA:
+    elements.draw_redact_data_warning()
 st.title("Publications")
 elements.draw_latest_data_badge(df_date_range["max_date"][0])
 st.markdown("\n\n")
@@ -47,7 +49,7 @@ with open("streamlit_testing/sql/dashboard/web_metrics/publications.sql", "r") a
 df = elements.load_data(
     script,
     connection,
-    (start_date, end_date, start_date, end_date)
+    (start_date, end_date, start_date, end_date),
 )
 
 # EDIT DATA
@@ -79,6 +81,7 @@ selected_metric = elements.draw_line_chart_section(
     metrics=list(METRICS_DISPLAY.keys()),
     default_metric=DEFAULT_METRIC,
     content_type="publications",
+    redact_data=config.REDACT_DATA,
 )
 
 # DRAW TABLE
@@ -109,8 +112,13 @@ column_defs = elements.format_date_cols(
     ["Published date", "Updated date"]
 )
 
-for metric, formatter in METRICS_DISPLAY.items():
-    column_defs[metric]["valueFormatter"] = formatter
+# Apply formatting to metric columns
+if config.REDACT_DATA:
+    for metric in METRICS_DISPLAY:
+        column_defs[metric]["valueFormatter"] = JsCode("function(params) {return 'xxxxx';}")
+else:
+    for metric, formatter in METRICS_DISPLAY.items():
+        column_defs[metric]["valueFormatter"] = formatter
 
 AgGrid(
     df_by_publication,
