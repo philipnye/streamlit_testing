@@ -1,5 +1,6 @@
 ### v1.0.2 - Thur 4 September
-🐛 **DATA: Fix bug: Metrics for Whitehall Monitor 2025 and Performance Tracker 2023 were overstated due to a bug relating to file extensions**
+🐛 **DATA: Fix bug: Metrics for Whitehall Monitor 2025 and Performance Tracker 2023 were overstated**
+A bug relating to file extensions led to overstatement for these two publication
 
 ### v1.0.1 - Fri 15 August
 🐛 **DATA: Fix bug: Certain comment pieces and explainers weren't eligible for inclusion in the Home page**\
