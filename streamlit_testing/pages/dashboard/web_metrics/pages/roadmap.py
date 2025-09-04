@@ -4,7 +4,7 @@ import streamlit_testing.pages.dashboard.web_metrics.elements as elements
 
 # DRAW PAGE HEADER
 st.title("Roadmap")
-elements.draw_last_updated_badge("2025-08-15")
+elements.draw_last_updated_badge("2025-09-04")
 st.markdown("\n\n")
 st.markdown("\n\n")
 
